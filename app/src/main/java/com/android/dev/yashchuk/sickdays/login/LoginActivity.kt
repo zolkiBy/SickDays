@@ -1,4 +1,4 @@
-package com.android.dev.yashchuk.sickdays
+package com.android.dev.yashchuk.sickdays.login
 
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
@@ -23,6 +23,7 @@ import android.widget.TextView
 
 import java.util.ArrayList
 import android.Manifest.permission.READ_CONTACTS
+import com.android.dev.yashchuk.sickdays.R
 
 import kotlinx.android.synthetic.main.activity_login.*
 
