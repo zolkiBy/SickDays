@@ -1,4 +1,4 @@
-package com.android.dev.yashchuk.sickdays
+package com.android.dev.yashchuk.sickleaves
 
 /**
  * Created by Vitali Yashchuk on 18.02.2018.

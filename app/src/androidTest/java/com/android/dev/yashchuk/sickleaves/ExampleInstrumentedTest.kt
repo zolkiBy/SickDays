@@ -1,4 +1,4 @@
-package com.android.dev.yashchuk.sickdays
+package com.android.dev.yashchuk.sickleaves
 
 import android.support.test.InstrumentationRegistry
 import android.support.test.runner.AndroidJUnit4

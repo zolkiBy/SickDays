@@ -1,4 +1,4 @@
-package com.android.dev.yashchuk.sickdays
+package com.android.dev.yashchuk.sickleaves
 
 import org.junit.Test
 
