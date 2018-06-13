@@ -28,6 +28,7 @@ dependencies {
     implementation "com.android.support:design:$rootProject.ext.supportLibraryVersion"
     implementation "com.google.firebase:firebase-auth:$rootProject.ext.firebaseAuthVersion"
     implementation "com.google.firebase:firebase-firestore:$rootProject.ext.firebaseFireStoreVersion"
+    implementation "com.google.firebase:firebase-core:$rootProject.ext.firebaseCoreVersion"
     implementation "android.arch.persistence.room:runtime:$rootProject.roomVersion"
     kapt "android.arch.persistence.room:compiler:$rootProject.roomVersion"
     testImplementation "junit:junit:$rootProject.ext.junitVersion"

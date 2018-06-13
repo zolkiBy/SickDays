@@ -10,5 +10,7 @@ data class SickLeave @JvmOverloads constructor(
         @PrimaryKey var id: String = UUID.randomUUID().toString(),
         @ColumnInfo(name = "title") var title: String = "",
         @ColumnInfo(name = "description") var description: String = ""
-) {
-}
+       /* @ColumnInfo(name = "start_date") var startDate: Long,
+        @ColumnInfo(name = "end_date") var endDate: Long,
+        @ColumnInfo(name = "status") var status: String*/
+){}

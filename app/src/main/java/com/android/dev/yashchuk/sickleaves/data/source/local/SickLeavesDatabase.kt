@@ -1,4 +1,4 @@
-package com.android.dev.yashchuk.sickleaves.data.local
+package com.android.dev.yashchuk.sickleaves.data.source.local
 
 import android.arch.persistence.room.Database
 import android.arch.persistence.room.Room

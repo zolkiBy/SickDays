@@ -23,8 +23,12 @@ import android.widget.TextView
 
 import java.util.ArrayList
 import android.Manifest.permission.READ_CONTACTS
+import android.util.Log
+import android.widget.Toast
 import com.android.dev.yashchuk.sickleaves.R
+import com.android.dev.yashchuk.sickleaves.data.source.remote.net.FireBaseApi
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 
 import kotlinx.android.synthetic.main.activity_login.*
 
@@ -54,7 +58,8 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor> {
             false
         })
 
-        email_sign_in_button.setOnClickListener { attemptLogin() }
+        email_sign_in_button.setOnClickListener { /*attemptLogin()*/ /*FireBaseApi.addSickLeave()*/
+        login(email.text.toString(), password.text.toString())}
     }
 
     override fun onStart() {
@@ -68,6 +73,22 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor> {
         }
 
         loaderManager.initLoader(0, null, this)
+    }
+
+    private fun login(email: String, password: String) {
+        auth.createUserWithEmailAndPassword(email, password)
+        .addOnCompleteListener{if (it.isSuccessful) {
+            // Sign in success, update UI with the signed-in user's information
+            Log.d("Login", "createUserWithEmail:success")
+            val user = auth.currentUser
+
+        } else {
+            // If sign in fails, display a message to the user.
+            Log.w("Login", "createUserWithEmail:failure", it.exception)
+            Toast.makeText(this, "Authentication failed.",
+                    Toast.LENGTH_SHORT).show()
+
+        }}
     }
 
     private fun mayRequestContacts(): Boolean {

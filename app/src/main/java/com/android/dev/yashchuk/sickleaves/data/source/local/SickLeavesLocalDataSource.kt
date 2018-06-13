@@ -1,14 +1,14 @@
-package com.android.dev.yashchuk.sickleaves.data.remote
+package com.android.dev.yashchuk.sickleaves.data.source.local
 
 import com.android.dev.yashchuk.sickleaves.data.SickLeave
-import com.android.dev.yashchuk.sickleaves.data.SickLeavesDataSource
+import com.android.dev.yashchuk.sickleaves.data.source.SickLeavesDataSource
 
-class SickLeavesRemoteDataSource: SickLeavesDataSource {
+class SickLeavesLocalDataSource: SickLeavesDataSource {
     override fun getSickLeaves(callback: SickLeavesDataSource.LoadSickLeavesCallback) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    override fun getSickLeave(sickDayId: String, callback: SickLeavesDataSource.GetSickLeaveCallback) {
+    override fun getSickLeave(id: String, callback: SickLeavesDataSource.GetSickLeaveCallback) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
@@ -16,7 +16,7 @@ class SickLeavesRemoteDataSource: SickLeavesDataSource {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    override fun deleteSickLeave(sickDayId: String, callback: SickLeavesDataSource.DeleteSickLeaveCallback) {
+    override fun deleteSickLeave(id: String, callback: SickLeavesDataSource.DeleteSickLeaveCallback) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 

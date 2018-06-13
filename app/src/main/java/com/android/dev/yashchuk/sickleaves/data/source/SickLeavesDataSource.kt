@@ -1,4 +1,6 @@
-package com.android.dev.yashchuk.sickleaves.data
+package com.android.dev.yashchuk.sickleaves.data.source
+
+import com.android.dev.yashchuk.sickleaves.data.SickLeave
 
 interface SickLeavesDataSource {
 
@@ -29,11 +31,11 @@ interface SickLeavesDataSource {
 
     fun getSickLeaves(callback: LoadSickLeavesCallback)
 
-    fun getSickLeave(sickDayId: String, callback: GetSickLeaveCallback)
+    fun getSickLeave(id: String, callback: GetSickLeaveCallback)
 
     fun saveSickLeave(sickLeave: SickLeave, callback: SaveSickLeaveCallback)
 
-    fun deleteSickLeave(sickDayId: String, callback: DeleteSickLeaveCallback)
+    fun deleteSickLeave(id: String, callback: DeleteSickLeaveCallback)
 
     fun deleteAllSickLeaves(callback: DeleteAllSickLeavesCallback)
 }
