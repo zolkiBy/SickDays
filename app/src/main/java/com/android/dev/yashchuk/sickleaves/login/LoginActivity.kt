@@ -23,10 +23,14 @@ import android.widget.TextView
 
 import java.util.ArrayList
 import android.Manifest.permission.READ_CONTACTS
+import android.content.Intent
 import android.util.Log
 import android.widget.Toast
 import com.android.dev.yashchuk.sickleaves.R
+import com.android.dev.yashchuk.sickleaves.callbacks.OnUserRegisterListener
 import com.android.dev.yashchuk.sickleaves.data.source.remote.net.FireBaseApi
+import com.android.dev.yashchuk.sickleaves.sicklist.SickLeavesListActivity
+import com.android.dev.yashchuk.sickleaves.utils.showSnackBar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 
@@ -59,7 +63,8 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor> {
         })
 
         email_sign_in_button.setOnClickListener { /*attemptLogin()*/ /*FireBaseApi.addSickLeave()*/
-        login(email.text.toString(), password.text.toString())}
+        /*login(email.text.toString(), password.text.toString())*/
+        createUser(it)}
     }
 
     override fun onStart() {
@@ -89,6 +94,24 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor> {
                     Toast.LENGTH_SHORT).show()
 
         }}
+    }
+
+    private fun createUser(view: View) {
+        FireBaseApi.createUser(auth,
+                email.text.toString(),
+                password.text.toString(),
+                object : OnUserRegisterListener {
+                    override fun onSuccess() {
+                        startActivity(Intent(this@LoginActivity,
+                                SickLeavesListActivity::class.java).apply {
+                            // put bundle values here
+                        })
+                    }
+
+                    override fun onFailed() {
+                        view.showSnackBar("Authorization Failed", Snackbar.LENGTH_SHORT)
+                    }
+                })
     }
 
     private fun mayRequestContacts(): Boolean {
