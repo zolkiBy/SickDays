@@ -1,7 +1,7 @@
 package com.android.dev.yashchuk.sickleaves.callbacks
 
 
-interface OnUserRegisterListener {
+interface OnUserAuthListener {
     fun onSuccess()
     fun onFailed()
 }
