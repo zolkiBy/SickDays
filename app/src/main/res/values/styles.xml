@@ -6,8 +6,8 @@
         <item name="colorAccent">@color/accentColor</item>
     </style>
 
-    <style name="PrimaryColorButton" parent="ThemeOverlay.AppCompat">
-        <item name="colorAccent">@color/primaryColor</item>
+    <style name="AppTheme.NoActionBar" parent="AppTheme">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
     </style>
-
 </resources>

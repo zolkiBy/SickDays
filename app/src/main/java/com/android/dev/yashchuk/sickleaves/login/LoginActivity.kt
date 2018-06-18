@@ -36,6 +36,8 @@ import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_login.*
 
 class LoginActivity : AppCompatActivity(), LoginContract.View {
+
+
     /**
      * Keep track of the login task to ensure we can cancel it if requested.
      */
@@ -46,7 +48,6 @@ class LoginActivity : AppCompatActivity(), LoginContract.View {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
-        // Set up the login form.
 
         auth = FirebaseAuth.getInstance()
         password.setOnEditorActionListener(TextView.OnEditorActionListener { _, id, _ ->
@@ -197,6 +198,17 @@ class LoginActivity : AppCompatActivity(), LoginContract.View {
                         login_progress.visibility = if (show) View.VISIBLE else View.GONE
                     }
                 })
+    }
+
+    override fun openListScreen() {
+        startActivity(Intent(this@LoginActivity,
+                SickLeavesListActivity::class.java).apply {
+            // put bundle values here
+        })
+    }
+
+    override fun showError(message: String) {
+        Snackbar.make(login_form, message, Snackbar.LENGTH_SHORT).show()
     }
 
     inner class UserLoginTask internal constructor(private val mEmail: String, private val mPassword: String) : AsyncTask<Void, Void, Boolean>() {

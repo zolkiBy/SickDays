@@ -43,6 +43,8 @@ captures/
 .idea/gradle.xml
 .idea/dictionaries
 .idea/libraries
+.idea/caches
+.idea/codeStyles
 
 # External native build folder generated in Android Studio 2.2 and later
 .externalNativeBuild
@@ -160,7 +162,8 @@ fabric.properties
 
 ### AndroidStudio Patch ###
 
-!/gradle/wrapper/gradle-wrapper.jar
-
+gradle-wrapper.jar
+gradle-wrapper.properties
+gradle.properties
 
 # End of https://www.gitignore.io/api/android,androidstudio
