@@ -15,18 +15,16 @@ interface SickLeavesDataSource {
     }
 
     interface SaveSickLeaveCallback {
-        fun onSickLeaveSuccesfullySaved()
-        fun onSickDaySaveFailed()
+        fun onSickLeaveSaveFailed()
     }
 
     interface DeleteSickLeaveCallback {
         fun onSickLeaveSuccesfullyDeleted()
-        fun onSickDayDeleteFailed()
+        fun onSickLeaveDeleteFailed()
     }
 
     interface DeleteAllSickLeavesCallback {
-        fun onSickLeavesSuccesfullyDeleted()
-        fun onSickDaysDeleteFailed()
+        fun onSickLeavesDeleteFailed()
     }
 
     fun getSickLeaves(callback: LoadSickLeavesCallback)

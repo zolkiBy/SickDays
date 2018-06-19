@@ -14,4 +14,8 @@
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
+
+    <!-- Login Screen -->
+    <string name="login_error_create_user">Error create user</string>
+    <string name="login_error_sign_in">Failed to sign in</string>
 </resources>

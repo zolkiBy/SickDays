@@ -1,11 +1,13 @@
 package com.android.dev.yashchuk.sickleaves.login
 
+import android.support.annotation.StringRes
+
 
 interface LoginContract {
     interface View {
         fun showProgress(show: Boolean)
         fun openListScreen()
-        fun showError(message: String)
+        fun showError(@StringRes resId: Int)
     }
 
     interface Presenter {
