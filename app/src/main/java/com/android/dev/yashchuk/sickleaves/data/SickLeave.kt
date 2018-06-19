@@ -7,7 +7,7 @@ import java.util.*
 
 @Entity(tableName = "sick_leaves")
 data class SickLeave @JvmOverloads constructor(
-        @PrimaryKey var id: String = UUID.randomUUID().toString(),
+        @PrimaryKey @ColumnInfo(name = "entryid")var id: String = UUID.randomUUID().toString(),
         @ColumnInfo(name = "title") var title: String = "",
         @ColumnInfo(name = "description") var description: String = ""
        /* @ColumnInfo(name = "start_date") var startDate: Long,

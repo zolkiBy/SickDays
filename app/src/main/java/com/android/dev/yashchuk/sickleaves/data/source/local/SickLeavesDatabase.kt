@@ -13,7 +13,7 @@ abstract class SickLeavesDatabase : RoomDatabase() {
 
     companion object {
 
-        private const val DATABASE_NAME = "SickDays.db"
+        private const val DATABASE_NAME = "SickLeaves.db"
         private var INSTANCE: SickLeavesDatabase? = null
 
         private val lock = Any()
