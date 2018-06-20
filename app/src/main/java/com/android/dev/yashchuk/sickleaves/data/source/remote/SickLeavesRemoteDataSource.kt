@@ -28,12 +28,12 @@ class SickLeavesRemoteDataSource: SickLeavesDataSource {
     }
 
     override fun saveSickLeave(userId: String, sickLeave: SickLeave, callback: SickLeavesDataSource.SaveSickLeaveCallback) {
-        val sickLeaveMap = HashMap<String, Any>()
+        /*val sickLeaveMap = HashMap<String, Any>()
         sickLeaveMap[id] = sickLeave.id
         sickLeaveMap[title] = sickLeave.title
-        sickLeaveMap[description] = sickLeave.description
-        FirebaseFirestore.getInstance().collection(userId)
-                .add(sickLeaveMap)
+        sickLeaveMap[description] = sickLeave.description*/
+        FirebaseFirestore.getInstance().collection(userId).document().set(sickLeave)
+                /*.add(sickLeaveMap)*/
                 .addOnSuccessListener { callback.onSickLeaveSaved() }
                 .addOnFailureListener { callback.onSickLeaveSaveFailed() }
 
