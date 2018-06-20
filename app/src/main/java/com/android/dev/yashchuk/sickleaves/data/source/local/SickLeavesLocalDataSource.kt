@@ -1,5 +1,6 @@
 package com.android.dev.yashchuk.sickleaves.data.source.local
 
+import android.support.annotation.VisibleForTesting
 import com.android.dev.yashchuk.sickleaves.data.SickLeave
 import com.android.dev.yashchuk.sickleaves.data.source.SickLeavesDataSource
 import com.android.dev.yashchuk.sickleaves.utils.AppExecutors
@@ -9,7 +10,7 @@ class SickLeavesLocalDataSource private constructor(
         val sickLeavesDao: SickLeavesDao
 ) : SickLeavesDataSource {
 
-    override fun getSickLeaves(callback: SickLeavesDataSource.LoadSickLeavesCallback) {
+    override fun getSickLeaves(userId: String, callback: SickLeavesDataSource.LoadSickLeavesCallback) {
         appExecutors.diskIO.execute {
             val sickLeaves = sickLeavesDao.getSickLeaves()
             appExecutors.mainThread.execute {
@@ -35,15 +36,38 @@ class SickLeavesLocalDataSource private constructor(
         }
     }
 
-    override fun saveSickLeave(sickLeave: SickLeave, callback: SickLeavesDataSource.SaveSickLeaveCallback) {
+    override fun saveSickLeave(userId: String, sickLeave: SickLeave, callback: SickLeavesDataSource.SaveSickLeaveCallback) {
         appExecutors.diskIO.execute { sickLeavesDao.insertSickLeave(sickLeave) }
     }
 
     override fun deleteSickLeave(id: String, callback: SickLeavesDataSource.DeleteSickLeaveCallback) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        appExecutors.diskIO.execute { sickLeavesDao.deleteSickLeaveById(id) }
     }
 
     override fun deleteAllSickLeaves(callback: SickLeavesDataSource.DeleteAllSickLeavesCallback) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        appExecutors.diskIO.execute { sickLeavesDao.deleteSickLeaves() }
+    }
+
+    companion object {
+        private var INSTANCE: SickLeavesLocalDataSource? = null
+
+        @JvmStatic
+        fun getInstance(appExecutors: AppExecutors,
+                        sickLeavesDao: SickLeavesDao)
+                : SickLeavesLocalDataSource {
+            INSTANCE ?: synchronized(SickLeavesLocalDataSource::class.java) {
+                INSTANCE ?: SickLeavesLocalDataSource(appExecutors, sickLeavesDao)
+                                .also { sickLeavesLocalDataSource ->
+                                    INSTANCE = sickLeavesLocalDataSource
+                                }
+            }
+
+            return INSTANCE!!
+        }
+
+        @VisibleForTesting
+        fun destroyInstance() {
+            INSTANCE = null
+        }
     }
 }

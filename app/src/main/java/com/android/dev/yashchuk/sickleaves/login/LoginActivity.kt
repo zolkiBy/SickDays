@@ -46,7 +46,7 @@ class LoginActivity : AppCompatActivity(), LoginContract.View {
             false
         })
 
-        email_sign_in_button.setOnClickListener { /*attemptLogin()*/ /*FireBaseApi.addSickLeave()*/
+        email_sign_in_button.setOnClickListener { /*attemptLogin()*/ /*FireBaseAuthApi.addSickLeave()*/
         /*login(email.text.toString(), password.text.toString())*/
         /*createUser(it)*/}
     }
@@ -73,7 +73,7 @@ class LoginActivity : AppCompatActivity(), LoginContract.View {
     }
 
     /*private fun createUser(view: View) {
-        FireBaseApi.createUser(email.text.toString(),
+        FireBaseAuthApi.createUser(email.text.toString(),
                 password.text.toString(),
                 object : OnUserAuthListener {
                     override fun onSuccess() {
@@ -90,7 +90,7 @@ class LoginActivity : AppCompatActivity(), LoginContract.View {
     }
 
     private fun signIn(view: View) {
-        FireBaseApi.signIn(email.text.toString(),
+        FireBaseAuthApi.signIn(email.text.toString(),
                 password.text.toString(),
                 object : OnUserAuthListener{
                     override fun onSuccess() {

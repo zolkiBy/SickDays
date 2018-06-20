@@ -9,7 +9,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import java.util.*
 
 
-object FireBaseApi : AuthApi{
+object FireBaseAuthApi : AuthApi{
 
 
     fun addSickLeave(fireStore: FirebaseFirestore) {
@@ -20,8 +20,8 @@ object FireBaseApi : AuthApi{
         sickLeaveObj["id"] = sickLeave.id
         fireStore.collection("sickleaves")
                 .add(sickLeaveObj)
-                .addOnSuccessListener { Log.d("FireBaseApi", "Add document" + it.id) }
-                .addOnFailureListener { Log.w("FireBaseApi", "Error", it) }
+                .addOnSuccessListener { Log.d("FireBaseAuthApi", "Add document" + it.id) }
+                .addOnFailureListener { Log.w("FireBaseAuthApi", "Error", it) }
     }
 
     override fun createUser(email: String, password: String, callback: OnUserAuthListener) {
