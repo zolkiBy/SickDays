@@ -6,7 +6,7 @@ import com.google.android.gms.tasks.Task
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.QuerySnapshot
 
-class SickLeavesRemoteDataSource: SickLeavesDataSource {
+class SickLeavesRemoteDataSource : SickLeavesDataSource {
 
     private val id = "id"
     private val title = "title"
@@ -14,17 +14,33 @@ class SickLeavesRemoteDataSource: SickLeavesDataSource {
 
 
     override fun getSickLeaves(userId: String, callback: SickLeavesDataSource.LoadSickLeavesCallback) {
+        val sickLeaves = mutableListOf<SickLeave>()
         FirebaseFirestore.getInstance().collection(userId)
                 .get()
-                .addOnCompleteListener { task: Task<QuerySnapshot> ->
+                .addOnCompleteListener { task ->
                     if (task.isSuccessful) {
+                        for (document in task.result) {
+                            sickLeaves.add(document.toObject(SickLeave::class.java))
+                        }
 
+                        callback.onSickLeavesLoaded(sickLeaves)
+                    } else {
+                        callback.onDataNotAvailable()
                     }
                 }
     }
 
     override fun getSickLeave(id: String, callback: SickLeavesDataSource.GetSickLeaveCallback) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        FirebaseFirestore.getInstance().collection(id)
+                .whereEqualTo(this.id, id)
+                .get()
+                .addOnCompleteListener {task ->
+                    if (task.isSuccessful) {
+                        val document = task.result
+                        callback.onSickLeaveLoaded(document.toObjects(SickLeave::class.java))
+                    }
+
+                }
     }
 
     override fun saveSickLeave(userId: String, sickLeave: SickLeave, callback: SickLeavesDataSource.SaveSickLeaveCallback) {
