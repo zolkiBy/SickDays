@@ -4,7 +4,7 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import com.android.dev.yashchuk.sickleaves.R
 
-class SickListActivity : AppCompatActivity() {
+class SickLeavesActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

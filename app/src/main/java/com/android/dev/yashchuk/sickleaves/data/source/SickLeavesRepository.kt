@@ -20,9 +20,10 @@ class SickLeavesRepository(
         if (cacheIsDirty) {
             getSickLeavesFromRemoteDataSource(userId, callback)
         } else {
-            localDataSource.getSickLeaves(userId, object : SickLeavesDataSource.LoadSickLeavesCallback{
+            localDataSource.getSickLeaves(userId, object : SickLeavesDataSource.LoadSickLeavesCallback {
                 override fun onSickLeavesLoaded(sickLeaves: List<SickLeave>) {
-                    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                    refreshCache(sickLeaves)
+                    callback.onSickLeavesLoaded(ArrayList(cachedSickLeaves.values))
                 }
 
                 override fun onDataNotAvailable() {
@@ -30,39 +31,83 @@ class SickLeavesRepository(
                 }
             })
         }
-
-
     }
 
     override fun getSickLeave(id: String, callback: SickLeavesDataSource.GetSickLeaveCallback) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
+        val cachedSickLeave = getCachedSickLeaveWithId(id)
 
-    override fun saveSickLeave(userId: String, sickLeave: SickLeave, callback: SickLeavesDataSource.SaveSickLeaveCallback) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
+        if (cachedSickLeave != null) {
+            callback.onSickLeaveLoaded(cachedSickLeave)
+            return
+        }
 
-    override fun deleteSickLeave(id: String, userId: String, callback: SickLeavesDataSource.DeleteSickLeaveCallback) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
+        localDataSource.getSickLeave(id, object : SickLeavesDataSource.GetSickLeaveCallback {
+            override fun onSickLeaveLoaded(sickLeave: SickLeave) {
+                cacheAndPerform(sickLeave) {
+                    callback.onSickLeaveLoaded(it)
+                }
+            }
 
-    override fun deleteAllSickLeaves(callback: SickLeavesDataSource.DeleteAllSickLeavesCallback) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    private fun getSickLeavesFromRemoteDataSource(userId: String, callback: SickLeavesDataSource.LoadSickLeavesCallback) {
-        remoteDataSource.getSickLeaves(userId, object : SickLeavesDataSource.LoadSickLeavesCallback {
-            override fun onSickLeavesLoaded(sickLeaves: List<SickLeave>) {
-                refreshCache(sickLeaves)
-                refreshLocalDataSource(userId, sickLeaves, object : SickLeavesDataSource.LoadSickLeavesCallback {
-                    override fun onSickLeavesLoaded(sickLeaves: List<SickLeave>) {
-
+            override fun onDataNotAvailable() {
+                remoteDataSource.getSickLeave(id, object : SickLeavesDataSource.GetSickLeaveCallback {
+                    override fun onSickLeaveLoaded(sickLeave: SickLeave) {
+                        cacheAndPerform(sickLeave) {
+                            callback.onSickLeaveLoaded(it)
+                        }
                     }
 
                     override fun onDataNotAvailable() {
                         callback.onDataNotAvailable()
                     }
                 })
+            }
+        })
+    }
+
+    override fun saveSickLeave(userId: String, sickLeave: SickLeave, callback: SickLeavesDataSource.SaveSickLeaveCallback) {
+        cacheAndPerform(sickLeave) {
+            localDataSource.saveSickLeave(userId, it, callback)
+            remoteDataSource.saveSickLeave(userId, it, callback)
+        }
+    }
+
+    override fun deleteSickLeave(id: String, userId: String, callback: SickLeavesDataSource.DeleteSickLeaveCallback) {
+        localDataSource.deleteSickLeave(id, userId, object : SickLeavesDataSource.DeleteSickLeaveCallback {
+            override fun onSickLeaveDeleted() {
+                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+            }
+
+            override fun onSickLeaveDeleteFailed() {
+                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+            }
+        })
+
+        remoteDataSource.deleteSickLeave(id, userId, object : SickLeavesDataSource.DeleteSickLeaveCallback {
+            override fun onSickLeaveDeleted() {
+                callback.onSickLeaveDeleted()
+            }
+
+            override fun onSickLeaveDeleteFailed() {
+                callback.onSickLeaveDeleteFailed()
+            }
+        })
+
+        cachedSickLeaves.remove(id)
+    }
+
+    override fun deleteAllSickLeaves(callback: SickLeavesDataSource.DeleteAllSickLeavesCallback) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    private fun getCachedSickLeaveWithId(id: String): SickLeave? {
+        return cachedSickLeaves[id]
+    }
+
+    private fun getSickLeavesFromRemoteDataSource(userId: String, callback: SickLeavesDataSource.LoadSickLeavesCallback) {
+        remoteDataSource.getSickLeaves(userId, object : SickLeavesDataSource.LoadSickLeavesCallback {
+            override fun onSickLeavesLoaded(sickLeaves: List<SickLeave>) {
+                refreshCache(sickLeaves)
+                refreshLocalDataSource(userId, sickLeaves, callback)
             }
 
             override fun onDataNotAvailable() {
@@ -83,13 +128,15 @@ class SickLeavesRepository(
         localDataSource.deleteAllSickLeaves(object : SickLeavesDataSource.DeleteAllSickLeavesCallback {
             override fun onSickLeavesDeleteFailed() {
                 callback.onDataNotAvailable()
+                // TODO : if really need return this????
+                return
             }
         })
 
         sickLeaves.forEach { sickLeave ->
             localDataSource.saveSickLeave(userId, sickLeave, object : SickLeavesDataSource.SaveSickLeaveCallback {
                 override fun onSickLeaveSaved() {
-                    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+
                 }
 
                 override fun onSickLeaveSaveFailed() {
@@ -114,9 +161,9 @@ class SickLeavesRepository(
                 : SickLeavesRepository {
             INSTANCE ?: synchronized(SickLeavesRepository::class.java) {
                 INSTANCE ?: SickLeavesRepository(localDataSource, remoteDataSource)
-                                .also { sickLeavesRepository ->
-                                    INSTANCE = sickLeavesRepository
-                                }
+                        .also { sickLeavesRepository ->
+                            INSTANCE = sickLeavesRepository
+                        }
             }
 
             return INSTANCE!!

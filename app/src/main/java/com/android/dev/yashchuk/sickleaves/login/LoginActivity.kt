@@ -18,7 +18,7 @@ import android.support.annotation.StringRes
 import android.util.Log
 import android.widget.Toast
 import com.android.dev.yashchuk.sickleaves.R
-import com.android.dev.yashchuk.sickleaves.sicklist.SickListActivity
+import com.android.dev.yashchuk.sickleaves.sicklist.SickLeavesActivity
 import com.google.firebase.auth.FirebaseAuth
 
 import kotlinx.android.synthetic.main.activity_login.*
@@ -78,7 +78,7 @@ class LoginActivity : AppCompatActivity(), LoginContract.View {
                 object : OnUserAuthListener {
                     override fun onSuccess() {
                         startActivity(Intent(this@LoginActivity,
-                                SickListActivity::class.java).apply {
+                                SickLeavesActivity::class.java).apply {
                             // put bundle values here
                         })
                     }
@@ -95,7 +95,7 @@ class LoginActivity : AppCompatActivity(), LoginContract.View {
                 object : OnUserAuthListener{
                     override fun onSuccess() {
                         startActivity(Intent(this@LoginActivity,
-                                SickListActivity::class.java).apply {
+                                SickLeavesActivity::class.java).apply {
                             // put bundle values here
                         })
                     }
@@ -190,7 +190,7 @@ class LoginActivity : AppCompatActivity(), LoginContract.View {
 
     override fun openListScreen() {
         startActivity(Intent(this@LoginActivity,
-                SickListActivity::class.java).apply {
+                SickLeavesActivity::class.java).apply {
             // put bundle values here
         })
     }
