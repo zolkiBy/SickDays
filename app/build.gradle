@@ -25,15 +25,18 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+
+    implementation 'com.android.support:support-v4:' + rootProject.ext.supportLibraryVersion
     implementation "com.android.support:appcompat-v7:$rootProject.ext.supportLibraryVersion"
     implementation "com.android.support:design:$rootProject.ext.supportLibraryVersion"
+    implementation 'com.android.support:cardview-v7:' + rootProject.ext.supportLibraryVersion
+    implementation 'com.android.support:multidex:' + rootProject.ext.multiDexVersion
+
     implementation "com.google.firebase:firebase-auth:$rootProject.ext.firebaseAuthVersion"
     implementation "com.google.firebase:firebase-firestore:$rootProject.ext.firebaseFireStoreVersion"
     implementation "android.arch.persistence.room:runtime:$rootProject.roomVersion"
-    implementation 'com.android.support:support-v4:27.1.1'
     kapt "android.arch.persistence.room:compiler:$rootProject.roomVersion"
-    implementation 'com.android.support:cardview-v7:' + rootProject.ext.supportLibraryVersion
-    implementation 'com.android.support:multidex:1.0.3'
+
     testImplementation "junit:junit:$rootProject.ext.junitVersion"
     androidTestImplementation "com.android.support.test:runner:$rootProject.ext.runnerVersion"
     androidTestImplementation "com.android.support.test.espresso:espresso-core:$rootProject.ext.espressoVersion"

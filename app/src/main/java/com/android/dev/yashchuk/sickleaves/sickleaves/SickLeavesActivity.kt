@@ -1,4 +1,4 @@
-package com.android.dev.yashchuk.sickleaves.sicklist
+package com.android.dev.yashchuk.sickleaves.sickleaves
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle

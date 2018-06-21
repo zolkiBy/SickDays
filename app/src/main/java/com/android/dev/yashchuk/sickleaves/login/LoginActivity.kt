@@ -18,7 +18,7 @@ import android.support.annotation.StringRes
 import android.util.Log
 import android.widget.Toast
 import com.android.dev.yashchuk.sickleaves.R
-import com.android.dev.yashchuk.sickleaves.sicklist.SickLeavesActivity
+import com.android.dev.yashchuk.sickleaves.sickleaves.SickLeavesActivity
 import com.google.firebase.auth.FirebaseAuth
 
 import kotlinx.android.synthetic.main.activity_login.*

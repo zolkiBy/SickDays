@@ -1,4 +1,4 @@
-package com.android.dev.yashchuk.sickleaves.sicklist
+package com.android.dev.yashchuk.sickleaves.sickleaves
 
 import android.arch.lifecycle.ViewModel
 
