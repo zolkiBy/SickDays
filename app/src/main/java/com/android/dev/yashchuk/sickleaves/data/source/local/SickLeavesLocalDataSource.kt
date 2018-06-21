@@ -40,7 +40,7 @@ class SickLeavesLocalDataSource private constructor(
         appExecutors.diskIO.execute { sickLeavesDao.insertSickLeave(sickLeave) }
     }
 
-    override fun deleteSickLeave(id: String, callback: SickLeavesDataSource.DeleteSickLeaveCallback) {
+    override fun deleteSickLeave(id: String, userId: String, callback: SickLeavesDataSource.DeleteSickLeaveCallback) {
         appExecutors.diskIO.execute { sickLeavesDao.deleteSickLeaveById(id) }
     }
 

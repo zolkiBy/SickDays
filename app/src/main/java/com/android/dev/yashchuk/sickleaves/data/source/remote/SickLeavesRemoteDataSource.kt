@@ -2,9 +2,7 @@ package com.android.dev.yashchuk.sickleaves.data.source.remote
 
 import com.android.dev.yashchuk.sickleaves.data.SickLeave
 import com.android.dev.yashchuk.sickleaves.data.source.SickLeavesDataSource
-import com.google.android.gms.tasks.Task
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.QuerySnapshot
 
 class SickLeavesRemoteDataSource : SickLeavesDataSource {
 
@@ -32,14 +30,15 @@ class SickLeavesRemoteDataSource : SickLeavesDataSource {
 
     override fun getSickLeave(id: String, callback: SickLeavesDataSource.GetSickLeaveCallback) {
         FirebaseFirestore.getInstance().collection(id)
-                .whereEqualTo(this.id, id)
+                .document(id)
                 .get()
-                .addOnCompleteListener {task ->
+                .addOnCompleteListener { task ->
                     if (task.isSuccessful) {
                         val document = task.result
-                        callback.onSickLeaveLoaded(document.toObjects(SickLeave::class.java))
+                        if (document.exists()) {
+                            callback.onSickLeaveLoaded(document.toObject(SickLeave::class.java)!!)
+                        }
                     }
-
                 }
     }
 
@@ -48,15 +47,23 @@ class SickLeavesRemoteDataSource : SickLeavesDataSource {
         sickLeaveMap[id] = sickLeave.id
         sickLeaveMap[title] = sickLeave.title
         sickLeaveMap[description] = sickLeave.description*/
-        FirebaseFirestore.getInstance().collection(userId).document().set(sickLeave)
+        FirebaseFirestore.getInstance().collection(userId).document(sickLeave.id).set(sickLeave)
                 /*.add(sickLeaveMap)*/
                 .addOnSuccessListener { callback.onSickLeaveSaved() }
                 .addOnFailureListener { callback.onSickLeaveSaveFailed() }
 
     }
 
-    override fun deleteSickLeave(id: String, callback: SickLeavesDataSource.DeleteSickLeaveCallback) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override fun deleteSickLeave(id: String, userId: String, callback: SickLeavesDataSource.DeleteSickLeaveCallback) {
+        FirebaseFirestore.getInstance().collection(userId)
+                .document(id)
+                .delete()
+                .addOnSuccessListener {
+                    callback.onSickLeaveDeleted()
+                }
+                .addOnFailureListener {
+                    callback.onSickLeaveDeleteFailed()
+                }
     }
 
     override fun deleteAllSickLeaves(callback: SickLeavesDataSource.DeleteAllSickLeavesCallback) {
