@@ -19,6 +19,8 @@
     <string name="login_error_create_user">Error create user</string>
     <string name="login_error_sign_in">Failed to sign in</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <!-- SickLeaves list -->
+    <string name="sick_list_date_title">Date start/end</string>
+    <string name="sick_list_date">$1%s - $2%s</string>
+
 </resources>
