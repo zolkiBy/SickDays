@@ -11,7 +11,7 @@ import com.android.dev.yashchuk.sickleaves.R
 import com.android.dev.yashchuk.sickleaves.data.SickLeave
 import com.android.dev.yashchuk.sickleaves.data.Status
 
-class SickLeavesAdapter(val context: Context)
+class SickLeavesAdapter(context: Context)
     : ListAdapter<SickLeave, RecyclerView.ViewHolder>(SickLeaveDiffCallBack()) {
 
     init {
