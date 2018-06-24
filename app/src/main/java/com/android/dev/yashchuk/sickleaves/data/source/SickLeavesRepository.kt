@@ -99,6 +99,10 @@ class SickLeavesRepository(
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
+    override fun refreshSickLeaves() {
+        cacheIsDirty = true
+    }
+
     private fun getCachedSickLeaveWithId(id: String): SickLeave? {
         return cachedSickLeaves[id]
     }

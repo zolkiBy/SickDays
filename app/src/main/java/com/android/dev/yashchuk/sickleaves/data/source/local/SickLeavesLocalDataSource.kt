@@ -48,6 +48,10 @@ class SickLeavesLocalDataSource private constructor(
         appExecutors.diskIO.execute { sickLeavesDao.deleteSickLeaves() }
     }
 
+    override fun refreshSickLeaves() {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
     companion object {
         private var INSTANCE: SickLeavesLocalDataSource? = null
 

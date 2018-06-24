@@ -42,7 +42,7 @@ ext {
     runnerVersion = '1.0.1'
     rulesVersion = '1.0.1'
     espressoVersion = '3.0.1'
-    roomVersion = "1.1.1"
+    archVersion = "1.1.1"
 
     // FireBase
     firebaseCoreVersion = "16.0.0"

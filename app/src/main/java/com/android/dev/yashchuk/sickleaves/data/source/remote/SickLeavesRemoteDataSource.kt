@@ -1,7 +1,11 @@
 package com.android.dev.yashchuk.sickleaves.data.source.remote
 
+import android.support.annotation.VisibleForTesting
 import com.android.dev.yashchuk.sickleaves.data.SickLeave
 import com.android.dev.yashchuk.sickleaves.data.source.SickLeavesDataSource
+import com.android.dev.yashchuk.sickleaves.data.source.local.SickLeavesDao
+import com.android.dev.yashchuk.sickleaves.data.source.local.SickLeavesLocalDataSource
+import com.android.dev.yashchuk.sickleaves.utils.AppExecutors
 import com.google.firebase.firestore.FirebaseFirestore
 
 class SickLeavesRemoteDataSource : SickLeavesDataSource {
@@ -68,5 +72,31 @@ class SickLeavesRemoteDataSource : SickLeavesDataSource {
 
     override fun deleteAllSickLeaves(callback: SickLeavesDataSource.DeleteAllSickLeavesCallback) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun refreshSickLeaves() {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    companion object {
+        private var INSTANCE: SickLeavesRemoteDataSource? = null
+
+        @JvmStatic
+        fun getInstance()
+                : SickLeavesRemoteDataSource {
+            INSTANCE ?: synchronized(SickLeavesRemoteDataSource::class.java) {
+                INSTANCE ?: SickLeavesRemoteDataSource()
+                        .also { sickLeavesRemoteDataSource ->
+                            INSTANCE = sickLeavesRemoteDataSource
+                        }
+            }
+
+            return INSTANCE!!
+        }
+
+        @VisibleForTesting
+        fun destroyInstance() {
+            INSTANCE = null
+        }
     }
 }
