@@ -45,9 +45,9 @@ ext {
     archVersion = "1.1.1"
 
     // FireBase
-    firebaseCoreVersion = "16.0.0"
+    firebaseCoreVersion = "16.0.1"
     firebaseAuthVersion = "16.0.2"
-    firebaseFireStoreVersion = "17.0.1"
+    firebaseFireStoreVersion = "17.0.2"
 
     // Networking
     retrofitVersion = "2.4.0"

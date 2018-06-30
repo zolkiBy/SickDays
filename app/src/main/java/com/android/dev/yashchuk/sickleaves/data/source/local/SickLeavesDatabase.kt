@@ -3,10 +3,12 @@ package com.android.dev.yashchuk.sickleaves.data.source.local
 import android.arch.persistence.room.Database
 import android.arch.persistence.room.Room
 import android.arch.persistence.room.RoomDatabase
+import android.arch.persistence.room.TypeConverters
 import android.content.Context
 import com.android.dev.yashchuk.sickleaves.data.SickLeave
 
 @Database(entities = arrayOf(SickLeave::class), version = 1)
+@TypeConverters(DateConverter::class)
 abstract class SickLeavesDatabase : RoomDatabase() {
 
     abstract fun sickLeavesDao(): SickLeavesDao
