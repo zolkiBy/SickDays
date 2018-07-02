@@ -12,12 +12,15 @@ import android.view.ViewGroup
 import android.widget.ProgressBar
 
 import com.android.dev.yashchuk.sickleaves.R
+import com.android.dev.yashchuk.sickleaves.data.SickLeave
 import com.android.dev.yashchuk.sickleaves.utils.Injection
 
 private const val USER_ID_PARAM = "USER_ID"
+private const val SICK_LEAVE_ID_PARAM = "SICK_LEAVE_ID"
 
 class SickLeaveDetailFragment : Fragment() {
     private var userId: String? = null
+    private var sickLeaveId: String? = null
     private var listener: OnFragmentInteractionListener? = null
 
     private lateinit var viewModel: SickLeaveDetailViewModel
@@ -28,6 +31,7 @@ class SickLeaveDetailFragment : Fragment() {
         super.onCreate(savedInstanceState)
         arguments?.let {
             userId = it.getString(USER_ID_PARAM)
+            sickLeaveId = it.getString(SICK_LEAVE_ID_PARAM)
         }
     }
 
@@ -42,9 +46,10 @@ class SickLeaveDetailFragment : Fragment() {
         bindViews(view)
 
         viewModel = createViewModel()
-        viewModel.start()
 
-        subscribeLoadingState()
+        subscribeUpdateLoadingState()
+
+        subscribeUpdateSickLeave()
     }
 
     private fun bindViews(view: View) {
@@ -53,14 +58,14 @@ class SickLeaveDetailFragment : Fragment() {
         }
     }
 
-    private fun createViewModel() : SickLeaveDetailViewModel {
+    private fun createViewModel(): SickLeaveDetailViewModel {
         val viewModelFactory =
                 Injection.provideSickLeaveDetailViewModelFactory(activity!!.applicationContext, userId)
         return ViewModelProviders.of(activity!!, viewModelFactory)
                 .get(SickLeaveDetailViewModel::class.java)
     }
 
-    private fun subscribeLoadingState() {
+    private fun subscribeUpdateLoadingState() {
         viewModel.isLoading.observe(this, Observer<Boolean> { isShow ->
             if (isShow == true) {
                 showLoading(true)
@@ -68,6 +73,16 @@ class SickLeaveDetailFragment : Fragment() {
                 showLoading(false)
             }
         })
+    }
+
+    private fun subscribeUpdateSickLeave() {
+        viewModel.loadSickLeave(sickLeaveId!!).observe(activity!!, Observer<SickLeave> { sickLeave ->
+            updateUi(sickLeave)
+        })
+    }
+
+    private fun updateUi(sickLeave: SickLeave?) {
+
     }
 
     private fun showLoading(isShow: Boolean) {
@@ -100,10 +115,11 @@ class SickLeaveDetailFragment : Fragment() {
 
     companion object {
         @JvmStatic
-        fun newInstance(userId: String) =
+        fun newInstance(userId: String, sickLeaveId: String) =
                 SickLeaveDetailFragment().apply {
                     arguments = Bundle().apply {
                         putString(USER_ID_PARAM, userId)
+                        putString(SICK_LEAVE_ID_PARAM, sickLeaveId)
                     }
                 }
     }

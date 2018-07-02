@@ -1,5 +1,6 @@
 package com.android.dev.yashchuk.sickleaves.detail
 
+import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import com.android.dev.yashchuk.sickleaves.data.SickLeave
@@ -10,23 +11,25 @@ class SickLeaveDetailViewModel(private val userId: String?,
                                private val repository: SickLeavesRepository)
     : ViewModel() {
 
-    var sickLeave: SickLeave? = null
-    var isLoading = MutableLiveData<Boolean>()
+    val sickLeave = MutableLiveData<SickLeave>()
+    val isLoading = MutableLiveData<Boolean>()
 
-    fun start() {
+    fun loadSickLeave(sickLeaveId: String): LiveData<SickLeave> {
         userId?.let { id ->
             isLoading.value = true
             repository.getSickLeave(id, object : SickLeavesDataSource.GetSickLeaveCallback {
                 override fun onSickLeaveLoaded(sickLeave: SickLeave) {
                     isLoading.value = false
-                    this@SickLeaveDetailViewModel.sickLeave = sickLeave
+                    this@SickLeaveDetailViewModel.sickLeave.value = sickLeave
                 }
 
                 override fun onDataNotAvailable() {
                     isLoading.value = false
-                    sickLeave = null
+                    sickLeave.value = null
                 }
             })
         }
+
+        return sickLeave
     }
 }

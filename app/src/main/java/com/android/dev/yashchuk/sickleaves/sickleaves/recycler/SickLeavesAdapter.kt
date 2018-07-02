@@ -28,17 +28,15 @@ class SickLeavesAdapter(context: Context)
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder) {
             is SickLeaveClosedVH -> holder.bindTo(getItem(position))
+            is SickLeaveOpenedVH -> holder.bindTo(getItem(position))
         }
     }
 
     override fun getItemViewType(position: Int): Int {
-        val sickLeave = getItem(position)
-
-        if (Status.OPEN.name == sickLeave.status) {
-            return R.layout.item_sick_leave_opened
+        return when (getItem(position).status) {
+            Status.OPEN.name -> R.layout.item_sick_leave_opened
+            else -> R.layout.item_sick_leave_closed
         }
-
-        return R.layout.item_sick_leave_closed
     }
 
     override fun getItemId(position: Int): Long {
@@ -53,7 +51,5 @@ class SickLeavesAdapter(context: Context)
         override fun areContentsTheSame(oldItem: SickLeave?, newItem: SickLeave?): Boolean {
             return oldItem == newItem
         }
-
     }
-
 }

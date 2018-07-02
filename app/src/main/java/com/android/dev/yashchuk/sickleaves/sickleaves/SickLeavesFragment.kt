@@ -1,15 +1,16 @@
 package com.android.dev.yashchuk.sickleaves.sickleaves
 
 
-import android.arch.lifecycle.ViewModelProvider
+import android.arch.lifecycle.Observer
+import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-
 import com.android.dev.yashchuk.sickleaves.R
+import com.android.dev.yashchuk.sickleaves.data.SickLeave
 import com.android.dev.yashchuk.sickleaves.sickleaves.recycler.SickLeavesAdapter
 import com.android.dev.yashchuk.sickleaves.utils.Injection
 import kotlinx.android.synthetic.main.fragment_sick_leaves.*
@@ -19,6 +20,9 @@ class SickLeavesFragment : Fragment() {
     // TODO - change to real user id
     val userId = "useerId"
 
+    private lateinit var adapter: SickLeavesAdapter
+
+    private lateinit var viewModel: SickLeavesViewModel
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -28,25 +32,61 @@ class SickLeavesFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val viewModelFactory = Injection.provideSickLeavesViewModelFactory(activity!!.applicationContext, userId)
+        viewModel = createViewModel()
+
+        subscribeUpdateLoadingState()
+
+        subscribeUpdateSickLeaves()
+
+        setupRecycler()
     }
 
-    private fun loadData() {
+    private fun bindViews(view: View) {
+        with(view) {
+            // init views here or simply use sinthetic
+        }
+    }
 
+    private fun createViewModel(): SickLeavesViewModel {
+        val viewModelFactory =
+                Injection.provideSickLeavesViewModelFactory(activity!!.applicationContext, userId)
+        return ViewModelProviders.of(activity!!, viewModelFactory).get(SickLeavesViewModel::class.java)
+    }
+
+    private fun subscribeUpdateLoadingState() {
+        viewModel.isLoading.observe(this, Observer<Boolean> { isShow ->
+            if (isShow == true) {
+                showLoading(true)
+            } else {
+                showLoading(false)
+            }
+        })
+    }
+
+    private fun subscribeUpdateSickLeaves() {
+        viewModel.sickLeaves.observe(this, Observer<List<SickLeave>> { sickLeaves ->
+            updateUi(sickLeaves)
+        })
+    }
+
+    private fun updateUi(sickLeaves: List<SickLeave>?) {
+        adapter.submitList(sickLeaves)
+    }
+
+    private fun showLoading(show: Boolean) {
+        progress.visibility = if (show) View.VISIBLE else View.GONE
+        recycler.visibility = if (show) View.GONE else View.VISIBLE
     }
 
     private fun setupRecycler() {
-        val sickLeavesAdapter = SickLeavesAdapter(activity!!)
+        adapter = SickLeavesAdapter(activity!!)
         recycler.apply {
-            adapter = sickLeavesAdapter
+            adapter = this@SickLeavesFragment.adapter
             layoutManager = LinearLayoutManager(activity)
         }
     }
 
     companion object {
-        private const val ARG_PARAM1 = "param1"
-        private const val ARG_PARAM2 = "param2"
-
         fun newInstance() = SickLeavesFragment().apply {
             arguments = Bundle().apply {
                 // put arguments here

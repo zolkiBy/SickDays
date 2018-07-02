@@ -27,9 +27,10 @@ class SickLeaveDetailActivity : AppCompatActivity() {
         findOrCreateFragment()
     }
 
+    // TODO: change sickLeaveId
     private fun findOrCreateFragment() =
             supportFragmentManager.findFragmentById(R.id.container)
-                    ?: SickLeaveDetailFragment.newInstance(USER_ID).also { fragment ->
+                    ?: SickLeaveDetailFragment.newInstance(USER_ID, "cfc7575757").also { fragment ->
                         replaceFragmentInActivity(fragment, R.id.container)
                     }
 }
