@@ -3,24 +3,20 @@ package com.android.dev.yashchuk.sickleaves.login
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.annotation.TargetApi
-import android.support.design.widget.Snackbar
-import android.support.v7.app.AppCompatActivity
+import android.content.Intent
 import android.os.AsyncTask
 import android.os.Build
 import android.os.Bundle
+import android.support.annotation.StringRes
+import android.support.design.widget.Snackbar
+import android.support.v7.app.AppCompatActivity
 import android.text.TextUtils
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.TextView
-
-import android.content.Intent
-import android.support.annotation.StringRes
-import android.util.Log
-import android.widget.Toast
 import com.android.dev.yashchuk.sickleaves.R
 import com.android.dev.yashchuk.sickleaves.sickleaves.SickLeavesActivity
 import com.google.firebase.auth.FirebaseAuth
-
 import kotlinx.android.synthetic.main.activity_login.*
 
 class LoginActivity : AppCompatActivity(), LoginContract.View {
@@ -46,9 +42,11 @@ class LoginActivity : AppCompatActivity(), LoginContract.View {
             false
         })
 
-        email_sign_in_button.setOnClickListener { /*attemptLogin()*/ /*FireBaseAuthApi.addSickLeave()*/
-        /*login(email.text.toString(), password.text.toString())*/
-        /*createUser(it)*/}
+        sign_in_btn.setOnClickListener {
+            /*attemptLogin()*/ /*FireBaseAuthApi.addSickLeave()*/
+            /*login(email.text.toString(), password.text.toString())*/
+            /*createUser(it)*/
+        }
     }
 
     override fun onStart() {
@@ -56,21 +54,6 @@ class LoginActivity : AppCompatActivity(), LoginContract.View {
         val user = auth.currentUser
     }
 
-    private fun login(email: String, password: String) {
-        auth.createUserWithEmailAndPassword(email, password)
-        .addOnCompleteListener{if (it.isSuccessful) {
-            // Sign in success, update UI with the signed-in user's information
-            Log.d("Login", "createUserWithEmail:success")
-            val user = auth.currentUser
-
-        } else {
-            // If sign in fails, display a message to the user.
-            Log.w("Login", "createUserWithEmail:failure", it.exception)
-            Toast.makeText(this, "Authentication failed.",
-                    Toast.LENGTH_SHORT).show()
-
-        }}
-    }
 
     /*private fun createUser(view: View) {
         FireBaseAuthApi.createUser(email.text.toString(),
