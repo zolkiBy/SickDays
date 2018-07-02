@@ -12,9 +12,7 @@ class SickLeavesActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sick_leaves)
 
-        setupActionBar(R.id.toolbar) {
-
-        }
+        setupActionBar(R.id.toolbar) {}
 
         findOrCreateFragment()
     }
@@ -24,5 +22,4 @@ class SickLeavesActivity : AppCompatActivity() {
                     ?: SickLeavesFragment.newInstance().also {
                         replaceFragmentInActivity(it, R.id.container)
                     }
-
 }

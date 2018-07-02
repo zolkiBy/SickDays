@@ -24,7 +24,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".sickleaves.SickLeavesActivity"></activity>
+        <activity
+            android:name=".sickleaves.SickLeavesActivity"
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".detail.SickLeaveDetailActivity"
+            android:label="@string/title_activity_sick_leave_detail"
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
-
 </manifest>

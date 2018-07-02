@@ -5,6 +5,7 @@ import com.android.dev.yashchuk.sickleaves.data.source.SickLeavesRepository
 import com.android.dev.yashchuk.sickleaves.data.source.local.SickLeavesDatabase
 import com.android.dev.yashchuk.sickleaves.data.source.local.SickLeavesLocalDataSource
 import com.android.dev.yashchuk.sickleaves.data.source.remote.SickLeavesRemoteDataSource
+import com.android.dev.yashchuk.sickleaves.detail.SickLeaveDetailViewModelFactory
 import com.android.dev.yashchuk.sickleaves.sickleaves.SickLeavesViewModelFactory
 
 object Injection {
@@ -16,5 +17,8 @@ object Injection {
 
 
     fun provideSickLeavesViewModelFactory(context: Context, userId: String) =
-            SickLeavesViewModelFactory(provideSickLeaveRepository(context.applicationContext), userId)
+            SickLeavesViewModelFactory(userId, provideSickLeaveRepository(context.applicationContext))
+
+    fun provideSickLeaveDetailViewModelFactory(context: Context, userId: String?) =
+            SickLeaveDetailViewModelFactory(userId, provideSickLeaveRepository(context.applicationContext))
 }

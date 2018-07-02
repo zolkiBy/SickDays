@@ -23,4 +23,8 @@
     <string name="sick_list_date_title">Date start/end</string>
     <string name="sick_list_date">$1%s - $2%s</string>
 
+    <!-- SickLeave Detail -->
+    <string name="title_activity_sick_leave_detail">SickLeaveDetailActivity</string>
+    <string name="action_settings">Settings</string>
+
 </resources>
