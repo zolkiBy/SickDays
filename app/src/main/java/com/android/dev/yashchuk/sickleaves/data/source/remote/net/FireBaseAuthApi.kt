@@ -1,5 +1,6 @@
 package com.android.dev.yashchuk.sickleaves.data.source.remote.net
 
+import android.support.annotation.VisibleForTesting
 import android.util.Log
 import com.android.dev.yashchuk.sickleaves.callbacks.OnUserAuthListener
 import com.android.dev.yashchuk.sickleaves.data.SickLeave
@@ -9,8 +10,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import java.util.*
 
 
-object FireBaseAuthApi : AuthApi{
-
+class FireBaseAuthApi : AuthApi{
 
     fun addSickLeave(fireStore: FirebaseFirestore) {
         val sickLeave = SickLeave(title = "Title", description = "description")
@@ -46,5 +46,27 @@ object FireBaseAuthApi : AuthApi{
 
     override fun getUser() : FirebaseUser? {
         return FirebaseAuth.getInstance().currentUser
+    }
+
+    companion object {
+        private var INSTANCE: FireBaseAuthApi? = null
+
+        @JvmStatic
+        fun getInstance()
+                : FireBaseAuthApi {
+            INSTANCE ?: synchronized(FireBaseAuthApi::class.java) {
+                INSTANCE ?: FireBaseAuthApi()
+                        .also { firebaseAuthApi ->
+                            INSTANCE = firebaseAuthApi
+                        }
+            }
+
+            return INSTANCE!!
+        }
+
+        @VisibleForTesting
+        fun destroyInstance() {
+            INSTANCE = null
+        }
     }
 }

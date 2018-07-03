@@ -16,18 +16,17 @@ import android.view.inputmethod.EditorInfo
 import android.widget.TextView
 import com.android.dev.yashchuk.sickleaves.R
 import com.android.dev.yashchuk.sickleaves.sickleaves.SickLeavesActivity
+import com.android.dev.yashchuk.sickleaves.utils.Injection
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_login.*
 
 class LoginActivity : AppCompatActivity(), LoginContract.View {
 
-
-    /**
-     * Keep track of the login task to ensure we can cancel it if requested.
-     */
     private var mAuthTask: UserLoginTask? = null
 
     private lateinit var auth: FirebaseAuth
+
+    private lateinit var presenter: LoginPresenter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,10 +41,10 @@ class LoginActivity : AppCompatActivity(), LoginContract.View {
             false
         })
 
+        presenter = initPresenter()
+
         sign_in_btn.setOnClickListener {
-            /*attemptLogin()*/ /*FireBaseAuthApi.addSickLeave()*/
-            /*login(email.text.toString(), password.text.toString())*/
-            /*createUser(it)*/
+            presenter.signIn(email.text.toString(), password.text.toString())
         }
     }
 
@@ -54,40 +53,9 @@ class LoginActivity : AppCompatActivity(), LoginContract.View {
         val user = auth.currentUser
     }
 
+    private fun initPresenter() =
+            Injection.provideLoginPresenter(this)
 
-    /*private fun createUser(view: View) {
-        FireBaseAuthApi.createUser(email.text.toString(),
-                password.text.toString(),
-                object : OnUserAuthListener {
-                    override fun onSuccess() {
-                        startActivity(Intent(this@LoginActivity,
-                                SickLeavesActivity::class.java).apply {
-                            // put bundle values here
-                        })
-                    }
-
-                    override fun onFailed() {
-                        view.showSnackBar("Authorization Failed", Snackbar.LENGTH_SHORT)
-                    }
-                })
-    }
-
-    private fun signIn(view: View) {
-        FireBaseAuthApi.signIn(email.text.toString(),
-                password.text.toString(),
-                object : OnUserAuthListener{
-                    override fun onSuccess() {
-                        startActivity(Intent(this@LoginActivity,
-                                SickLeavesActivity::class.java).apply {
-                            // put bundle values here
-                        })
-                    }
-
-                    override fun onFailed() {
-                        view.showSnackBar("Authorization Failed", Snackbar.LENGTH_SHORT)
-                    }
-                })
-    }*/
 
     private fun attemptLogin() {
         if (mAuthTask != null) {

@@ -13,5 +13,7 @@ interface LoginContract {
     interface Presenter {
         fun createUser(email: String, password: String)
         fun signIn(email: String, password: String)
+        fun isEmailValid(email: String): Boolean
+        fun isPasswordValid(password: String): Boolean
     }
 }
