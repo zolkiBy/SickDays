@@ -8,12 +8,13 @@ interface LoginContract {
         fun showProgress(show: Boolean)
         fun openListScreen()
         fun showError(@StringRes resId: Int)
+        fun showEmailError(@StringRes resId: Int)
+        fun showPasswordError(@StringRes resId: Int)
     }
 
     interface Presenter {
-        fun createUser(email: String, password: String)
-        fun signIn(email: String, password: String)
-        fun isEmailValid(email: String): Boolean
-        fun isPasswordValid(password: String): Boolean
+        fun createUser(email: String?, password: String?)
+        fun signIn(email: String?, password: String?)
+        fun isEmailValid(email: String?): Boolean
     }
 }

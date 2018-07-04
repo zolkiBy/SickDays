@@ -46,6 +46,10 @@ class LoginActivity : AppCompatActivity(), LoginContract.View {
         sign_in_btn.setOnClickListener {
             presenter.signIn(email.text.toString(), password.text.toString())
         }
+
+        register_btn.setOnClickListener {
+            presenter.createUser(email.text.toString(), password.text.toString())
+        }
     }
 
     override fun onStart() {
@@ -148,6 +152,14 @@ class LoginActivity : AppCompatActivity(), LoginContract.View {
 
     override fun showError(@StringRes resId: Int) {
         Snackbar.make(login_form, getString(resId), Snackbar.LENGTH_SHORT).show()
+    }
+
+    override fun showEmailError(resId: Int) {
+        email.error = getString(resId)
+    }
+
+    override fun showPasswordError(resId: Int) {
+        password.error = getString(resId)
     }
 
     inner class UserLoginTask internal constructor(private val mEmail: String, private val mPassword: String) : AsyncTask<Void, Void, Boolean>() {

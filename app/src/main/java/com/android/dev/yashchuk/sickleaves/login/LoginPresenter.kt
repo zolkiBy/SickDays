@@ -2,6 +2,7 @@ package com.android.dev.yashchuk.sickleaves.login
 
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
+import android.support.annotation.StringRes
 import com.android.dev.yashchuk.sickleaves.R
 import com.android.dev.yashchuk.sickleaves.callbacks.OnUserAuthListener
 import com.android.dev.yashchuk.sickleaves.data.source.remote.net.AuthApi
@@ -19,54 +20,79 @@ class LoginPresenter(private val view: LoginContract.View,
     val message: LiveData<Event<Int>>
         get() = snackBarMessage
 
-    override fun createUser(email: String, password: String) {
+    override fun createUser(email: String?, password: String?) {
         if (isEmailPasswordValid(email, password)) {
             view.showProgress(true)
-            api.createUser(email,
-                    password,
+            api.createUser(email!!,
+                    password!!,
                     object : OnUserAuthListener {
                         override fun onSuccess() {
-                            view.showProgress(false)
-                            view.openListScreen()
+                            openListScreen()
                         }
 
                         override fun onFailed() {
-                            view.showProgress(false)
-                            view.showError(R.string.login_error_create_user)
+                            showResponseError(R.string.login_error_create_user)
                         }
                     })
+        } else {
+            showEmailError(email)
+            showPasswordError(password)
         }
 
     }
 
-    override fun signIn(email: String, password: String) {
+    override fun signIn(email: String?, password: String?) {
+        if (password.isPasswordValid())
         if (isEmailPasswordValid(email, password)) {
             view.showProgress(true)
-            api.signIn(email,
-                    password,
+            api.signIn(email!!,
+                    password!!,
                     object : OnUserAuthListener {
                         override fun onSuccess() {
-                            view.showProgress(false)
-                            view.openListScreen()
+                            openListScreen()
                         }
 
                         override fun onFailed() {
-                            view.showProgress(false)
-                            view.showError(R.string.login_error_sign_in)
+                            showResponseError(R.string.login_error_sign_in)
                         }
                     })
+        } else {
+            showEmailError(email)
+            showPasswordError(password)
         }
     }
 
-    override fun isEmailValid(email: String): Boolean {
+    override fun isEmailValid(email: String?): Boolean {
         return PATTERN_EMAIL.matcher(email).matches()
     }
 
-    override fun isPasswordValid(password: String): Boolean {
-        return password.length >= PASSWORD_MIN_LENGTH
+    private fun isEmailPasswordValid(email: String?, password: String?): Boolean {
+        return isEmailValid(email) && password.isPasswordValid()
     }
 
-    private fun isEmailPasswordValid(email: String, password: String): Boolean {
-        return isEmailValid(email) && isPasswordValid(password)
+    private fun showPasswordError(password: String?) {
+        if (!password.isPasswordValid()) view.showPasswordError(R.string.error_invalid_password)
+    }
+
+    private fun showEmailError(email: String?) {
+        if (email == null || email.isBlank()) {
+           view.showEmailError(R.string.error_field_required)
+        } else if (!isEmailValid(email)) {
+            view.showEmailError(R.string.error_invalid_email)
+        }
+    }
+
+    private fun openListScreen() {
+        view.showProgress(false)
+        view.openListScreen()
+    }
+
+    private fun showResponseError(@StringRes resId: Int) {
+        view.showProgress(false)
+        view.showError(resId)
+    }
+
+    private fun String?.isPasswordValid(): Boolean {
+        return this != null && !this.isBlank() && this.length >= PASSWORD_MIN_LENGTH
     }
 }
