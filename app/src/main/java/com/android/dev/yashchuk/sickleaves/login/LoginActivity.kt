@@ -89,9 +89,7 @@ class LoginActivity : AppCompatActivity(), LoginContract.View {
 
     override fun openListScreen() {
         startActivity(Intent(this@LoginActivity,
-                SickLeavesActivity::class.java).apply {
-            // put bundle values here
-        })
+                SickLeavesActivity::class.java))
     }
 
     override fun showError(@StringRes resId: Int) {

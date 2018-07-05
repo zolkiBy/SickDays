@@ -2,6 +2,8 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
 
+    <dimen name="login_activity_common_padding">16dp</dimen>
+
     <!-- Text sizes -->
     <dimen name="text_size_big">16sp</dimen>
     <dimen name="text_size_normal">14sp</dimen>

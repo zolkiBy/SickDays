@@ -85,7 +85,6 @@ class LoginPresenter(private val view: LoginContract.View,
     }
 
     private fun openListScreenAndFinish() {
-        view.showProgress(false)
         view.openListScreen()
         view.finishActivity()
     }
