@@ -9,7 +9,7 @@ import com.google.firebase.auth.FirebaseUser
 class LoginViewModel(private val api: AuthApi) : ViewModel() {
     val user = MutableLiveData<FirebaseUser>()
 
-    private fun start() {
+    fun start() {
         user.value = api.getUser()
     }
 }

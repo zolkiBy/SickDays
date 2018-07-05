@@ -1,6 +1,7 @@
 package com.android.dev.yashchuk.sickleaves.login
 
 import android.support.annotation.StringRes
+import com.google.firebase.auth.FirebaseUser
 
 
 interface LoginContract {
@@ -10,11 +11,12 @@ interface LoginContract {
         fun showError(@StringRes resId: Int)
         fun showEmailError(@StringRes resId: Int)
         fun showPasswordError(@StringRes resId: Int)
+        fun finishActivity()
     }
 
     interface Presenter {
-        fun createUser(email: String?, password: String?)
-        fun signIn(email: String?, password: String?)
-        fun isEmailValid(email: String?): Boolean
+        fun attemptCreateUser(email: String?, password: String?)
+        fun attemptSignIn(email: String?, password: String?)
+        fun checkUser(user: FirebaseUser?)
     }
 }

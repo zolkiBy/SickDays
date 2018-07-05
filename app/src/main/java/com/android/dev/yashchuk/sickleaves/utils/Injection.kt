@@ -9,6 +9,7 @@ import com.android.dev.yashchuk.sickleaves.data.source.remote.net.FireBaseAuthAp
 import com.android.dev.yashchuk.sickleaves.detail.SickLeaveDetailViewModelFactory
 import com.android.dev.yashchuk.sickleaves.login.LoginContract
 import com.android.dev.yashchuk.sickleaves.login.LoginPresenter
+import com.android.dev.yashchuk.sickleaves.login.LoginViewModelFactory
 import com.android.dev.yashchuk.sickleaves.sickleaves.SickLeavesViewModelFactory
 
 object Injection {
@@ -29,4 +30,6 @@ object Injection {
 
 
     fun provideLoginPresenter(view: LoginContract.View) = LoginPresenter(view, FireBaseAuthApi.getInstance())
+
+    fun provideLoginViewModelFactory() = LoginViewModelFactory(FireBaseAuthApi.getInstance())
 }
