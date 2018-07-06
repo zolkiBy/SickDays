@@ -27,6 +27,12 @@
     <string name="activity_detail_toolbar_title">SickLeaveDetailActivity</string>
     <string name="fragment_detail_sick_leave_title_hint">Title</string>
     <string name="fragment_detail_sick_leave_description_hint">Title</string>
+    <string name="fragment_detail_sick_leave_end_date_text">End date</string>
+    <string name="fragment_detail_btn_create_text">Create Sick Leave</string>
+    <string name="fragment_detail_btn_save_text">Save changes</string>
+    <string name="fragment_detail_btn_close_text">Close Sick Leave</string>
+    <string name="fragment_detail_failed_load_sick_leave">Failed to load sick leave</string>
+    <string name="fragment_detail_failed_save_sick_leave">Failed to save sick leave</string>
 
     <string name="title_activity_add_edit_sick_leave">AddEditSickLeaveActivity</string>
 </resources>

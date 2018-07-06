@@ -16,8 +16,8 @@ class SickLeaveClosedVH(itemView: View?) : RecyclerView.ViewHolder(itemView) {
             itemView.status.text = status
             itemView.date.text = itemView.context.getString(
                     R.string.sick_list_date,
-                    sickLeave.startDate.toString().getFormattedDate(),
-                    sickLeave.endDate.toString().getFormattedDate()
+                    sickLeave.startDate.getFormattedDate(),
+                    sickLeave.endDate?.getFormattedDate()
             )
         }
     }

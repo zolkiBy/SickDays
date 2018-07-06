@@ -14,39 +14,64 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center" />
 
-    <EditText
-        android:id="@+id/title"
+    <ScrollView
+        android:id="@+id/content"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="@string/fragment_detail_sick_leave_title_hint"
-        android:inputType="text"
-        tools:hint="Название" />
+        android:layout_height="match_parent">
 
-    <EditText
-        android:id="@+id/description"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="@string/fragment_detail_sick_leave_description_hint"
-        android:inputType="text"
-        tools:hint="Описание" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/start_date"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="@dimen/common_small_padding"
-        tools:text="Дата открытия" />
+            <EditText
+                android:id="@+id/title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/fragment_detail_sick_leave_title_hint"
+                android:inputType="text"
+                tools:hint="Название" />
 
-    <TextView
-        android:id="@+id/end_date"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="@dimen/common_small_padding"
-        tools:text="Дата закрытия" />
+            <EditText
+                android:id="@+id/description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/fragment_detail_sick_leave_description_hint"
+                android:inputType="text"
+                tools:hint="Описание" />
 
-    <Button
-        android:id="@+id/close_btn"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/common_normal_margin" />
+            <TextView
+                android:id="@+id/start_date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/common_small_padding"
+                tools:text="Дата открытия" />
+
+            <TextView
+                android:id="@+id/end_date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/common_small_padding"
+                tools:text="Дата закрытия" />
+
+            <Button
+                android:id="@+id/create_save_btn"
+                style="@style/Widget.AppCompat.Button.Colored"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/common_normal_margin"
+                tools:text="Создать больничный" />
+
+            <Button
+                android:id="@+id/close_btn"
+                style="@style/Widget.AppCompat.Button.Borderless.Colored"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/common_normal_margin"
+                android:text="@string/fragment_detail_btn_close_text"
+                android:visibility="gone"
+                tools:visibility="visible"
+                tools:text="Закрыть больничный"/>
+        </LinearLayout>
+    </ScrollView>
 </LinearLayout>
