@@ -67,6 +67,12 @@ class LoginPresenter(private val view: LoginContract.View,
                 })
     }
 
+    override fun saveUserIdToPrefs(userId: String?) {
+        userId?.let {
+            view.saveUserIdToPrefs(it)
+        }
+    }
+
     private fun showPasswordError(password: String?) {
         if (!password.isPasswordValid()) view.showPasswordError(R.string.error_invalid_password)
     }

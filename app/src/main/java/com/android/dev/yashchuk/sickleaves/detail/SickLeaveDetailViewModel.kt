@@ -3,33 +3,58 @@ package com.android.dev.yashchuk.sickleaves.detail
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
+import com.android.dev.yashchuk.sickleaves.R
 import com.android.dev.yashchuk.sickleaves.data.SickLeave
 import com.android.dev.yashchuk.sickleaves.data.source.SickLeavesDataSource
 import com.android.dev.yashchuk.sickleaves.data.source.SickLeavesRepository
+import com.android.dev.yashchuk.sickleaves.utils.Event
 
 class SickLeaveDetailViewModel(private val userId: String?,
                                private val repository: SickLeavesRepository)
     : ViewModel() {
 
-    val sickLeave = MutableLiveData<SickLeave>()
-    val isLoading = MutableLiveData<Boolean>()
+    private val _snackBarMessage = MutableLiveData<Event<Int>>()
+    private val _sickLeave = MutableLiveData<SickLeave>()
+    private val _isLoading = MutableLiveData<Boolean>()
 
-    fun loadSickLeave(sickLeaveId: String): LiveData<SickLeave> {
-        userId?.let { id ->
-            isLoading.value = true
-            repository.getSickLeave(id, object : SickLeavesDataSource.GetSickLeaveCallback {
+    val snackBarMessage: LiveData<Event<Int>>
+        get() = _snackBarMessage
+    val sickLeave: LiveData<SickLeave>
+        get() = _sickLeave
+    val isLoading: LiveData<Boolean>
+        get() = _isLoading
+
+    fun loadSickLeave(sickLeaveId: String?) {
+        _sickLeave.value = null
+        sickLeaveId?.let {
+            _isLoading.value = true
+            repository.getSickLeave(it, object : SickLeavesDataSource.GetSickLeaveCallback {
                 override fun onSickLeaveLoaded(sickLeave: SickLeave) {
-                    isLoading.value = false
-                    this@SickLeaveDetailViewModel.sickLeave.value = sickLeave
+                    _isLoading.value = false
+                    this@SickLeaveDetailViewModel._sickLeave.value = sickLeave
                 }
 
                 override fun onDataNotAvailable() {
-                    isLoading.value = false
-                    sickLeave.value = null
+                    _isLoading.value = false
+                    _sickLeave.value = null
+                    _snackBarMessage.value = Event(R.string.fragment_detail_failed_load_sick_leave)
                 }
             })
         }
+    }
 
-        return sickLeave
+    fun saveSickLeave(userId: String, sickLeave: SickLeave) {
+        _isLoading.value = true
+        repository.saveSickLeave(userId, sickLeave, object : SickLeavesDataSource.SaveSickLeaveCallback {
+            override fun onSickLeaveSaved() {
+                _isLoading.value = false
+                this@SickLeaveDetailViewModel._sickLeave.value = sickLeave
+            }
+
+            override fun onSickLeaveSaveFailed() {
+                _isLoading.value = false
+                _snackBarMessage.value = Event(R.string.fragment_detail_failed_save_sick_leave)
+            }
+        })
     }
 }

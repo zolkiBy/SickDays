@@ -12,11 +12,13 @@ interface LoginContract {
         fun showEmailError(@StringRes resId: Int)
         fun showPasswordError(@StringRes resId: Int)
         fun finishActivity()
+        fun saveUserIdToPrefs(userId: String)
     }
 
     interface Presenter {
         fun attemptCreateUser(email: String?, password: String?)
         fun attemptSignIn(email: String?, password: String?)
         fun checkUser(user: FirebaseUser?)
+        fun saveUserIdToPrefs(userId: String?)
     }
 }

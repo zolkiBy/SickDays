@@ -41,12 +41,6 @@ class SickLeavesFragment : Fragment() {
         setupRecycler()
     }
 
-    private fun bindViews(view: View) {
-        with(view) {
-            // init views here or simply use sinthetic
-        }
-    }
-
     private fun createViewModel(): SickLeavesViewModel {
         val viewModelFactory =
                 Injection.provideSickLeavesViewModelFactory(activity!!.applicationContext, userId)
