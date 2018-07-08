@@ -6,10 +6,10 @@ import com.android.dev.yashchuk.sickleaves.data.source.remote.net.AuthApi
 import com.google.firebase.auth.FirebaseUser
 
 
-class LoginViewModel(private val api: AuthApi) : ViewModel() {
+class LoginViewModel(api: AuthApi) : ViewModel() {
     val user = MutableLiveData<FirebaseUser>()
 
-    fun start() {
+    init {
         user.value = api.getUser()
     }
 }

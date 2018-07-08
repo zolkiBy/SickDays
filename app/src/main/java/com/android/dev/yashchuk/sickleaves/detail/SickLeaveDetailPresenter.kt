@@ -13,6 +13,10 @@ class SickLeaveDetailPresenter(private val view: SickLeaveDetailContract.View,
         if (sickLeave != null) view.fillSickLeaveData(sickLeave) else view.showEmptySickLeave()
     }
 
+    override fun showDatePicker(requestCode: Int) {
+        view.showDatePicker(requestCode)
+    }
+
     override fun saveSickLeave(userId: String, sickLeave: SickLeave) {
         repository.saveSickLeave(userId, sickLeave,  object : SickLeavesDataSource.SaveSickLeaveCallback {
             override fun onSickLeaveSaved() {

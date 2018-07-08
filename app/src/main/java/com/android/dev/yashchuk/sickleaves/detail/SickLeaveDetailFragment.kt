@@ -12,29 +12,35 @@ import android.view.View
 import android.view.ViewGroup
 
 import com.android.dev.yashchuk.sickleaves.R
+import com.android.dev.yashchuk.sickleaves.data.DatePickerCode
 import com.android.dev.yashchuk.sickleaves.data.SickLeave
+import com.android.dev.yashchuk.sickleaves.data.Status
+import com.android.dev.yashchuk.sickleaves.detail.datepicker.DatePickerFragment
+import com.android.dev.yashchuk.sickleaves.utils.Event
 import com.android.dev.yashchuk.sickleaves.utils.Injection
 import com.android.dev.yashchuk.sickleaves.utils.getFormattedDate
 import kotlinx.android.synthetic.main.fragment_sick_leave_detail.*
 import java.util.*
 
-private const val USER_ID_PARAM = "USER_ID"
-private const val SICK_LEAVE_ID_PARAM = "SICK_LEAVE_ID"
+private const val PARAM_USER_ID = "USER_ID"
+private const val PARAM_SICK_LEAVE_ID = "SICK_LEAVE_ID"
+private const val TARGET_FRAGMENT_REQUEST_CODE = 111
 
-class SickLeaveDetailFragment : Fragment(), SickLeaveDetailContract.View {
+class SickLeaveDetailFragment : Fragment(), SickLeaveDetailContract.View, DatePickerFragment.OnDateSetListener {
     private var userId: String? = null
     private var sickLeaveId: String? = null
     private var listener: OnFragmentInteractionListener? = null
 
-    private lateinit var presenter: SickLeaveDetailContract.Presenter
+    private var sickLeave: SickLeave? = null
 
+    private lateinit var presenter: SickLeaveDetailContract.Presenter
     private lateinit var viewModel: SickLeaveDetailViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            userId = it.getString(USER_ID_PARAM)
-            sickLeaveId = it.getString(SICK_LEAVE_ID_PARAM)
+            userId = it.getString(PARAM_USER_ID)
+            sickLeaveId = it.getString(PARAM_SICK_LEAVE_ID)
         }
     }
 
@@ -47,7 +53,7 @@ class SickLeaveDetailFragment : Fragment(), SickLeaveDetailContract.View {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel = createViewModel()
-        viewModel.loadSickLeave(sickLeaveId!!)
+        viewModel.loadSickLeave(sickLeaveId)
 
         presenter = initPresenter()
 
@@ -56,6 +62,10 @@ class SickLeaveDetailFragment : Fragment(), SickLeaveDetailContract.View {
         subscribeUpdateSickLeave()
 
         subscribeSnackBarMessage()
+
+        configButtons()
+
+        configDateViews()
     }
 
     private fun initPresenter() = Injection.provideSickLeaveDetailPresenter(activity!!.applicationContext, this)
@@ -80,22 +90,23 @@ class SickLeaveDetailFragment : Fragment(), SickLeaveDetailContract.View {
     private fun subscribeUpdateSickLeave() {
         viewModel.sickLeave.observe(activity!!, Observer<SickLeave> { sickLeave ->
             presenter.updateUi(sickLeave)
+            this.sickLeave = sickLeave
         })
     }
 
     private fun showLoading(isShow: Boolean) {
-        progress.visibility = if (isShow) View.VISIBLE else View.GONE
+        progress.visibility = if (isShow) View.VISIBLE else View.INVISIBLE
     }
 
     private fun subscribeSnackBarMessage() {
-        viewModel.snackBarMessage.observe(this, Observer {
+        viewModel.snackBarMessage.observe(this, Observer<Event<Int>> {
             it?.getContentIfNotHandled()?.let { messageResId ->
                 Snackbar.make(content, getString(messageResId), Snackbar.LENGTH_SHORT).show()
             }
         })
     }
 
-    private fun configBtns() {
+    private fun configButtons() {
         create_save_btn.setOnClickListener {
             val sickLeave = SickLeave(
                     title = title.text.toString(),
@@ -104,6 +115,30 @@ class SickLeaveDetailFragment : Fragment(), SickLeaveDetailContract.View {
             )
             viewModel.saveSickLeave(userId!!, sickLeave)
         }
+
+        close_btn.setOnClickListener {
+            if (sickLeave != null) {
+                sickLeave?.status = Status.CLOSE.name
+                viewModel.saveSickLeave(userId!!, sickLeave!!)
+            }
+        }
+    }
+
+    private fun configDateViews() {
+        start_date.setOnClickListener {
+            presenter.showDatePicker(DatePickerCode.START_DATE_CODE.ordinal)
+        }
+
+        end_date.setOnClickListener {
+            presenter.showDatePicker(DatePickerCode.END_DATE_CODE.ordinal)
+        }
+    }
+
+    override fun onDateSet(requestCode: Int?, date: Date) {
+        when (requestCode) {
+            DatePickerCode.START_DATE_CODE.ordinal -> start_date.text = date.getFormattedDate()
+            DatePickerCode.END_DATE_CODE.ordinal -> end_date.text = date.getFormattedDate()
+        }
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -111,7 +146,7 @@ class SickLeaveDetailFragment : Fragment(), SickLeaveDetailContract.View {
         listener?.onFragmentInteraction(uri)
     }
 
-    override fun onAttach(context: Context) {
+    /*override fun onAttach(context: Context) {
         super.onAttach(context)
         if (context is OnFragmentInteractionListener) {
             listener = context
@@ -123,7 +158,7 @@ class SickLeaveDetailFragment : Fragment(), SickLeaveDetailContract.View {
     override fun onDetach() {
         super.onDetach()
         listener = null
-    }
+    }*/
 
     // TODO: remove if not need
     interface OnFragmentInteractionListener {
@@ -146,13 +181,19 @@ class SickLeaveDetailFragment : Fragment(), SickLeaveDetailContract.View {
         close_btn.visibility = View.GONE
     }
 
+    override fun showDatePicker(requestCode: Int) {
+        val datePicker = DatePickerFragment.newInstance(requestCode)
+        datePicker.setTargetFragment(this, TARGET_FRAGMENT_REQUEST_CODE)
+        datePicker.show(fragmentManager, "datePicker")
+    }
+
     companion object {
         @JvmStatic
         fun newInstance(userId: String, sickLeaveId: String?) =
                 SickLeaveDetailFragment().apply {
                     arguments = Bundle().apply {
-                        putString(USER_ID_PARAM, userId)
-                        putString(SICK_LEAVE_ID_PARAM, sickLeaveId)
+                        putString(PARAM_USER_ID, userId)
+                        putString(PARAM_SICK_LEAVE_ID, sickLeaveId)
                     }
                 }
     }

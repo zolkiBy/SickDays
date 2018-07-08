@@ -12,7 +12,9 @@
         style="?android:attr/progressBarStyleSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center" />
+        android:layout_gravity="center"
+        android:visibility="invisible"
+        tools:visibility="visible" />
 
     <ScrollView
         android:id="@+id/content"
@@ -44,6 +46,8 @@
                 android:id="@+id/start_date"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:clickable="true"
+                android:focusable="true"
                 android:padding="@dimen/common_small_padding"
                 tools:text="Дата открытия" />
 
@@ -51,6 +55,8 @@
                 android:id="@+id/end_date"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:clickable="true"
+                android:focusable="true"
                 android:padding="@dimen/common_small_padding"
                 tools:text="Дата закрытия" />
 
@@ -70,8 +76,8 @@
                 android:layout_margin="@dimen/common_normal_margin"
                 android:text="@string/fragment_detail_btn_close_text"
                 android:visibility="gone"
-                tools:visibility="visible"
-                tools:text="Закрыть больничный"/>
+                tools:text="Закрыть больничный"
+                tools:visibility="visible" />
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

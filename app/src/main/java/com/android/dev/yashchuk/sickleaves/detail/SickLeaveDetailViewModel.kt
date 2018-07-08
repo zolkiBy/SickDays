@@ -24,10 +24,11 @@ class SickLeaveDetailViewModel(private val userId: String?,
     val isLoading: LiveData<Boolean>
         get() = _isLoading
 
-    fun loadSickLeave(sickLeaveId: String) {
-        userId?.let { _ ->
+    fun loadSickLeave(sickLeaveId: String?) {
+        _sickLeave.value = null
+        sickLeaveId?.let {
             _isLoading.value = true
-            repository.getSickLeave(sickLeaveId, object : SickLeavesDataSource.GetSickLeaveCallback {
+            repository.getSickLeave(it, object : SickLeavesDataSource.GetSickLeaveCallback {
                 override fun onSickLeaveLoaded(sickLeave: SickLeave) {
                     _isLoading.value = false
                     this@SickLeaveDetailViewModel._sickLeave.value = sickLeave
@@ -43,12 +44,15 @@ class SickLeaveDetailViewModel(private val userId: String?,
     }
 
     fun saveSickLeave(userId: String, sickLeave: SickLeave) {
+        _isLoading.value = true
         repository.saveSickLeave(userId, sickLeave, object : SickLeavesDataSource.SaveSickLeaveCallback {
             override fun onSickLeaveSaved() {
+                _isLoading.value = false
                 this@SickLeaveDetailViewModel._sickLeave.value = sickLeave
             }
 
             override fun onSickLeaveSaveFailed() {
+                _isLoading.value = false
                 _snackBarMessage.value = Event(R.string.fragment_detail_failed_save_sick_leave)
             }
         })

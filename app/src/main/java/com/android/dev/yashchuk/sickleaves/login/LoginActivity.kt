@@ -10,9 +10,11 @@ import android.support.annotation.StringRes
 import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity
 import android.view.View
+import android.content.Context
 import com.android.dev.yashchuk.sickleaves.R
 import com.android.dev.yashchuk.sickleaves.sickleaves.SickLeavesActivity
 import com.android.dev.yashchuk.sickleaves.utils.Injection
+import com.android.dev.yashchuk.sickleaves.utils.getUserIdFromPrefs
 import com.google.firebase.auth.FirebaseUser
 import kotlinx.android.synthetic.main.activity_login.*
 
@@ -54,13 +56,22 @@ class LoginActivity : AppCompatActivity(), LoginContract.View {
     private fun createViewModel() {
         val viewModelFactory = Injection.provideLoginViewModelFactory()
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(LoginViewModel::class.java)
-        viewModel.start()
     }
 
     private fun subscribeUpdateUser() {
         viewModel.user.observe(this, Observer<FirebaseUser> { user ->
             presenter.checkUser(user)
+            presenter.saveUserIdToPrefs(user?.uid)
         })
+    }
+
+    override fun saveUserIdToPrefs(userId: String) {
+        val sharedPref = this.getSharedPreferences(getString(R.string.preference_user_id_key), Context.MODE_PRIVATE)
+                ?: return
+        with(sharedPref.edit()) {
+            putString(getString(R.string.preference_user_id_key), userId)
+            apply()
+        }
     }
 
     override fun showProgress(show: Boolean) {
