@@ -7,13 +7,12 @@ import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity
 import com.android.dev.yashchuk.sickleaves.R
 import com.android.dev.yashchuk.sickleaves.sickleaves.SickLeavesFragment
+import com.android.dev.yashchuk.sickleaves.utils.getUserIdFromPrefs
 import com.android.dev.yashchuk.sickleaves.utils.replaceFragmentInActivity
 import com.android.dev.yashchuk.sickleaves.utils.setupActionBar
 
 import kotlinx.android.synthetic.main.activity_sick_leave_detail.*
 
-// TODO: remove after add user id
-private const val USER_ID = "21312312"
 private const val EXTRA_SICK_LEAVE_ID = "SICK_LEAVE_ID"
 
 class SickLeaveDetailActivity : AppCompatActivity() {
@@ -22,6 +21,7 @@ class SickLeaveDetailActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sick_leave_detail)
 
+        val userId = getUserIdFromPrefs()
         val sickLeaveId = intent.extras.getString(EXTRA_SICK_LEAVE_ID)
 
         setupActionBar(R.id.toolbar) {
@@ -29,12 +29,12 @@ class SickLeaveDetailActivity : AppCompatActivity() {
             setDisplayHomeAsUpEnabled(true)
         }
 
-        findOrCreateFragment(sickLeaveId)
+        findOrCreateFragment(userId, sickLeaveId)
     }
 
-    private fun findOrCreateFragment(sickLeaveId: String?) =
+    private fun findOrCreateFragment(userId: String?, sickLeaveId: String?) =
             supportFragmentManager.findFragmentById(R.id.container)
-                    ?: SickLeaveDetailFragment.newInstance(USER_ID, sickLeaveId).also { fragment ->
+                    ?: SickLeaveDetailFragment.newInstance(userId, sickLeaveId).also { fragment ->
                         replaceFragmentInActivity(fragment, R.id.container)
                     }
 

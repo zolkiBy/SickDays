@@ -33,15 +33,15 @@ class SickLeavesRepository(
         }
     }
 
-    override fun getSickLeave(id: String, callback: SickLeavesDataSource.GetSickLeaveCallback) {
-        val cachedSickLeave = getCachedSickLeaveWithId(id)
+    override fun getSickLeave(userId: String, sickLeaveId: String, callback: SickLeavesDataSource.GetSickLeaveCallback) {
+        val cachedSickLeave = getCachedSickLeaveWithId(sickLeaveId)
 
         if (cachedSickLeave != null) {
             callback.onSickLeaveLoaded(cachedSickLeave)
             return
         }
 
-        localDataSource.getSickLeave(id, object : SickLeavesDataSource.GetSickLeaveCallback {
+        localDataSource.getSickLeave(userId, sickLeaveId, object : SickLeavesDataSource.GetSickLeaveCallback {
             override fun onSickLeaveLoaded(sickLeave: SickLeave) {
                 cacheAndPerform(sickLeave) {
                     callback.onSickLeaveLoaded(it)
@@ -49,7 +49,7 @@ class SickLeavesRepository(
             }
 
             override fun onDataNotAvailable() {
-                remoteDataSource.getSickLeave(id, object : SickLeavesDataSource.GetSickLeaveCallback {
+                remoteDataSource.getSickLeave(userId, sickLeaveId, object : SickLeavesDataSource.GetSickLeaveCallback {
                     override fun onSickLeaveLoaded(sickLeave: SickLeave) {
                         cacheAndPerform(sickLeave) {
                             callback.onSickLeaveLoaded(it)
@@ -151,7 +151,13 @@ class SickLeavesRepository(
     }
 
     private inline fun cacheAndPerform(sickLeave: SickLeave, perform: (SickLeave) -> Unit) {
-        val cachedSickLeave = SickLeave(sickLeave.title, sickLeave.description)
+        val cachedSickLeave = SickLeave(
+                id = sickLeave.id,
+                title = sickLeave.title,
+                description = sickLeave.description,
+                startDate = sickLeave.startDate,
+                endDate = sickLeave.endDate,
+                status = sickLeave.status)
         cachedSickLeaves[cachedSickLeave.id] = cachedSickLeave
         perform(cachedSickLeave)
     }

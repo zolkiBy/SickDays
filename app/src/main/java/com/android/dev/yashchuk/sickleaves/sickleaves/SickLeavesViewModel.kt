@@ -4,7 +4,6 @@ import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import com.android.dev.yashchuk.sickleaves.data.SickLeave
 import com.android.dev.yashchuk.sickleaves.data.source.SickLeavesDataSource
-import com.android.dev.yashchuk.sickleaves.data.source.SickLeavesRepository
 
 class SickLeavesViewModel(private val userId: String,
                           private val sickLeavesRepository: SickLeavesDataSource)

@@ -3,9 +3,6 @@ package com.android.dev.yashchuk.sickleaves.data.source.remote
 import android.support.annotation.VisibleForTesting
 import com.android.dev.yashchuk.sickleaves.data.SickLeave
 import com.android.dev.yashchuk.sickleaves.data.source.SickLeavesDataSource
-import com.android.dev.yashchuk.sickleaves.data.source.local.SickLeavesDao
-import com.android.dev.yashchuk.sickleaves.data.source.local.SickLeavesLocalDataSource
-import com.android.dev.yashchuk.sickleaves.utils.AppExecutors
 import com.google.firebase.firestore.FirebaseFirestore
 
 class SickLeavesRemoteDataSource : SickLeavesDataSource {
@@ -32,9 +29,9 @@ class SickLeavesRemoteDataSource : SickLeavesDataSource {
                 }
     }
 
-    override fun getSickLeave(id: String, callback: SickLeavesDataSource.GetSickLeaveCallback) {
-        FirebaseFirestore.getInstance().collection(id)
-                .document(id)
+    override fun getSickLeave(userId: String, sickLeaveId: String, callback: SickLeavesDataSource.GetSickLeaveCallback) {
+        FirebaseFirestore.getInstance().collection(sickLeaveId)
+                .document(sickLeaveId)
                 .get()
                 .addOnCompleteListener { task ->
                     if (task.isSuccessful) {
