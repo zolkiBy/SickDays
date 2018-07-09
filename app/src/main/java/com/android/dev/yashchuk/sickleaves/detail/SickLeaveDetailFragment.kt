@@ -172,6 +172,7 @@ class SickLeaveDetailFragment : Fragment(), SickLeaveDetailContract.View, DatePi
         description.setText(sickLeave.description)
         start_date.text = sickLeave.startDate?.getFormattedDateString()
         end_date.text = sickLeave.endDate?.getFormattedDateString()
+                ?: getString(R.string.fragment_detail_sick_leave_end_date_text)
         create_save_btn.text = getString(R.string.fragment_detail_btn_save_text)
         close_btn.visibility = View.VISIBLE
     }

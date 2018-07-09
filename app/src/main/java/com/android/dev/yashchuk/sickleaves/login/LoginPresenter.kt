@@ -39,7 +39,8 @@ class LoginPresenter(private val view: LoginContract.View,
 
     private fun createUser(email: String?, password: String?) {
         view.showProgress(true)
-        api.createUser(email!!,
+        api.createUser(
+                email!!,
                 password!!,
                 object : OnUserAuthListener {
                     override fun onSuccess() {
@@ -54,11 +55,13 @@ class LoginPresenter(private val view: LoginContract.View,
 
     private fun signIn(email: String?, password: String?) {
         view.showProgress(true)
-        api.signIn(email!!,
+        api.signIn(
+                email!!,
                 password!!,
                 object : OnUserAuthListener {
                     override fun onSuccess() {
                         openListScreenAndFinish()
+                        view.loadUser()
                     }
 
                     override fun onFailed() {
