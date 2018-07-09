@@ -4,6 +4,7 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import com.android.dev.yashchuk.sickleaves.R
 import com.android.dev.yashchuk.sickleaves.detail.SickLeaveDetailActivity
+import com.android.dev.yashchuk.sickleaves.utils.getUserIdFromPrefs
 import com.android.dev.yashchuk.sickleaves.utils.replaceFragmentInActivity
 import com.android.dev.yashchuk.sickleaves.utils.setupActionBar
 import kotlinx.android.synthetic.main.activity_sick_leaves.*
@@ -16,14 +17,16 @@ class SickLeavesActivity : AppCompatActivity() {
 
         setupActionBar(R.id.toolbar) {}
 
-        findOrCreateFragment()
+        val userId = getUserIdFromPrefs()
+
+        findOrCreateFragment(userId)
 
         configCreateButton()
     }
 
-    private fun findOrCreateFragment() =
+    private fun findOrCreateFragment(userId: String?) =
             supportFragmentManager.findFragmentById(R.id.container)
-                    ?: SickLeavesFragment.newInstance().also {
+                    ?: SickLeavesFragment.newInstance(userId).also {
                         replaceFragmentInActivity(it, R.id.container)
                     }
 

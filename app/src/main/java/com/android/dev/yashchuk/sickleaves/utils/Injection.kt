@@ -24,7 +24,7 @@ object Injection {
                     SickLeavesRemoteDataSource.getInstance())
 
 
-    fun provideSickLeavesViewModelFactory(context: Context, userId: String) =
+    fun provideSickLeavesViewModelFactory(context: Context, userId: String?) =
             SickLeavesViewModelFactory(userId, provideSickLeaveRepository(context.applicationContext))
 
     fun provideSickLeaveDetailPresenter(context: Context, view: SickLeaveDetailContract.View)

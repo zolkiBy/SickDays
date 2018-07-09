@@ -19,6 +19,8 @@
     <!-- SickLeaves list -->
     <string name="sick_list_date_title">Date start/end</string>
     <string name="sick_list_date">$1%s - $2%s</string>
+    <string name="sick_list_empty_view_text">There is not sick leaves</string>
+
 
     <!-- SickLeave Detail -->
     <string name="activity_detail_toolbar_title">SickLeaveDetailActivity</string>

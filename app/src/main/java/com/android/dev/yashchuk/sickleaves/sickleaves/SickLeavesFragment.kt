@@ -15,14 +15,22 @@ import com.android.dev.yashchuk.sickleaves.sickleaves.recycler.SickLeavesAdapter
 import com.android.dev.yashchuk.sickleaves.utils.Injection
 import kotlinx.android.synthetic.main.fragment_sick_leaves.*
 
+private const val PARAM_USER_ID = "USER_ID"
+
 class SickLeavesFragment : Fragment() {
 
-    // TODO - change to real user id
-    val userId = "useerId"
+    var userId: String? = null
 
     private lateinit var adapter: SickLeavesAdapter
 
     private lateinit var viewModel: SickLeavesViewModel
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        arguments?.let {
+            userId = it.getString(PARAM_USER_ID)
+        }
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -81,9 +89,9 @@ class SickLeavesFragment : Fragment() {
     }
 
     companion object {
-        fun newInstance() = SickLeavesFragment().apply {
+        fun newInstance(userId: String?) = SickLeavesFragment().apply {
             arguments = Bundle().apply {
-                // put arguments here
+                putString(PARAM_USER_ID, userId)
             }
         }
     }
