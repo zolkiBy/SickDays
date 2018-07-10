@@ -12,6 +12,8 @@ import com.android.dev.yashchuk.sickleaves.detail.SickLeaveDetailViewModelFactor
 import com.android.dev.yashchuk.sickleaves.login.LoginContract
 import com.android.dev.yashchuk.sickleaves.login.LoginPresenter
 import com.android.dev.yashchuk.sickleaves.login.LoginViewModelFactory
+import com.android.dev.yashchuk.sickleaves.sickleaves.SickLeavesContract
+import com.android.dev.yashchuk.sickleaves.sickleaves.SickLeavesPresenter
 import com.android.dev.yashchuk.sickleaves.sickleaves.SickLeavesViewModelFactory
 
 object Injection {
@@ -23,6 +25,11 @@ object Injection {
                             SickLeavesDatabase.getInstance(context.applicationContext).sickLeavesDao()),
                     SickLeavesRemoteDataSource.getInstance())
 
+    fun provideLoginPresenter(view: LoginContract.View) = LoginPresenter(view, FireBaseAuthApi.getInstance())
+
+    fun provideLoginViewModelFactory() = LoginViewModelFactory(FireBaseAuthApi.getInstance())
+
+    fun provideSickLeavesPresenter(view: SickLeavesContract.View) = SickLeavesPresenter(view)
 
     fun provideSickLeavesViewModelFactory(context: Context, userId: String?) =
             SickLeavesViewModelFactory(userId, provideSickLeaveRepository(context.applicationContext))
@@ -32,8 +39,4 @@ object Injection {
 
     fun provideSickLeaveDetailViewModelFactory(context: Context, userId: String?) =
             SickLeaveDetailViewModelFactory(userId, provideSickLeaveRepository(context.applicationContext))
-
-    fun provideLoginPresenter(view: LoginContract.View) = LoginPresenter(view, FireBaseAuthApi.getInstance())
-
-    fun provideLoginViewModelFactory() = LoginViewModelFactory(FireBaseAuthApi.getInstance())
 }

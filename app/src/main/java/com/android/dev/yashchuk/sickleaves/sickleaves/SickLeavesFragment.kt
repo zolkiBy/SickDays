@@ -1,6 +1,5 @@
 package com.android.dev.yashchuk.sickleaves.sickleaves
 
-
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
@@ -17,12 +16,13 @@ import kotlinx.android.synthetic.main.fragment_sick_leaves.*
 
 private const val PARAM_USER_ID = "USER_ID"
 
-class SickLeavesFragment : Fragment() {
+class SickLeavesFragment : Fragment(), SickLeavesContract.View {
 
     var userId: String? = null
 
     private lateinit var adapter: SickLeavesAdapter
 
+    private lateinit var presenter: SickLeavesContract.Presenter
     private lateinit var viewModel: SickLeavesViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -40,6 +40,7 @@ class SickLeavesFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        presenter = initPresenter()
         viewModel = createViewModel()
 
         subscribeUpdateLoadingState()
@@ -48,6 +49,8 @@ class SickLeavesFragment : Fragment() {
 
         setupRecycler()
     }
+
+    private fun initPresenter() = Injection.provideSickLeavesPresenter(this)
 
     private fun createViewModel(): SickLeavesViewModel {
         val viewModelFactory =
@@ -58,9 +61,9 @@ class SickLeavesFragment : Fragment() {
     private fun subscribeUpdateLoadingState() {
         viewModel.isLoading.observe(this, Observer<Boolean> { isShow ->
             if (isShow == true) {
-                showLoading(true)
+                presenter.showLoading(true)
             } else {
-                showLoading(false)
+                presenter.showLoading(false)
             }
         })
     }
@@ -75,7 +78,7 @@ class SickLeavesFragment : Fragment() {
         adapter.submitList(sickLeaves)
     }
 
-    private fun showLoading(show: Boolean) {
+    override fun showLoading(show: Boolean) {
         progress.visibility = if (show) View.VISIBLE else View.GONE
         recycler.visibility = if (show) View.GONE else View.VISIBLE
     }
