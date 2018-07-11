@@ -66,4 +66,10 @@ class SickLeavesViewModel(private val userId: String?,
             })
         }
     }
+
+    fun deleteSickLeave(sickLeave: SickLeave) {
+        userId?.let {
+            // TODO: delete sick leave
+        }
+    }
 }

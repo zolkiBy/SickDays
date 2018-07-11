@@ -87,9 +87,14 @@ class SickLeavesFragment : Fragment(), SickLeavesContract.View {
     }
 
     private fun setupRecycler() {
-        adapter = SickLeavesAdapter(activity!!) { sickLeave ->
+        adapter = SickLeavesAdapter(
+                activity!!, { sickLeave ->
+
+        }, { sickLeave ->
             presenter.closeSickLeave(sickLeave)
-        }
+        }, { sickLeave ->
+            presenter
+        })
 
         recycler.apply {
             adapter = this@SickLeavesFragment.adapter
@@ -103,6 +108,10 @@ class SickLeavesFragment : Fragment(), SickLeavesContract.View {
 
     override fun closeSickLeave(sickLeave: SickLeave) {
         viewModel.saveSickLeave(sickLeave)
+    }
+
+    override fun deleteSickLeave(sickLeave: SickLeave) {
+        viewModel.deleteSickLeave(sickLeave)
     }
 
     override fun showEmptyView() {

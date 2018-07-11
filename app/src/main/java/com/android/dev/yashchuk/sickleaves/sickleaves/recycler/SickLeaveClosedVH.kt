@@ -9,7 +9,9 @@ import kotlinx.android.synthetic.main.item_sick_leave_closed.view.*
 
 class SickLeaveClosedVH(itemView: View?) : RecyclerView.ViewHolder(itemView) {
 
-    fun bindTo(sickLeave: SickLeave) {
+    fun bindTo(sickLeave: SickLeave,
+               itemClickListener: (SickLeave) -> Unit,
+               deleteClickListener: (SickLeave) -> Unit) {
         with(sickLeave) {
             itemView.title.text = title
             itemView.description.text = description
@@ -19,6 +21,8 @@ class SickLeaveClosedVH(itemView: View?) : RecyclerView.ViewHolder(itemView) {
                     sickLeave.startDate?.getFormattedDateString(),
                     sickLeave.endDate?.getFormattedDateString()
             )
+            itemView.setOnClickListener { itemClickListener(this) }
+            itemView.delete_btn.setOnClickListener { deleteClickListener(this) }
         }
     }
 }
