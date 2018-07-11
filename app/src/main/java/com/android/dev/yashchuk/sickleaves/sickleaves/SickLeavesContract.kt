@@ -10,7 +10,7 @@ interface SickLeavesContract {
         fun hideEmptyView()
         fun showDataList()
         fun hideDataList()
-        fun closeSickLeave()
+        fun closeSickLeave(sickLeave: SickLeave)
     }
 
     interface Presenter {

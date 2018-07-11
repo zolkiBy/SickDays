@@ -3,6 +3,7 @@ package com.android.dev.yashchuk.sickleaves.sickleaves
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
+import android.support.design.widget.Snackbar
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
@@ -11,6 +12,7 @@ import android.view.ViewGroup
 import com.android.dev.yashchuk.sickleaves.R
 import com.android.dev.yashchuk.sickleaves.data.SickLeave
 import com.android.dev.yashchuk.sickleaves.sickleaves.recycler.SickLeavesAdapter
+import com.android.dev.yashchuk.sickleaves.utils.Event
 import com.android.dev.yashchuk.sickleaves.utils.Injection
 import kotlinx.android.synthetic.main.fragment_sick_leaves.*
 
@@ -47,6 +49,8 @@ class SickLeavesFragment : Fragment(), SickLeavesContract.View {
 
         subscribeUpdateSickLeaves()
 
+        subscribeSnackBarMessage()
+
         setupRecycler()
     }
 
@@ -74,8 +78,16 @@ class SickLeavesFragment : Fragment(), SickLeavesContract.View {
         })
     }
 
+    private fun subscribeSnackBarMessage() {
+        viewModel.snackBarMessage.observe(this, Observer<Event<Int>> {
+            it?.getContentIfNotHandled()?.let { messageResId ->
+                Snackbar.make(recycler, getString(messageResId), Snackbar.LENGTH_SHORT).show()
+            }
+        })
+    }
+
     private fun setupRecycler() {
-        adapter = SickLeavesAdapter(activity!!) {sickLeave ->
+        adapter = SickLeavesAdapter(activity!!) { sickLeave ->
             presenter.closeSickLeave(sickLeave)
         }
 
@@ -89,8 +101,8 @@ class SickLeavesFragment : Fragment(), SickLeavesContract.View {
         adapter.submitList(sickLeaves)
     }
 
-    override fun closeSickLeave() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override fun closeSickLeave(sickLeave: SickLeave) {
+        viewModel.saveSickLeave(sickLeave)
     }
 
     override fun showEmptyView() {
@@ -102,11 +114,11 @@ class SickLeavesFragment : Fragment(), SickLeavesContract.View {
     }
 
     override fun showDataList() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        recycler.visibility = View.VISIBLE
     }
 
     override fun hideDataList() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        recycler.visibility = View.GONE
     }
 
     override fun showLoading(show: Boolean) {

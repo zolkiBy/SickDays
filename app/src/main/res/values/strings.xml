@@ -21,6 +21,8 @@
     <string name="sick_list_date">%1$s - %2$s</string>
     <string name="sick_list_empty_view_text">There are no sick leaves</string>
     <string name="sick_list_item_btn_close_text">Close Sick Leave</string>
+    <string name="sick_list_close_success_message">Sick leave successfully closed</string>
+    <string name="sick_list_close_error_message">Failed to close sick leave</string>
 
     <!-- SickLeave Detail -->
     <string name="activity_detail_toolbar_title">SickLeaveDetailActivity</string>

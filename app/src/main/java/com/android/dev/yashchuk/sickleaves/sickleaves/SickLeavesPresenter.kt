@@ -1,6 +1,7 @@
 package com.android.dev.yashchuk.sickleaves.sickleaves
 
 import com.android.dev.yashchuk.sickleaves.data.SickLeave
+import com.android.dev.yashchuk.sickleaves.data.Status
 
 class SickLeavesPresenter(private val view: SickLeavesContract.View): SickLeavesContract.Presenter {
 
@@ -12,7 +13,11 @@ class SickLeavesPresenter(private val view: SickLeavesContract.View): SickLeaves
         view.updateUi(sickLeaves)
     }
 
-    override fun closeSickLeave() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override fun closeSickLeave(sickLeave: SickLeave) {
+        sickLeave.apply {
+            status = Status.CLOSE.name
+        }
+
+        view.closeSickLeave(sickLeave)
     }
 }
