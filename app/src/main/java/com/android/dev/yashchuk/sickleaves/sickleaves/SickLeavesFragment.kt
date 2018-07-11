@@ -70,25 +70,48 @@ class SickLeavesFragment : Fragment(), SickLeavesContract.View {
 
     private fun subscribeUpdateSickLeaves() {
         viewModel.sickLeaves.observe(this, Observer<List<SickLeave>> { sickLeaves ->
-            updateUi(sickLeaves)
+            presenter.updateUi(sickLeaves)
         })
     }
 
-    private fun updateUi(sickLeaves: List<SickLeave>?) {
+    private fun setupRecycler() {
+        adapter = SickLeavesAdapter(activity!!) {sickLeave ->
+            presenter.closeSickLeave(sickLeave)
+        }
+
+        recycler.apply {
+            adapter = this@SickLeavesFragment.adapter
+            layoutManager = LinearLayoutManager(activity)
+        }
+    }
+
+    override fun updateUi(sickLeaves: List<SickLeave>?) {
         adapter.submitList(sickLeaves)
+    }
+
+    override fun closeSickLeave() {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun showEmptyView() {
+        empty_view.visibility = View.VISIBLE
+    }
+
+    override fun hideEmptyView() {
+        empty_view.visibility = View.GONE
+    }
+
+    override fun showDataList() {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun hideDataList() {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     override fun showLoading(show: Boolean) {
         progress.visibility = if (show) View.VISIBLE else View.GONE
         recycler.visibility = if (show) View.GONE else View.VISIBLE
-    }
-
-    private fun setupRecycler() {
-        adapter = SickLeavesAdapter(activity!!)
-        recycler.apply {
-            adapter = this@SickLeavesFragment.adapter
-            layoutManager = LinearLayoutManager(activity)
-        }
     }
 
     companion object {

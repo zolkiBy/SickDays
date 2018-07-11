@@ -7,8 +7,8 @@ import com.android.dev.yashchuk.sickleaves.data.SickLeave
 import com.android.dev.yashchuk.sickleaves.utils.getFormattedDateString
 import kotlinx.android.synthetic.main.item_sick_leave_opened.view.*
 
-class SickLeaveOpenedVH (itemView: View?) : RecyclerView.ViewHolder(itemView){
-    fun bindTo(sickLeave: SickLeave) {
+class SickLeaveOpenedVH(itemView: View?) : RecyclerView.ViewHolder(itemView) {
+    fun bindTo(sickLeave: SickLeave, clickListener: (SickLeave) -> Unit) {
         with(sickLeave) {
             itemView.title.text = title
             itemView.description.text = description
@@ -18,9 +18,7 @@ class SickLeaveOpenedVH (itemView: View?) : RecyclerView.ViewHolder(itemView){
                     sickLeave.startDate?.getFormattedDateString(),
                     sickLeave.endDate?.getFormattedDateString()
             )
-            itemView.close_btn.setOnClickListener{
-
-            }
+            itemView.close_btn.setOnClickListener { clickListener(this) }
         }
     }
 }

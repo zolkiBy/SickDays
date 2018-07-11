@@ -11,7 +11,7 @@ import com.android.dev.yashchuk.sickleaves.R
 import com.android.dev.yashchuk.sickleaves.data.SickLeave
 import com.android.dev.yashchuk.sickleaves.data.Status
 
-class SickLeavesAdapter(context: Context)
+class SickLeavesAdapter(context: Context, private val clickListener: (SickLeave) -> Unit)
     : ListAdapter<SickLeave, RecyclerView.ViewHolder>(SickLeaveDiffCallBack()) {
 
     init {
@@ -28,7 +28,7 @@ class SickLeavesAdapter(context: Context)
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder) {
             is SickLeaveClosedVH -> holder.bindTo(getItem(position))
-            is SickLeaveOpenedVH -> holder.bindTo(getItem(position))
+            is SickLeaveOpenedVH -> holder.bindTo(getItem(position), clickListener)
         }
     }
 
