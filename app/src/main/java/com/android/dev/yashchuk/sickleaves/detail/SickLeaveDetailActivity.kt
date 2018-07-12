@@ -1,4 +1,4 @@
-package com.android.dev.yashchuk.sickleaves.detail.addedit
+package com.android.dev.yashchuk.sickleaves.detail
 
 import android.content.Context
 import android.content.Intent
@@ -7,9 +7,9 @@ import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
 import com.android.dev.yashchuk.sickleaves.R
 import com.android.dev.yashchuk.sickleaves.data.Status
+import com.android.dev.yashchuk.sickleaves.detail.addedit.SickLeaveAddEditFragment
 import com.android.dev.yashchuk.sickleaves.detail.watch.SickLeaveWatchFragment
 import com.android.dev.yashchuk.sickleaves.utils.getUserIdFromPrefs
-import com.android.dev.yashchuk.sickleaves.utils.replaceFragmentInActivity
 import com.android.dev.yashchuk.sickleaves.utils.setupActionBar
 
 private const val EXTRA_SICK_LEAVE_ID = "SICK_LEAVE_ID"
@@ -42,7 +42,7 @@ class SickLeaveDetailActivity : AppCompatActivity() {
     private fun getFragment(userId: String?, sickLeaveId: String?, status: String?): Fragment {
         return when (status) {
             Status.CLOSE.name -> SickLeaveWatchFragment.newInstance(userId, sickLeaveId)
-            else ->  SickLeaveAddEditFragment.newInstance(userId, sickLeaveId)
+            else -> SickLeaveAddEditFragment.newInstance(userId, sickLeaveId)
         }
     }
 

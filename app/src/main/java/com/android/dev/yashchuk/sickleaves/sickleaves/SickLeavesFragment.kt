@@ -12,7 +12,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.android.dev.yashchuk.sickleaves.R
 import com.android.dev.yashchuk.sickleaves.data.SickLeave
-import com.android.dev.yashchuk.sickleaves.detail.addedit.SickLeaveDetailActivity
+import com.android.dev.yashchuk.sickleaves.detail.SickLeaveDetailActivity
 import com.android.dev.yashchuk.sickleaves.sickleaves.recycler.SickLeavesAdapter
 import com.android.dev.yashchuk.sickleaves.utils.Event
 import com.android.dev.yashchuk.sickleaves.utils.Injection

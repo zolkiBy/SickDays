@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="@dimen/common_normal_padding"
-    tools:context=".detail.watch.SickLeaveWatchActivity">
+    tools:context=".detail.SickLeaveDetailActivity">
 
     <ProgressBar
         android:id="@+id/progress"
