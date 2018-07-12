@@ -11,7 +11,11 @@ import com.android.dev.yashchuk.sickleaves.R
 import com.android.dev.yashchuk.sickleaves.data.SickLeave
 import com.android.dev.yashchuk.sickleaves.data.Status
 
-class SickLeavesAdapter(context: Context)
+class SickLeavesAdapter(
+        context: Context,
+        private val itemClickListener: (SickLeave) -> Unit,
+        private val closeClickListener: (SickLeave) -> Unit,
+        private val deleteClickListener: (SickLeave) -> Unit)
     : ListAdapter<SickLeave, RecyclerView.ViewHolder>(SickLeaveDiffCallBack()) {
 
     init {
@@ -27,8 +31,15 @@ class SickLeavesAdapter(context: Context)
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder) {
-            is SickLeaveClosedVH -> holder.bindTo(getItem(position))
-            is SickLeaveOpenedVH -> holder.bindTo(getItem(position))
+            is SickLeaveClosedVH -> holder.bindTo(
+                    getItem(position),
+                    itemClickListener,
+                    deleteClickListener)
+            is SickLeaveOpenedVH -> holder.bindTo(
+                    getItem(position),
+                    itemClickListener,
+                    closeClickListener,
+                    deleteClickListener)
         }
     }
 
@@ -40,7 +51,7 @@ class SickLeavesAdapter(context: Context)
     }
 
     override fun getItemId(position: Int): Long {
-        return getItem(position).startDate.time
+        return getItem(position).startDate!!.time
     }
 
     class SickLeaveDiffCallBack : DiffUtil.ItemCallback<SickLeave>() {

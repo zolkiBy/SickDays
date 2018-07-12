@@ -26,10 +26,8 @@
         <activity
             android:name=".detail.SickLeaveDetailActivity"
             android:label="@string/activity_detail_toolbar_title"
+            android:parentActivityName=".sickleaves.SickLeavesActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".addedit.AddEditSickLeaveActivity"
-            android:label="@string/title_activity_add_edit_sick_leave"
-            android:theme="@style/AppTheme.NoActionBar"/>
     </application>
+
 </manifest>

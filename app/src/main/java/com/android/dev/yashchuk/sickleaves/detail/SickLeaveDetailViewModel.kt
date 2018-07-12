@@ -26,9 +26,9 @@ class SickLeaveDetailViewModel(private val userId: String?,
 
     fun loadSickLeave(sickLeaveId: String?) {
         _sickLeave.value = null
-        sickLeaveId?.let {
+        if (userId != null && sickLeaveId != null) {
             _isLoading.value = true
-            repository.getSickLeave(it, object : SickLeavesDataSource.GetSickLeaveCallback {
+            repository.getSickLeave(userId, sickLeaveId, object : SickLeavesDataSource.GetSickLeaveCallback {
                 override fun onSickLeaveLoaded(sickLeave: SickLeave) {
                     _isLoading.value = false
                     this@SickLeaveDetailViewModel._sickLeave.value = sickLeave
@@ -43,18 +43,20 @@ class SickLeaveDetailViewModel(private val userId: String?,
         }
     }
 
-    fun saveSickLeave(userId: String, sickLeave: SickLeave) {
-        _isLoading.value = true
-        repository.saveSickLeave(userId, sickLeave, object : SickLeavesDataSource.SaveSickLeaveCallback {
-            override fun onSickLeaveSaved() {
-                _isLoading.value = false
-                this@SickLeaveDetailViewModel._sickLeave.value = sickLeave
-            }
+    fun saveSickLeave(sickLeave: SickLeave) {
+        userId?.let {
+            _isLoading.value = true
+            repository.saveSickLeave(it, sickLeave, object : SickLeavesDataSource.SaveSickLeaveCallback {
+                override fun onSickLeaveSaved() {
+                    _isLoading.value = false
+                    this@SickLeaveDetailViewModel._sickLeave.value = sickLeave
+                }
 
-            override fun onSickLeaveSaveFailed() {
-                _isLoading.value = false
-                _snackBarMessage.value = Event(R.string.fragment_detail_failed_save_sick_leave)
-            }
-        })
+                override fun onSickLeaveSaveFailed() {
+                    _isLoading.value = false
+                    _snackBarMessage.value = Event(R.string.fragment_detail_failed_save_sick_leave)
+                }
+            })
+        }
     }
 }

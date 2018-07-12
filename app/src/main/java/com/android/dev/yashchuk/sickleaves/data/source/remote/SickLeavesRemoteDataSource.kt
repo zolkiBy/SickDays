@@ -3,9 +3,6 @@ package com.android.dev.yashchuk.sickleaves.data.source.remote
 import android.support.annotation.VisibleForTesting
 import com.android.dev.yashchuk.sickleaves.data.SickLeave
 import com.android.dev.yashchuk.sickleaves.data.source.SickLeavesDataSource
-import com.android.dev.yashchuk.sickleaves.data.source.local.SickLeavesDao
-import com.android.dev.yashchuk.sickleaves.data.source.local.SickLeavesLocalDataSource
-import com.android.dev.yashchuk.sickleaves.utils.AppExecutors
 import com.google.firebase.firestore.FirebaseFirestore
 
 class SickLeavesRemoteDataSource : SickLeavesDataSource {
@@ -32,9 +29,9 @@ class SickLeavesRemoteDataSource : SickLeavesDataSource {
                 }
     }
 
-    override fun getSickLeave(id: String, callback: SickLeavesDataSource.GetSickLeaveCallback) {
-        FirebaseFirestore.getInstance().collection(id)
-                .document(id)
+    override fun getSickLeave(userId: String, sickLeaveId: String, callback: SickLeavesDataSource.GetSickLeaveCallback) {
+        FirebaseFirestore.getInstance().collection(sickLeaveId)
+                .document(sickLeaveId)
                 .get()
                 .addOnCompleteListener { task ->
                     if (task.isSuccessful) {
@@ -47,12 +44,7 @@ class SickLeavesRemoteDataSource : SickLeavesDataSource {
     }
 
     override fun saveSickLeave(userId: String, sickLeave: SickLeave, callback: SickLeavesDataSource.SaveSickLeaveCallback) {
-        /*val sickLeaveMap = HashMap<String, Any>()
-        sickLeaveMap[id] = sickLeave.id
-        sickLeaveMap[title] = sickLeave.title
-        sickLeaveMap[description] = sickLeave.description*/
         FirebaseFirestore.getInstance().collection(userId).document(sickLeave.id).set(sickLeave)
-                /*.add(sickLeaveMap)*/
                 .addOnSuccessListener { callback.onSickLeaveSaved() }
                 .addOnFailureListener { callback.onSickLeaveSaveFailed() }
 

@@ -6,7 +6,7 @@ import com.android.dev.yashchuk.sickleaves.data.source.SickLeavesDataSource
 
 
 @Suppress("UNCHECKED_CAST")
-class SickLeavesViewModelFactory(private val userId: String,
+class SickLeavesViewModelFactory(private val userId: String?,
                                  private val sickLeavesRepository: SickLeavesDataSource)
     : ViewModelProvider.NewInstanceFactory() {
 

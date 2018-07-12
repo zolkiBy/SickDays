@@ -30,6 +30,7 @@ class LoginActivity : AppCompatActivity(), LoginContract.View {
         presenter = initPresenter()
 
         createViewModel()
+        loadUser()
 
         configureViews()
     }
@@ -60,8 +61,8 @@ class LoginActivity : AppCompatActivity(), LoginContract.View {
 
     private fun subscribeUpdateUser() {
         viewModel.user.observe(this, Observer<FirebaseUser> { user ->
-            presenter.checkUser(user)
             presenter.saveUserIdToPrefs(user?.uid)
+            presenter.checkUser(user)
         })
     }
 
@@ -72,6 +73,10 @@ class LoginActivity : AppCompatActivity(), LoginContract.View {
             putString(getString(R.string.preference_user_id_key), userId)
             apply()
         }
+    }
+
+    override fun loadUser() {
+        viewModel.loadCurrentUser()
     }
 
     override fun showProgress(show: Boolean) {

@@ -13,6 +13,7 @@ interface LoginContract {
         fun showPasswordError(@StringRes resId: Int)
         fun finishActivity()
         fun saveUserIdToPrefs(userId: String)
+        fun loadUser()
     }
 
     interface Presenter {

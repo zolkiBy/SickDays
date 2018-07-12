@@ -25,12 +25,13 @@ interface SickLeavesDataSource {
     }
 
     interface DeleteAllSickLeavesCallback {
+        fun onSickLeavesDeleted()
         fun onSickLeavesDeleteFailed()
     }
 
     fun getSickLeaves(userId: String, callback: LoadSickLeavesCallback)
 
-    fun getSickLeave(id: String, callback: GetSickLeaveCallback)
+    fun getSickLeave(userId: String, sickLeaveId: String, callback: GetSickLeaveCallback)
 
     fun saveSickLeave(userId: String, sickLeave: SickLeave, callback: SaveSickLeaveCallback)
 

@@ -23,9 +23,9 @@ class SickLeavesLocalDataSource private constructor(
         }
     }
 
-    override fun getSickLeave(id: String, callback: SickLeavesDataSource.GetSickLeaveCallback) {
+    override fun getSickLeave(userId: String, sickLeaveId: String, callback: SickLeavesDataSource.GetSickLeaveCallback) {
         appExecutors.diskIO.execute {
-            val sickLeave = sickLeavesDao.getSickLeave(id)
+            val sickLeave = sickLeavesDao.getSickLeave(sickLeaveId)
             appExecutors.mainThread.execute {
                 if (sickLeave == null) {
                     callback.onDataNotAvailable()
