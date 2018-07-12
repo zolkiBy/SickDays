@@ -1,13 +1,13 @@
-package com.android.dev.yashchuk.sickleaves.detail
+package com.android.dev.yashchuk.sickleaves.detail.addedit
 
 import com.android.dev.yashchuk.sickleaves.data.SickLeave
 import com.android.dev.yashchuk.sickleaves.data.source.SickLeavesDataSource
 import com.android.dev.yashchuk.sickleaves.data.source.SickLeavesRepository
 
 
-class SickLeaveDetailPresenter(private val view: SickLeaveDetailContract.View,
-                               private val repository: SickLeavesRepository)
-    : SickLeaveDetailContract.Presenter {
+class SickLeaveAddEditPresenter(private val view: SickLeaveAddEditContract.View,
+                                private val repository: SickLeavesRepository)
+    : SickLeaveAddEditContract.Presenter {
 
     override fun updateUi(sickLeave: SickLeave?) {
         if (sickLeave != null) view.fillSickLeaveData(sickLeave) else view.showEmptySickLeave()

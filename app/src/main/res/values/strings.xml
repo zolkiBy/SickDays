@@ -36,4 +36,7 @@
     <string name="fragment_detail_failed_save_sick_leave">Failed to save sick leave</string>
 
     <string name="title_activity_add_edit_sick_leave">AddEditSickLeaveActivity</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

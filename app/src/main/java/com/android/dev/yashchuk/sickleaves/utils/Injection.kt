@@ -6,8 +6,8 @@ import com.android.dev.yashchuk.sickleaves.data.source.local.SickLeavesDatabase
 import com.android.dev.yashchuk.sickleaves.data.source.local.SickLeavesLocalDataSource
 import com.android.dev.yashchuk.sickleaves.data.source.remote.SickLeavesRemoteDataSource
 import com.android.dev.yashchuk.sickleaves.data.source.remote.net.FireBaseAuthApi
-import com.android.dev.yashchuk.sickleaves.detail.SickLeaveDetailContract
-import com.android.dev.yashchuk.sickleaves.detail.SickLeaveDetailPresenter
+import com.android.dev.yashchuk.sickleaves.detail.addedit.SickLeaveAddEditContract
+import com.android.dev.yashchuk.sickleaves.detail.addedit.SickLeaveAddEditPresenter
 import com.android.dev.yashchuk.sickleaves.detail.SickLeaveDetailViewModelFactory
 import com.android.dev.yashchuk.sickleaves.login.LoginContract
 import com.android.dev.yashchuk.sickleaves.login.LoginPresenter
@@ -34,8 +34,8 @@ object Injection {
     fun provideSickLeavesViewModelFactory(context: Context, userId: String?) =
             SickLeavesViewModelFactory(userId, provideSickLeaveRepository(context.applicationContext))
 
-    fun provideSickLeaveDetailPresenter(context: Context, view: SickLeaveDetailContract.View)
-            = SickLeaveDetailPresenter(view, provideSickLeaveRepository(context.applicationContext))
+    fun provideSickLeaveDetailPresenter(context: Context, view: SickLeaveAddEditContract.View)
+            = SickLeaveAddEditPresenter(view, provideSickLeaveRepository(context.applicationContext))
 
     fun provideSickLeaveDetailViewModelFactory(context: Context, userId: String?) =
             SickLeaveDetailViewModelFactory(userId, provideSickLeaveRepository(context.applicationContext))

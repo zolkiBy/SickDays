@@ -5,12 +5,14 @@ import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.v4.app.Fragment
+import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.android.dev.yashchuk.sickleaves.R
 import com.android.dev.yashchuk.sickleaves.data.SickLeave
+import com.android.dev.yashchuk.sickleaves.detail.addedit.SickLeaveDetailActivity
 import com.android.dev.yashchuk.sickleaves.sickleaves.recycler.SickLeavesAdapter
 import com.android.dev.yashchuk.sickleaves.utils.Event
 import com.android.dev.yashchuk.sickleaves.utils.Injection
@@ -18,7 +20,7 @@ import kotlinx.android.synthetic.main.fragment_sick_leaves.*
 
 private const val PARAM_USER_ID = "USER_ID"
 
-class SickLeavesFragment : Fragment(), SickLeavesContract.View {
+class SickLeavesFragment : Fragment(), SickLeavesContract.View, SwipeRefreshLayout.OnRefreshListener {
 
     var userId: String? = null
 
@@ -74,6 +76,7 @@ class SickLeavesFragment : Fragment(), SickLeavesContract.View {
 
     private fun subscribeUpdateSickLeaves() {
         viewModel.sickLeaves.observe(this, Observer<List<SickLeave>> { sickLeaves ->
+
             presenter.updateUi(sickLeaves)
         })
     }
@@ -88,13 +91,10 @@ class SickLeavesFragment : Fragment(), SickLeavesContract.View {
 
     private fun setupRecycler() {
         adapter = SickLeavesAdapter(
-                activity!!, { sickLeave ->
-
-        }, { sickLeave ->
-            presenter.closeSickLeave(sickLeave)
-        }, { sickLeave ->
-            presenter
-        })
+                activity!!,
+                { sickLeave -> SickLeaveDetailActivity.start(activity!!, sickLeave.id, sickLeave.status) },
+                { sickLeave -> presenter.closeSickLeave(sickLeave) },
+                { sickLeave -> presenter.deleteSickLeave(sickLeave) })
 
         recycler.apply {
             adapter = this@SickLeavesFragment.adapter
@@ -133,6 +133,10 @@ class SickLeavesFragment : Fragment(), SickLeavesContract.View {
     override fun showLoading(show: Boolean) {
         progress.visibility = if (show) View.VISIBLE else View.GONE
         recycler.visibility = if (show) View.GONE else View.VISIBLE
+    }
+
+    override fun onRefresh() {
+        viewModel.loadSickLeaves(true)
     }
 
     companion object {

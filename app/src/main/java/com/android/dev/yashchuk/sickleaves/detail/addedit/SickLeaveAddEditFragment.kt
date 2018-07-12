@@ -1,4 +1,4 @@
-package com.android.dev.yashchuk.sickleaves.detail
+package com.android.dev.yashchuk.sickleaves.detail.addedit
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
@@ -14,12 +14,13 @@ import com.android.dev.yashchuk.sickleaves.R
 import com.android.dev.yashchuk.sickleaves.data.DatePickerCode
 import com.android.dev.yashchuk.sickleaves.data.SickLeave
 import com.android.dev.yashchuk.sickleaves.data.Status
+import com.android.dev.yashchuk.sickleaves.detail.SickLeaveDetailViewModel
 import com.android.dev.yashchuk.sickleaves.detail.datepicker.DatePickerFragment
 import com.android.dev.yashchuk.sickleaves.utils.Event
 import com.android.dev.yashchuk.sickleaves.utils.Injection
 import com.android.dev.yashchuk.sickleaves.utils.getFormattedDate
 import com.android.dev.yashchuk.sickleaves.utils.getFormattedDateString
-import kotlinx.android.synthetic.main.fragment_sick_leave_detail.*
+import kotlinx.android.synthetic.main.fragment_add_edit_sick_leave.*
 import java.util.*
 
 private const val PARAM_USER_ID = "USER_ID"
@@ -27,14 +28,14 @@ private const val PARAM_SICK_LEAVE_ID = "SICK_LEAVE_ID"
 private const val REQUEST_CODE_TARGET_FRAGMENT = 111
 private const val TAG_DATE_PICKER = "DATE_PICKER"
 
-class SickLeaveDetailFragment : Fragment(), SickLeaveDetailContract.View, DatePickerFragment.OnDateSetListener {
+class SickLeaveAddEditFragment : Fragment(), SickLeaveAddEditContract.View, DatePickerFragment.OnDateSetListener {
     private var userId: String? = null
     private var sickLeaveId: String? = null
     private var listener: OnFragmentInteractionListener? = null
 
     private var sickLeave: SickLeave? = null
 
-    private lateinit var presenter: SickLeaveDetailContract.Presenter
+    private lateinit var presenter: SickLeaveAddEditContract.Presenter
     private lateinit var viewModel: SickLeaveDetailViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -47,7 +48,7 @@ class SickLeaveDetailFragment : Fragment(), SickLeaveDetailContract.View, DatePi
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_sick_leave_detail, container, false)
+        return inflater.inflate(R.layout.fragment_add_edit_sick_leave, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -74,7 +75,7 @@ class SickLeaveDetailFragment : Fragment(), SickLeaveDetailContract.View, DatePi
     private fun createViewModel(): SickLeaveDetailViewModel {
         val viewModelFactory =
                 Injection.provideSickLeaveDetailViewModelFactory(activity!!.applicationContext, userId)
-        return ViewModelProviders.of(activity!!, viewModelFactory)
+        return ViewModelProviders.of(this, viewModelFactory)
                 .get(SickLeaveDetailViewModel::class.java)
     }
 
@@ -193,7 +194,7 @@ class SickLeaveDetailFragment : Fragment(), SickLeaveDetailContract.View, DatePi
     companion object {
         @JvmStatic
         fun newInstance(userId: String?, sickLeaveId: String?) =
-                SickLeaveDetailFragment().apply {
+                SickLeaveAddEditFragment().apply {
                     arguments = Bundle().apply {
                         putString(PARAM_USER_ID, userId)
                         putString(PARAM_SICK_LEAVE_ID, sickLeaveId)

@@ -27,7 +27,7 @@ class SickLeavesViewModel(private val userId: String?,
         loadSickLeaves(false)
     }
 
-    private fun loadSickLeaves(forceUpdate: Boolean) {
+    fun loadSickLeaves(forceUpdate: Boolean) {
         userId?.let {
             _isLoading.value = true
 

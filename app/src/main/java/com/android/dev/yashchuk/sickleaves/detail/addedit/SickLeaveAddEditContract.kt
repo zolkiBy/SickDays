@@ -1,9 +1,9 @@
-package com.android.dev.yashchuk.sickleaves.detail
+package com.android.dev.yashchuk.sickleaves.detail.addedit
 
 import com.android.dev.yashchuk.sickleaves.data.SickLeave
 
 
-interface SickLeaveDetailContract {
+interface SickLeaveAddEditContract {
     interface View {
         fun fillSickLeaveData(sickLeave: SickLeave)
         fun showEmptySickLeave()
