@@ -112,6 +112,7 @@ class SickLeavesRepository(
             override fun onSickLeavesLoaded(sickLeaves: List<SickLeave>) {
                 refreshCache(sickLeaves)
                 refreshLocalDataSource(userId, sickLeaves, callback)
+                callback.onSickLeavesLoaded(sickLeaves)
             }
 
             override fun onDataNotAvailable() {
@@ -130,24 +131,24 @@ class SickLeavesRepository(
 
     private fun refreshLocalDataSource(userId: String, sickLeaves: List<SickLeave>, callback: SickLeavesDataSource.LoadSickLeavesCallback) {
         localDataSource.deleteAllSickLeaves(object : SickLeavesDataSource.DeleteAllSickLeavesCallback {
+            override fun onSickLeavesDeleted() {
+                sickLeaves.forEach { sickLeave ->
+                    localDataSource.saveSickLeave(userId, sickLeave, object : SickLeavesDataSource.SaveSickLeaveCallback {
+                        override fun onSickLeaveSaved() {
+                            // do nothing, sick leave saved
+                        }
+
+                        override fun onSickLeaveSaveFailed() {
+                            callback.onDataNotAvailable()
+                        }
+                    })
+                }
+            }
+
             override fun onSickLeavesDeleteFailed() {
                 callback.onDataNotAvailable()
-                // TODO : if really need return this????
-                return
             }
         })
-
-        sickLeaves.forEach { sickLeave ->
-            localDataSource.saveSickLeave(userId, sickLeave, object : SickLeavesDataSource.SaveSickLeaveCallback {
-                override fun onSickLeaveSaved() {
-
-                }
-
-                override fun onSickLeaveSaveFailed() {
-                    callback.onDataNotAvailable()
-                }
-            })
-        }
     }
 
     private inline fun cacheAndPerform(sickLeave: SickLeave, perform: (SickLeave) -> Unit) {

@@ -47,7 +47,11 @@ class SickLeavesFragment : Fragment(), SickLeavesContract.View, SwipeRefreshLayo
         presenter = initPresenter()
         viewModel = createViewModel()
 
+        initSwipeRefreshLayout()
+
         subscribeUpdateLoadingState()
+
+        subscribeSwipeLoadingState()
 
         subscribeUpdateSickLeaves()
 
@@ -64,6 +68,10 @@ class SickLeavesFragment : Fragment(), SickLeavesContract.View, SwipeRefreshLayo
         return ViewModelProviders.of(activity!!, viewModelFactory).get(SickLeavesViewModel::class.java)
     }
 
+    private fun initSwipeRefreshLayout() {
+        swipe_refresh_layout.setOnRefreshListener(this)
+    }
+
     private fun subscribeUpdateLoadingState() {
         viewModel.isLoading.observe(this, Observer<Boolean> { isShow ->
             if (isShow == true) {
@@ -74,9 +82,16 @@ class SickLeavesFragment : Fragment(), SickLeavesContract.View, SwipeRefreshLayo
         })
     }
 
+    private fun subscribeSwipeLoadingState() {
+        viewModel.isLoadingFromSwipe.observe(this, Observer<Boolean> { isLoading ->
+            isLoading?.let {
+                swipe_refresh_layout.isRefreshing = it
+            }
+        })
+    }
+
     private fun subscribeUpdateSickLeaves() {
         viewModel.sickLeaves.observe(this, Observer<List<SickLeave>> { sickLeaves ->
-
             presenter.updateUi(sickLeaves)
         })
     }
@@ -136,10 +151,11 @@ class SickLeavesFragment : Fragment(), SickLeavesContract.View, SwipeRefreshLayo
     }
 
     override fun onRefresh() {
-        viewModel.loadSickLeaves(true)
+        viewModel.loadSickLeaves(true, true)
     }
 
     companion object {
+        @JvmStatic
         fun newInstance(userId: String?) = SickLeavesFragment().apply {
             arguments = Bundle().apply {
                 putString(PARAM_USER_ID, userId)

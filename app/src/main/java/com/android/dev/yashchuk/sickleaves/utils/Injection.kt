@@ -19,7 +19,7 @@ import com.android.dev.yashchuk.sickleaves.sickleaves.SickLeavesViewModelFactory
 object Injection {
 
     fun provideSickLeaveRepository(context: Context) =
-            SickLeavesRepository(
+            SickLeavesRepository.getInstance(
                     SickLeavesLocalDataSource.getInstance(
                             AppExecutors(),
                             SickLeavesDatabase.getInstance(context.applicationContext).sickLeavesDao()),

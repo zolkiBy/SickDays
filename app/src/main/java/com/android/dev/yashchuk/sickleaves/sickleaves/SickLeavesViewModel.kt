@@ -14,35 +14,42 @@ class SickLeavesViewModel(private val userId: String?,
 
     private val _sickLeaves = MutableLiveData<List<SickLeave>>()
     private val _isLoading = MutableLiveData<Boolean>()
+    private val _isLoadingFromSwipe = MutableLiveData<Boolean>()
     private val _snackBarMessage = MutableLiveData<Event<Int>>()
 
     val sickLeaves: LiveData<List<SickLeave>>
         get() = _sickLeaves
     val isLoading: LiveData<Boolean>
         get() = _isLoading
+    val isLoadingFromSwipe: LiveData<Boolean>
+        get() = _isLoadingFromSwipe
     val snackBarMessage: LiveData<Event<Int>>
         get() = _snackBarMessage
 
     init {
-        loadSickLeaves(false)
+        loadSickLeaves(true, false)
     }
 
-    fun loadSickLeaves(forceUpdate: Boolean) {
+    fun loadSickLeaves(forceUpdate: Boolean, isFromSwipe: Boolean) {
         userId?.let {
-            _isLoading.value = true
+            if (!isFromSwipe) {
+                _isLoading.value = true
+            }
 
             if (forceUpdate) {
                 sickLeavesRepository.refreshSickLeaves()
             }
 
-            sickLeavesRepository.getSickLeaves(userId, object : SickLeavesDataSource.LoadSickLeavesCallback {
+            sickLeavesRepository.getSickLeaves(it, object : SickLeavesDataSource.LoadSickLeavesCallback {
                 override fun onSickLeavesLoaded(sickLeaves: List<SickLeave>) {
                     _isLoading.value = false
+                    _isLoadingFromSwipe.value = false
                     this@SickLeavesViewModel._sickLeaves.value = sickLeaves
                 }
 
                 override fun onDataNotAvailable() {
                     _isLoading.value = false
+                    _isLoadingFromSwipe.value = false
                     _sickLeaves.value = null
                 }
             })
@@ -54,7 +61,7 @@ class SickLeavesViewModel(private val userId: String?,
             _isLoading.value = true
             sickLeavesRepository.saveSickLeave(it, sickLeave, object : SickLeavesDataSource.SaveSickLeaveCallback {
                 override fun onSickLeaveSaved() {
-                    loadSickLeaves(false)
+                    loadSickLeaves(false, false)
                     _isLoading.value = false
                     _snackBarMessage.value = Event(R.string.sick_list_close_success_message)
                 }

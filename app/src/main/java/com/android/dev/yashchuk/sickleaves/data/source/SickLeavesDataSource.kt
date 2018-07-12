@@ -25,6 +25,7 @@ interface SickLeavesDataSource {
     }
 
     interface DeleteAllSickLeavesCallback {
+        fun onSickLeavesDeleted()
         fun onSickLeavesDeleteFailed()
     }
 
