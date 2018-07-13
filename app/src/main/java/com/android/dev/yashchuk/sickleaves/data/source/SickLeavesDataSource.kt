@@ -35,9 +35,9 @@ interface SickLeavesDataSource {
 
     fun saveSickLeave(userId: String, sickLeave: SickLeave, callback: SaveSickLeaveCallback)
 
-    fun deleteSickLeave(id: String, userId: String, callback: DeleteSickLeaveCallback)
+    fun deleteSickLeave(userId: String, sickLeaveId: String, callback: DeleteSickLeaveCallback)
 
-    fun deleteAllSickLeaves(callback: DeleteAllSickLeavesCallback)
+    fun deleteAllSickLeaves(userId: String, sickLeaves: List<SickLeave>, callback: DeleteAllSickLeavesCallback)
 
     fun refreshSickLeaves()
 }

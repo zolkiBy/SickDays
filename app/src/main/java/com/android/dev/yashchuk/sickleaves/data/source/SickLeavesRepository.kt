@@ -71,8 +71,8 @@ class SickLeavesRepository(
         }
     }
 
-    override fun deleteSickLeave(id: String, userId: String, callback: SickLeavesDataSource.DeleteSickLeaveCallback) {
-        localDataSource.deleteSickLeave(id, userId, object : SickLeavesDataSource.DeleteSickLeaveCallback {
+    override fun deleteSickLeave(userId: String, sickLeaveId: String, callback: SickLeavesDataSource.DeleteSickLeaveCallback) {
+        localDataSource.deleteSickLeave(userId, sickLeaveId, object : SickLeavesDataSource.DeleteSickLeaveCallback {
             override fun onSickLeaveDeleted() {
                 TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
             }
@@ -82,7 +82,7 @@ class SickLeavesRepository(
             }
         })
 
-        remoteDataSource.deleteSickLeave(id, userId, object : SickLeavesDataSource.DeleteSickLeaveCallback {
+        remoteDataSource.deleteSickLeave(userId, sickLeaveId, object : SickLeavesDataSource.DeleteSickLeaveCallback {
             override fun onSickLeaveDeleted() {
                 callback.onSickLeaveDeleted()
             }
@@ -92,10 +92,10 @@ class SickLeavesRepository(
             }
         })
 
-        cachedSickLeaves.remove(id)
+        cachedSickLeaves.remove(sickLeaveId)
     }
 
-    override fun deleteAllSickLeaves(callback: SickLeavesDataSource.DeleteAllSickLeavesCallback) {
+    override fun deleteAllSickLeaves(userId: String, sickLeaves: List<SickLeave>, callback: SickLeavesDataSource.DeleteAllSickLeavesCallback) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
@@ -130,7 +130,7 @@ class SickLeavesRepository(
     }
 
     private fun refreshLocalDataSource(userId: String, sickLeaves: List<SickLeave>, callback: SickLeavesDataSource.LoadSickLeavesCallback) {
-        localDataSource.deleteAllSickLeaves(object : SickLeavesDataSource.DeleteAllSickLeavesCallback {
+        localDataSource.deleteAllSickLeaves(, object : SickLeavesDataSource.DeleteAllSickLeavesCallback {
             override fun onSickLeavesDeleted() {
                 sickLeaves.forEach { sickLeave ->
                     localDataSource.saveSickLeave(userId, sickLeave, object : SickLeavesDataSource.SaveSickLeaveCallback {
