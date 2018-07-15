@@ -23,6 +23,8 @@
     <string name="sick_list_item_btn_close_text">Close Sick Leave</string>
     <string name="sick_list_close_success_message">Sick leave successfully closed</string>
     <string name="sick_list_close_error_message">Failed to close sick leave</string>
+    <string name="sick_list_delete_success_message">Sick leave successfully deleted</string>
+    <string name="sick_list_delete_error_message">Failed to delete sick leave</string>
 
     <!-- SickLeave Detail -->
     <string name="activity_detail_toolbar_title">SickLeaveDetailActivity</string>

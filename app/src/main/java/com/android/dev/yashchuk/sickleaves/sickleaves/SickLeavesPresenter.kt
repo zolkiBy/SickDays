@@ -22,6 +22,6 @@ class SickLeavesPresenter(private val view: SickLeavesContract.View): SickLeaves
     }
 
     override fun deleteSickLeave(sickLeave: SickLeave) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        view.deleteSickLeave(sickLeave)
     }
 }

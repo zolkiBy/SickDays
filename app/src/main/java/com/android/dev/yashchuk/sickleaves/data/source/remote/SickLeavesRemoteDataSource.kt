@@ -7,11 +7,6 @@ import com.google.firebase.firestore.FirebaseFirestore
 
 class SickLeavesRemoteDataSource : SickLeavesDataSource {
 
-    private val id = "id"
-    private val title = "title"
-    private val description = "description"
-
-
     override fun getSickLeaves(userId: String, callback: SickLeavesDataSource.LoadSickLeavesCallback) {
         val sickLeaves = mutableListOf<SickLeave>()
         FirebaseFirestore.getInstance().collection(userId)
@@ -50,24 +45,32 @@ class SickLeavesRemoteDataSource : SickLeavesDataSource {
 
     }
 
-    override fun deleteSickLeave(id: String, userId: String, callback: SickLeavesDataSource.DeleteSickLeaveCallback) {
+    override fun deleteSickLeave(userId: String, sickLeaveId: String, callback: SickLeavesDataSource.DeleteSickLeaveCallback) {
         FirebaseFirestore.getInstance().collection(userId)
-                .document(id)
+                .document(sickLeaveId)
                 .delete()
-                .addOnSuccessListener {
-                    callback.onSickLeaveDeleted()
-                }
-                .addOnFailureListener {
-                    callback.onSickLeaveDeleteFailed()
-                }
+                .addOnSuccessListener { callback.onSickLeaveDeleted() }
+                .addOnFailureListener { callback.onSickLeaveDeleteFailed() }
     }
 
-    override fun deleteAllSickLeaves(callback: SickLeavesDataSource.DeleteAllSickLeavesCallback) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override fun deleteAllSickLeaves(userId: String, sickLeaves: List<SickLeave>, callback: SickLeavesDataSource.DeleteAllSickLeavesCallback) {
+        val sickLeaveIds = sickLeaves.map { it.id }
+        val lastId = sickLeaveIds.last()
+        for (sickLeaveId in sickLeaveIds) {
+            FirebaseFirestore.getInstance().collection(userId)
+                    .document(sickLeaveId)
+                    .delete()
+                    .addOnSuccessListener {
+                        if (sickLeaveId == lastId) {
+                            callback.onSickLeavesDeleted()
+                        }
+                    }
+                    .addOnFailureListener { callback.onSickLeavesDeleteFailed() }
+        }
     }
 
     override fun refreshSickLeaves() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        // implement by SickLeaveRepository
     }
 
     companion object {
