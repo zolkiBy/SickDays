@@ -76,7 +76,19 @@ class SickLeavesViewModel(private val userId: String?,
 
     fun deleteSickLeave(sickLeave: SickLeave) {
         userId?.let {
-            // TODO: delete sick leave
+            sickLeavesRepository.deleteSickLeave(
+                    it,
+                    sickLeave.id,
+                    object : SickLeavesDataSource.DeleteSickLeaveCallback {
+                        override fun onSickLeaveDeleted() {
+                            loadSickLeaves(false, false)
+                            _snackBarMessage.value = Event(R.string.sick_list_delete_success_message)
+                        }
+
+                        override fun onSickLeaveDeleteFailed() {
+                            _snackBarMessage.value = Event(R.string.sick_list_delete_error_message)
+                        }
+                    })
         }
     }
 }
