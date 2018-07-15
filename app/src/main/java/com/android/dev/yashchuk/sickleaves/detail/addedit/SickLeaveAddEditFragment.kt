@@ -70,7 +70,7 @@ class SickLeaveAddEditFragment : Fragment(), SickLeaveAddEditContract.View, Date
         configDateViews()
     }
 
-    private fun initPresenter() = Injection.provideSickLeaveDetailPresenter(activity!!.applicationContext, this)
+    private fun initPresenter() = Injection.provideSickLeaveDetailPresenter(this)
 
     private fun createViewModel(): SickLeaveDetailViewModel {
         val viewModelFactory =
@@ -82,9 +82,9 @@ class SickLeaveAddEditFragment : Fragment(), SickLeaveAddEditContract.View, Date
     private fun subscribeUpdateLoadingState() {
         viewModel.isLoading.observe(this, Observer<Boolean> { isShow ->
             if (isShow == true) {
-                showLoading(true)
+                presenter.showLoading(true)
             } else {
-                showLoading(false)
+                presenter.showLoading(false)
             }
         })
     }
@@ -96,8 +96,8 @@ class SickLeaveAddEditFragment : Fragment(), SickLeaveAddEditContract.View, Date
         })
     }
 
-    private fun showLoading(isShow: Boolean) {
-        progress.visibility = if (isShow) View.VISIBLE else View.INVISIBLE
+    override fun showLoading(show: Boolean) {
+        progress.visibility = if (show) View.VISIBLE else View.INVISIBLE
     }
 
     private fun subscribeSnackBarMessage() {
@@ -116,13 +116,13 @@ class SickLeaveAddEditFragment : Fragment(), SickLeaveAddEditContract.View, Date
                     startDate = start_date.text.toString().getFormattedDate(),
                     endDate = end_date.text.toString().getFormattedDate()
             )
-            viewModel.saveSickLeave(sickLeave)
+            presenter.saveSickLeave(sickLeave)
         }
 
         close_btn.setOnClickListener {
             if (sickLeave != null) {
                 sickLeave?.status = Status.CLOSE.name
-                viewModel.saveSickLeave(sickLeave!!)
+                presenter.saveSickLeave(sickLeave!!)
             }
         }
     }
@@ -176,6 +176,10 @@ class SickLeaveAddEditFragment : Fragment(), SickLeaveAddEditContract.View, Date
                 ?: getString(R.string.fragment_detail_sick_leave_end_date_text)
         create_save_btn.text = getString(R.string.fragment_detail_btn_save_text)
         close_btn.visibility = View.VISIBLE
+    }
+
+    override fun saveSickLeave(sickLeave: SickLeave) {
+        viewModel.saveSickLeave(sickLeave)
     }
 
     override fun showEmptySickLeave() {
