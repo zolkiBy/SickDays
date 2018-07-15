@@ -1,12 +1,9 @@
 package com.android.dev.yashchuk.sickleaves.detail.addedit
 
 import com.android.dev.yashchuk.sickleaves.data.SickLeave
-import com.android.dev.yashchuk.sickleaves.data.source.SickLeavesDataSource
-import com.android.dev.yashchuk.sickleaves.data.source.SickLeavesRepository
 
 
-class SickLeaveAddEditPresenter(private val view: SickLeaveAddEditContract.View,
-                                private val repository: SickLeavesRepository)
+class SickLeaveAddEditPresenter(private val view: SickLeaveAddEditContract.View)
     : SickLeaveAddEditContract.Presenter {
 
     override fun updateUi(sickLeave: SickLeave?) {
@@ -17,15 +14,11 @@ class SickLeaveAddEditPresenter(private val view: SickLeaveAddEditContract.View,
         view.showDatePicker(requestCode)
     }
 
-    override fun saveSickLeave(userId: String, sickLeave: SickLeave) {
-        repository.saveSickLeave(userId, sickLeave,  object : SickLeavesDataSource.SaveSickLeaveCallback {
-            override fun onSickLeaveSaved() {
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-            }
+    override fun saveSickLeave(sickLeave: SickLeave) {
+        view.saveSickLeave(sickLeave)
+    }
 
-            override fun onSickLeaveSaveFailed() {
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-            }
-        })
+    override fun showLoading(show: Boolean) {
+        view.showLoading(show)
     }
 }

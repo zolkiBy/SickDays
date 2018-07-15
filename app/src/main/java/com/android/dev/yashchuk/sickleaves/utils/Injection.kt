@@ -34,8 +34,7 @@ object Injection {
     fun provideSickLeavesViewModelFactory(context: Context, userId: String?) =
             SickLeavesViewModelFactory(userId, provideSickLeaveRepository(context.applicationContext))
 
-    fun provideSickLeaveDetailPresenter(context: Context, view: SickLeaveAddEditContract.View)
-            = SickLeaveAddEditPresenter(view, provideSickLeaveRepository(context.applicationContext))
+    fun provideSickLeaveDetailPresenter(view: SickLeaveAddEditContract.View) = SickLeaveAddEditPresenter(view)
 
     fun provideSickLeaveDetailViewModelFactory(context: Context, userId: String?) =
             SickLeaveDetailViewModelFactory(userId, provideSickLeaveRepository(context.applicationContext))
