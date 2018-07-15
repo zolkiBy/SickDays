@@ -22,7 +22,10 @@ class SickLeaveClosedVH(itemView: View?) : RecyclerView.ViewHolder(itemView) {
                     sickLeave.endDate?.getFormattedDateString()
             )
             itemView.setOnClickListener { itemClickListener(this) }
-            itemView.delete_btn.setOnClickListener { deleteClickListener(this) }
+            itemView.delete_btn.setOnClickListener { button ->
+                button.isEnabled = false
+                deleteClickListener(this)
+            }
         }
     }
 }

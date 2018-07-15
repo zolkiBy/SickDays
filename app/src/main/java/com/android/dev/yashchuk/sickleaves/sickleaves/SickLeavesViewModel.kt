@@ -86,6 +86,7 @@ class SickLeavesViewModel(private val userId: String?,
                         }
 
                         override fun onSickLeaveDeleteFailed() {
+                            loadSickLeaves(false, false)
                             _snackBarMessage.value = Event(R.string.sick_list_delete_error_message)
                         }
                     })

@@ -26,7 +26,9 @@ class SickLeaveOpenedVH(itemView: View?) : RecyclerView.ViewHolder(itemView) {
             )
             itemView.setOnClickListener { itemClickListener(this) }
             itemView.close_btn.setOnClickListener { closeClickListener(this) }
-            itemView.delete_btn.setOnClickListener { deleteClickListener(this) }
+            itemView.delete_btn.setOnClickListener { button ->
+                button.isEnabled = false
+                deleteClickListener(this) }
         }
     }
 }

@@ -20,7 +20,10 @@ import kotlinx.android.synthetic.main.fragment_sick_leaves.*
 
 private const val PARAM_USER_ID = "USER_ID"
 
-class SickLeavesFragment : Fragment(), SickLeavesContract.View, SwipeRefreshLayout.OnRefreshListener {
+class SickLeavesFragment :
+        Fragment(),
+        SickLeavesContract.View,
+        SwipeRefreshLayout.OnRefreshListener {
 
     var userId: String? = null
 
