@@ -8,8 +8,7 @@ import java.util.*
 
 @Entity(tableName = "sick_leaves")
 data class SickLeave(
-        @NonNull @PrimaryKey @ColumnInfo(name = "entryid")
-        var id: String = UUID.randomUUID().toString(),
+        @ColumnInfo(name = "entryid") @PrimaryKey(autoGenerate = true) var id: Long,
         @ColumnInfo(name = "title") var title: String = "",
         @ColumnInfo(name = "description") var description: String = "",
         @ColumnInfo(name = "start_date") var startDate: Date? = Date(),

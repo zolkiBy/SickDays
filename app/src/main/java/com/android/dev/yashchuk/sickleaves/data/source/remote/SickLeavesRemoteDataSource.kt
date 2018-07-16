@@ -39,7 +39,7 @@ class SickLeavesRemoteDataSource : SickLeavesDataSource {
     }
 
     override fun saveSickLeave(userId: String, sickLeave: SickLeave, callback: SickLeavesDataSource.SaveSickLeaveCallback) {
-        FirebaseFirestore.getInstance().collection(userId).document(sickLeave.id).set(sickLeave)
+        FirebaseFirestore.getInstance().collection(userId).document(sickLeave.id.toString()).set(sickLeave)
                 .addOnSuccessListener { callback.onSickLeaveSaved() }
                 .addOnFailureListener { callback.onSickLeaveSaveFailed() }
 
@@ -58,7 +58,7 @@ class SickLeavesRemoteDataSource : SickLeavesDataSource {
         val lastId = sickLeaveIds.last()
         for (sickLeaveId in sickLeaveIds) {
             FirebaseFirestore.getInstance().collection(userId)
-                    .document(sickLeaveId)
+                    .document(sickLeaveId.toString())
                     .delete()
                     .addOnSuccessListener {
                         if (sickLeaveId == lastId) {

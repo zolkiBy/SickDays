@@ -51,7 +51,7 @@ class SickLeavesAdapter(
     }
 
     override fun getItemId(position: Int): Long {
-        return getItem(position).startDate!!.time
+        return getItem(position).id
     }
 
     class SickLeaveDiffCallBack : DiffUtil.ItemCallback<SickLeave>() {

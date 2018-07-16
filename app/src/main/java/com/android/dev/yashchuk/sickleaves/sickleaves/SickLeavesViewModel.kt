@@ -78,7 +78,7 @@ class SickLeavesViewModel(private val userId: String?,
         userId?.let {
             sickLeavesRepository.deleteSickLeave(
                     it,
-                    sickLeave.id,
+                    sickLeave.id.toString(),
                     object : SickLeavesDataSource.DeleteSickLeaveCallback {
                         override fun onSickLeaveDeleted() {
                             loadSickLeaves(false, false)

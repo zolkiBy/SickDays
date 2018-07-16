@@ -110,7 +110,7 @@ class SickLeavesFragment :
     private fun setupRecycler() {
         adapter = SickLeavesAdapter(
                 activity!!,
-                { sickLeave -> SickLeaveDetailActivity.start(activity!!, sickLeave.id, sickLeave.status) },
+                { sickLeave -> SickLeaveDetailActivity.start(activity!!, sickLeave.id.toString(), sickLeave.status) },
                 { sickLeave -> presenter.closeSickLeave(sickLeave) },
                 { sickLeave -> presenter.deleteSickLeave(sickLeave) })
 

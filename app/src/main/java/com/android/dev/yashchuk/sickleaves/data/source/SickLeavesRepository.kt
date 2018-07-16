@@ -193,7 +193,7 @@ class SickLeavesRepository(
                 startDate = sickLeave.startDate,
                 endDate = sickLeave.endDate,
                 status = sickLeave.status)
-        cachedSickLeaves[cachedSickLeave.id] = cachedSickLeave
+        cachedSickLeaves[cachedSickLeave.id.toString()] = cachedSickLeave
         perform(cachedSickLeave)
     }
 
