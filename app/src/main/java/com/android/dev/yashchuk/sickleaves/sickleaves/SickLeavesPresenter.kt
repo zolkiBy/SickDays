@@ -10,7 +10,14 @@ class SickLeavesPresenter(private val view: SickLeavesContract.View): SickLeaves
     }
 
     override fun updateUi(sickLeaves: List<SickLeave>?) {
-        view.updateUi(sickLeaves)
+        if (sickLeaves != null && sickLeaves.isNotEmpty()) {
+            view.hideEmptyView()
+            view.showDataList()
+            view.updateUi(sickLeaves)
+        } else {
+            view.hideDataList()
+            view.showEmptyView()
+        }
     }
 
     override fun closeSickLeave(sickLeave: SickLeave) {
