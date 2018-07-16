@@ -19,16 +19,15 @@ class SickLeavesActivity : AppCompatActivity() {
 
         val userId = getUserIdFromPrefs()
 
-        findOrCreateFragment(userId)
+        if (savedInstanceState == null) {
+            supportFragmentManager
+                    .beginTransaction()
+                    .replace(R.id.container, SickLeavesFragment.newInstance(userId))
+                    .commit()
+        }
 
         configCreateButton()
     }
-
-    private fun findOrCreateFragment(userId: String?) =
-            supportFragmentManager.findFragmentById(R.id.container)
-                    ?: SickLeavesFragment.newInstance(userId).also {
-                        replaceFragmentInActivity(it, R.id.container)
-                    }
 
     private fun configCreateButton() {
         create_btn.setOnClickListener {
