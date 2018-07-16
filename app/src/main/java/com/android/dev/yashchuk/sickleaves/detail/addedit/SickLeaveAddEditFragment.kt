@@ -111,11 +111,13 @@ class SickLeaveAddEditFragment : Fragment(), SickLeaveAddEditContract.View, Date
     private fun configButtons() {
         create_save_btn.setOnClickListener {
             val sickLeave = SickLeave(
+                    id = Date().time,
                     title = title.text.toString(),
                     description = description.text.toString(),
                     startDate = start_date.text.toString().getFormattedDate(),
                     endDate = end_date.text.toString().getFormattedDate()
             )
+
             presenter.saveSickLeave(sickLeave)
         }
 
