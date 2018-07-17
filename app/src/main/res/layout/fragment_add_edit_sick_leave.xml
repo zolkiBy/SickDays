@@ -63,7 +63,9 @@
             <Button
                 android:id="@+id/create_save_btn"
                 style="@style/buttonColored"
-                android:layout_margin="@dimen/common_normal_margin"
+                android:layout_marginEnd="@dimen/common_normal_margin"
+                android:layout_marginStart="@dimen/common_normal_margin"
+                android:layout_marginTop="@dimen/common_normal_margin"
                 tools:text="Создать больничный" />
 
             <Button
