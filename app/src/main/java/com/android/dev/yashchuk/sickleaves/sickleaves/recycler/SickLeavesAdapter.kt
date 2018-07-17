@@ -28,7 +28,8 @@ class SickLeavesAdapter(
         val view: View = layoutInflater.inflate(viewType, parent, false)
         return when (viewType) {
             R.layout.item_sick_leave_opened -> SickLeaveOpenedVH(view)
-            else -> SickLeaveClosedVH(view)
+            R.layout.item_sick_leave_closed -> SickLeaveClosedVH(view)
+            else -> throw IllegalArgumentException("Unknown ViewType")
         }
     }
 
@@ -47,10 +48,10 @@ class SickLeavesAdapter(
     }
 
     override fun getItemViewType(position: Int): Int {
-        return if (getItem(position).status == Status.OPEN.name) {
-            R.layout.item_sick_leave_opened
-        } else {
-            R.layout.item_sick_leave_closed
+        return when (getItem(position).status) {
+            Status.OPEN.name -> R.layout.item_sick_leave_opened
+            Status.CLOSE.name -> R.layout.item_sick_leave_closed
+            else -> throw IllegalArgumentException("Unknown Status")
         }
     }
 

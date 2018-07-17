@@ -31,4 +31,6 @@
     <string name="fragment_detail_btn_close_text">Закрыть больничный</string>
     <string name="fragment_detail_failed_load_sick_leave">Ошибка при загрузке</string>
     <string name="fragment_detail_failed_save_sick_leave">Ошибка при сохранении</string>
+    <string name="sick_list_status_open">Открыт</string>
+    <string name="sick_list_status_closed">Закрыт</string>
 </resources>
