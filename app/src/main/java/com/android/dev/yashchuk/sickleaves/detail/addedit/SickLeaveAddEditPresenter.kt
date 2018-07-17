@@ -21,4 +21,8 @@ class SickLeaveAddEditPresenter(private val view: SickLeaveAddEditContract.View)
     override fun showLoading(show: Boolean) {
         view.showLoading(show)
     }
+
+    override fun closeScreen() {
+        view.closeScreen()
+    }
 }
