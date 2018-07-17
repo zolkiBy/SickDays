@@ -21,4 +21,9 @@
         <item name="android:textSize">@dimen/text_size_big</item>
         <item name="android:padding">@dimen/common_small_padding</item>
     </style>
+
+    <style name="buttonColored" parent="Widget.AppCompat.Button.Colored">
+        <item name="android:layout_height">@dimen/button_height</item>
+        <item name="android:layout_width">match_parent</item>
+    </style>
 </resources>
