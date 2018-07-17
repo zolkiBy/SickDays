@@ -24,6 +24,9 @@
     <string name="sick_list_close_error_message">Failed to close sick leave</string>
     <string name="sick_list_delete_success_message">Sick leave successfully deleted</string>
     <string name="sick_list_delete_error_message">Failed to delete sick leave</string>
+    <string name="sick_list_status_open">Open</string>
+    <string name="sick_list_status_closed">Closed</string>
+
 
     <!-- SickLeave Detail -->
     <string name="activity_detail_toolbar_title" translatable="false">SickLeaveDetailActivity</string>
