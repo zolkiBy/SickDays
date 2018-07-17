@@ -2,6 +2,7 @@ package com.android.dev.yashchuk.sickleaves.detail.addedit
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
+import android.content.Context
 import android.net.Uri
 import android.os.Bundle
 import android.support.design.widget.Snackbar
@@ -31,7 +32,7 @@ private const val TAG_DATE_PICKER = "DATE_PICKER"
 class SickLeaveAddEditFragment : Fragment(), SickLeaveAddEditContract.View, DatePickerFragment.OnDateSetListener {
     private var userId: String? = null
     private var sickLeaveId: String? = null
-    private var listener: OnFragmentInteractionListener? = null
+    private var listener: OnCloseScreenListener? = null
 
     private var sickLeave: SickLeave? = null
 
@@ -119,6 +120,7 @@ class SickLeaveAddEditFragment : Fragment(), SickLeaveAddEditContract.View, Date
             )
 
             presenter.saveSickLeave(sickLeave)
+            presenter.closeScreen()
         }
 
         close_btn.setOnClickListener {
@@ -146,30 +148,6 @@ class SickLeaveAddEditFragment : Fragment(), SickLeaveAddEditContract.View, Date
         }
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    fun onButtonPressed(uri: Uri) {
-        listener?.onFragmentInteraction(uri)
-    }
-
-    /*override fun onAttach(context: Context) {
-        super.onAttach(context)
-        if (context is OnFragmentInteractionListener) {
-            listener = context
-        } else {
-            throw RuntimeException(context.toString() + " must implement OnFragmentInteractionListener")
-        }
-    }
-
-    override fun onDetach() {
-        super.onDetach()
-        listener = null
-    }*/
-
-    // TODO: remove if not need
-    interface OnFragmentInteractionListener {
-        fun onFragmentInteraction(uri: Uri)
-    }
-
     override fun fillSickLeaveData(sickLeave: SickLeave) {
         title.setText(sickLeave.title)
         description.setText(sickLeave.description)
@@ -195,6 +173,28 @@ class SickLeaveAddEditFragment : Fragment(), SickLeaveAddEditContract.View, Date
         val datePicker = DatePickerFragment.newInstance(requestCode)
         datePicker.setTargetFragment(this, REQUEST_CODE_TARGET_FRAGMENT)
         datePicker.show(fragmentManager, TAG_DATE_PICKER)
+    }
+
+    override fun closeScreen() {
+        listener?.onCloseScreen()
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        if (context is OnCloseScreenListener) {
+            listener = context
+        } else {
+            throw RuntimeException(context.toString() + " must implement OnCloseScreenListener")
+        }
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        listener = null
+    }
+
+    interface OnCloseScreenListener {
+        fun onCloseScreen()
     }
 
     companion object {

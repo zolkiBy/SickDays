@@ -10,6 +10,7 @@ interface SickLeaveAddEditContract {
         fun showEmptySickLeave()
         fun showDatePicker(requestCode: Int)
         fun showLoading(show: Boolean)
+        fun closeScreen()
     }
 
     interface Presenter {
@@ -17,5 +18,6 @@ interface SickLeaveAddEditContract {
         fun saveSickLeave(sickLeave: SickLeave)
         fun showDatePicker(requestCode: Int)
         fun showLoading(show: Boolean)
+        fun closeScreen()
     }
 }

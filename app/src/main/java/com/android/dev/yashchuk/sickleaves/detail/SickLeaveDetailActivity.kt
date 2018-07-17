@@ -15,7 +15,7 @@ import com.android.dev.yashchuk.sickleaves.utils.setupActionBar
 private const val EXTRA_SICK_LEAVE_ID = "SICK_LEAVE_ID"
 private const val EXTRA_SICK_LEAVE_IS_EDIT = "SICK_LEAVE_STATUS"
 
-class SickLeaveDetailActivity : AppCompatActivity() {
+class SickLeaveDetailActivity : AppCompatActivity(), SickLeaveAddEditFragment.OnCloseScreenListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,6 +44,10 @@ class SickLeaveDetailActivity : AppCompatActivity() {
             Status.CLOSE.name -> SickLeaveWatchFragment.newInstance(userId, sickLeaveId)
             else -> SickLeaveAddEditFragment.newInstance(userId, sickLeaveId)
         }
+    }
+
+    override fun onCloseScreen() {
+        finish()
     }
 
     companion object {
