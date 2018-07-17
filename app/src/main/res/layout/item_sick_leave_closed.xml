@@ -5,8 +5,10 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="@dimen/common_small_margin"
-    app:cardBackgroundColor="@color/grey_100"
-    android:background="?android:attr/selectableItemBackground"
+    android:clickable="true"
+    android:focusable="true"
+    android:foreground="?android:attr/selectableItemBackground"
+    app:cardBackgroundColor="@color/grey_200"
     app:cardCornerRadius="4dp"
     app:cardElevation="8dp">
 
