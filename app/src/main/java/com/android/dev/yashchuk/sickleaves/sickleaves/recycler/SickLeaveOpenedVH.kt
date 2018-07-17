@@ -22,7 +22,7 @@ class SickLeaveOpenedVH(itemView: View?) : RecyclerView.ViewHolder(itemView) {
             itemView.date.text = itemView.context.getString(
                     R.string.sick_list_date,
                     sickLeave.startDate?.getFormattedDateString(),
-                    sickLeave.endDate?.getFormattedDateString()
+                    sickLeave.endDate?.getFormattedDateString() ?: ""
             )
             itemView.setOnClickListener { itemClickListener(this) }
             itemView.close_btn.setOnClickListener { closeClickListener(this) }

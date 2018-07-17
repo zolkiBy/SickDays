@@ -19,12 +19,7 @@ class SickLeaveClosedVH(itemView: View?) : RecyclerView.ViewHolder(itemView) {
             itemView.date.text = itemView.context.getString(
                     R.string.sick_list_date,
                     sickLeave.startDate?.getFormattedDateString(),
-                    if (sickLeave.endDate == null) {
-                        ""
-                    } else {
-                        sickLeave.endDate?.getFormattedDateString()
-                    }
-
+                    sickLeave.endDate?.getFormattedDateString() ?: ""
             )
             itemView.setOnClickListener { itemClickListener(this) }
             itemView.delete_btn.setOnClickListener { button ->
