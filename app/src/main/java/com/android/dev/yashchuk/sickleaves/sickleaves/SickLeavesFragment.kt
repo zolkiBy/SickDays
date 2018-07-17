@@ -95,7 +95,10 @@ class SickLeavesFragment :
 
     private fun subscribeUpdateSickLeaves() {
         viewModel.sickLeaves.observe(this, Observer<List<SickLeave>> { sickLeaves ->
-            presenter.updateUi(sickLeaves)
+            val sortedList = sickLeaves
+                    ?.sortedWith(compareBy(SickLeave::status, SickLeave::startDate))?.reversed()
+
+            presenter.updateUi(sortedList)
         })
     }
 
