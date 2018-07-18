@@ -13,7 +13,7 @@ import android.view.ViewGroup
 import com.android.dev.yashchuk.sickleaves.R
 import com.android.dev.yashchuk.sickleaves.callbacks.OnCloseScreenListener
 import com.android.dev.yashchuk.sickleaves.callbacks.OnDateSetListener
-import com.android.dev.yashchuk.sickleaves.callbacks.OnToolbarTitleSetListener
+import com.android.dev.yashchuk.sickleaves.callbacks.OnTitleChangeListener
 import com.android.dev.yashchuk.sickleaves.data.DatePickerCode
 import com.android.dev.yashchuk.sickleaves.data.SickLeave
 import com.android.dev.yashchuk.sickleaves.data.Status
@@ -28,14 +28,14 @@ import java.util.*
 
 private const val PARAM_USER_ID = "USER_ID"
 private const val PARAM_SICK_LEAVE_ID = "SICK_LEAVE_ID"
-private const val REQUEST_CODE_TARGET_FRAGMENT = 111
 private const val TAG_DATE_PICKER = "DATE_PICKER"
+private const val REQUEST_CODE_TARGET_FRAGMENT = 111
 
 class SickLeaveAddEditFragment : Fragment(), SickLeaveAddEditContract.View, OnDateSetListener {
     private var userId: String? = null
     private var sickLeaveId: String? = null
     private var closeListener: OnCloseScreenListener? = null
-    private var titleSetListener: OnToolbarTitleSetListener? = null
+    private var titleChangeListener: OnTitleChangeListener? = null
 
     private var sickLeave: SickLeave? = null
 
@@ -64,9 +64,7 @@ class SickLeaveAddEditFragment : Fragment(), SickLeaveAddEditContract.View, OnDa
         presenter = initPresenter()
 
         subscribeUpdateLoadingState()
-
         subscribeUpdateSickLeave()
-
         subscribeSnackBarMessage()
 
         configButtons()
@@ -96,6 +94,7 @@ class SickLeaveAddEditFragment : Fragment(), SickLeaveAddEditContract.View, OnDa
     private fun subscribeUpdateSickLeave() {
         viewModel.sickLeave.observe(activity!!, Observer<SickLeave> { sickLeave ->
             presenter.updateUi(sickLeave)
+            presenter.setToolbarTitle(sickLeave)
             this.sickLeave = sickLeave
         })
     }
@@ -182,21 +181,29 @@ class SickLeaveAddEditFragment : Fragment(), SickLeaveAddEditContract.View, OnDa
         closeListener?.onCloseScreen()
     }
 
+    override fun setToolbarTextForSickLeave(text: String) {
+        titleChangeListener?.onTitleChange(text)
+    }
+
+    override fun setToolbarTextForNewSickLeave(textResId: Int) {
+        titleChangeListener?.onTitleChange(getString(textResId))
+    }
+
     override fun onAttach(context: Context) {
         super.onAttach(context)
         if (context is OnCloseScreenListener) {
             closeListener = context
         }
 
-        if (context is OnToolbarTitleSetListener) {
-            titleSetListener = context
+        if (context is OnTitleChangeListener) {
+            titleChangeListener = context
         }
     }
 
     override fun onDetach() {
         super.onDetach()
         closeListener = null
-        titleSetListener = null
+        titleChangeListener = null
     }
 
     companion object {

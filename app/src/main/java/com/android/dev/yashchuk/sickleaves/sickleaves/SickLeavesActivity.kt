@@ -4,14 +4,13 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
 import com.android.dev.yashchuk.sickleaves.R
-import com.android.dev.yashchuk.sickleaves.callbacks.OnToolbarTitleSetListener
+import com.android.dev.yashchuk.sickleaves.callbacks.OnTitleResChangeListener
 import com.android.dev.yashchuk.sickleaves.detail.SickLeaveDetailActivity
 import com.android.dev.yashchuk.sickleaves.utils.getUserIdFromPrefs
-import com.android.dev.yashchuk.sickleaves.utils.replaceFragmentInActivity
 import com.android.dev.yashchuk.sickleaves.utils.setupActionBar
 import kotlinx.android.synthetic.main.activity_sick_leaves.*
 
-class SickLeavesActivity : AppCompatActivity(), OnToolbarTitleSetListener {
+class SickLeavesActivity : AppCompatActivity(), OnTitleResChangeListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,7 +40,7 @@ class SickLeavesActivity : AppCompatActivity(), OnToolbarTitleSetListener {
         }
     }
 
-    override fun onToolbarTitleSet(titleResId: Int) {
+    override fun onTitleResChange(titleResId: Int) {
         toolbar.title = getString(titleResId)
     }
 }

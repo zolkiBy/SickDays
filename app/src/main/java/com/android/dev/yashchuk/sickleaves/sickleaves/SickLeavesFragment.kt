@@ -10,14 +10,13 @@ import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.LinearLayoutManager
 import android.view.*
 import com.android.dev.yashchuk.sickleaves.R
-import com.android.dev.yashchuk.sickleaves.callbacks.OnToolbarTitleSetListener
+import com.android.dev.yashchuk.sickleaves.callbacks.OnTitleResChangeListener
 import com.android.dev.yashchuk.sickleaves.data.FilterType
 import com.android.dev.yashchuk.sickleaves.data.SickLeave
 import com.android.dev.yashchuk.sickleaves.detail.SickLeaveDetailActivity
 import com.android.dev.yashchuk.sickleaves.sickleaves.recycler.SickLeavesAdapter
 import com.android.dev.yashchuk.sickleaves.utils.Event
 import com.android.dev.yashchuk.sickleaves.utils.Injection
-import kotlinx.android.synthetic.main.activity_sick_leaves.*
 import kotlinx.android.synthetic.main.fragment_sick_leaves.*
 
 private const val PARAM_USER_ID = "USER_ID"
@@ -29,7 +28,7 @@ class SickLeavesFragment :
 
     var userId: String? = null
 
-    private var toolbarTitleSetListener: OnToolbarTitleSetListener? = null
+    private var titleResChangeListener: OnTitleResChangeListener? = null
 
     private lateinit var adapter: SickLeavesAdapter
 
@@ -90,16 +89,16 @@ class SickLeavesFragment :
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)
-        if (context is OnToolbarTitleSetListener) {
-            toolbarTitleSetListener = context
+        if (context is OnTitleResChangeListener) {
+            titleResChangeListener = context
         } else {
-            throw RuntimeException(context.toString() + " must implement OnToolbarTitleSetListener")
+            throw RuntimeException(context.toString() + " must implement OnTitleResChangeListener")
         }
     }
 
     override fun onDetach() {
         super.onDetach()
-        toolbarTitleSetListener = null
+        titleResChangeListener = null
     }
 
     private fun initPresenter() = Injection.provideSickLeavesPresenter(this)
@@ -152,7 +151,7 @@ class SickLeavesFragment :
     private fun subscribeToolbarTitle() {
         viewModel.toolbarTitleResId.observe(this, Observer<Int> {titleResId ->
             titleResId?.let {
-                toolbarTitleSetListener?.onToolbarTitleSet(it)
+                titleResChangeListener?.onTitleResChange(it)
             }
         })
     }
