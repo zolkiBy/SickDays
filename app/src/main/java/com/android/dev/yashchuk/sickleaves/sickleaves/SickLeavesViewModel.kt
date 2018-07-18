@@ -4,7 +4,9 @@ import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import com.android.dev.yashchuk.sickleaves.R
+import com.android.dev.yashchuk.sickleaves.data.FilterType
 import com.android.dev.yashchuk.sickleaves.data.SickLeave
+import com.android.dev.yashchuk.sickleaves.data.Status
 import com.android.dev.yashchuk.sickleaves.data.source.SickLeavesDataSource
 import com.android.dev.yashchuk.sickleaves.utils.Event
 
@@ -16,6 +18,7 @@ class SickLeavesViewModel(private val userId: String?,
     private val _isLoading = MutableLiveData<Boolean>()
     private val _isLoadingFromSwipe = MutableLiveData<Boolean>()
     private val _snackBarMessage = MutableLiveData<Event<Int>>()
+    private val _toolbarTitleResId = MutableLiveData<Int>()
 
     val sickLeaves: LiveData<List<SickLeave>>
         get() = _sickLeaves
@@ -25,6 +28,22 @@ class SickLeavesViewModel(private val userId: String?,
         get() = _isLoadingFromSwipe
     val snackBarMessage: LiveData<Event<Int>>
         get() = _snackBarMessage
+    val toolbarTitleResId: LiveData<Int>
+        get() = _toolbarTitleResId
+
+    var currentFiltering = FilterType.ALL
+    set(value) {
+        field = value
+        updateFiltering()
+    }
+
+    private fun updateFiltering() {
+        when (currentFiltering) {
+            FilterType.ALL -> _toolbarTitleResId.value = R.string.sick_list_toolbar_title_all
+            FilterType.OPEN -> _toolbarTitleResId.value = R.string.sick_list_toolbar_title_opened
+            FilterType.CLOSE -> _toolbarTitleResId.value = R.string.sick_list_toolbar_title_closed
+        }
+    }
 
     init {
         loadSickLeaves(true, false)
@@ -42,9 +61,15 @@ class SickLeavesViewModel(private val userId: String?,
 
             sickLeavesRepository.getSickLeaves(it, object : SickLeavesDataSource.LoadSickLeavesCallback {
                 override fun onSickLeavesLoaded(sickLeaves: List<SickLeave>) {
+                    val sickLeavesToShow: List<SickLeave> = when (currentFiltering) {
+                        FilterType.ALL -> sickLeaves
+                        FilterType.OPEN -> sickLeaves.filter { it.status == Status.OPEN.name }
+                        FilterType.CLOSE -> sickLeaves.filter { it.status == Status.CLOSE.name }
+                    }
+
                     _isLoading.value = false
                     _isLoadingFromSwipe.value = false
-                    this@SickLeavesViewModel._sickLeaves.value = sickLeaves
+                    this@SickLeavesViewModel._sickLeaves.value = sickLeavesToShow
                 }
 
                 override fun onDataNotAvailable() {

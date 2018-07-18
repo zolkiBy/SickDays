@@ -17,8 +17,8 @@ fun String.getFormattedDate(): Date? {
 @StringRes
 fun String.getStatusStringRes(): Int {
     return when (this) {
-        Status.OPEN.name -> R.string.sick_list_status_open
-        Status.CLOSE.name -> R.string.sick_list_status_closed
+        Status.OPEN.name -> R.string.sick_list_item_status_open
+        Status.CLOSE.name -> R.string.sick_list_item_status_closed
         else -> throw IllegalArgumentException("Unknown status")
     }
 }

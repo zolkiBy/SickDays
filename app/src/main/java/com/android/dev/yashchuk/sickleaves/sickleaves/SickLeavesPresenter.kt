@@ -31,4 +31,16 @@ class SickLeavesPresenter(private val view: SickLeavesContract.View): SickLeaves
     override fun deleteSickLeave(sickLeave: SickLeave) {
         view.deleteSickLeave(sickLeave)
     }
+
+    override fun showAll() {
+        view.showAll()
+    }
+
+    override fun showOpened() {
+        view.showOpened()
+    }
+
+    override fun showClosed() {
+        view.showClosed()
+    }
 }

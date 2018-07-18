@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
 import com.android.dev.yashchuk.sickleaves.R
+import com.android.dev.yashchuk.sickleaves.callbacks.OnCloseScreenListener
 import com.android.dev.yashchuk.sickleaves.data.Status
 import com.android.dev.yashchuk.sickleaves.detail.addedit.SickLeaveAddEditFragment
 import com.android.dev.yashchuk.sickleaves.detail.watch.SickLeaveWatchFragment
@@ -15,7 +16,7 @@ import com.android.dev.yashchuk.sickleaves.utils.setupActionBar
 private const val EXTRA_SICK_LEAVE_ID = "SICK_LEAVE_ID"
 private const val EXTRA_SICK_LEAVE_IS_EDIT = "SICK_LEAVE_STATUS"
 
-class SickLeaveDetailActivity : AppCompatActivity(), SickLeaveAddEditFragment.OnCloseScreenListener {
+class SickLeaveDetailActivity : AppCompatActivity(), OnCloseScreenListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

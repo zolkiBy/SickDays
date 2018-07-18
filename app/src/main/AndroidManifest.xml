@@ -29,5 +29,4 @@
             android:parentActivityName=".sickleaves.SickLeavesActivity"
             android:theme="@style/AppTheme.NoActionBar" />
     </application>
-
 </manifest>

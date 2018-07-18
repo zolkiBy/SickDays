@@ -1,9 +1,17 @@
 package com.android.dev.yashchuk.sickleaves.data
 
 enum class Status {
-    OPEN, CLOSE
+    OPEN,
+    CLOSE
 }
 
 enum class DatePickerCode {
-    START_DATE_CODE, END_DATE_CODE
+    START_DATE_CODE,
+    END_DATE_CODE
+}
+
+enum class FilterType {
+    ALL,
+    OPEN,
+    CLOSE
 }
