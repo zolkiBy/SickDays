@@ -13,6 +13,7 @@ import android.view.ViewGroup
 import com.android.dev.yashchuk.sickleaves.R
 import com.android.dev.yashchuk.sickleaves.callbacks.OnCloseScreenListener
 import com.android.dev.yashchuk.sickleaves.callbacks.OnDateSetListener
+import com.android.dev.yashchuk.sickleaves.callbacks.OnToolbarTitleSetListener
 import com.android.dev.yashchuk.sickleaves.data.DatePickerCode
 import com.android.dev.yashchuk.sickleaves.data.SickLeave
 import com.android.dev.yashchuk.sickleaves.data.Status
@@ -33,7 +34,8 @@ private const val TAG_DATE_PICKER = "DATE_PICKER"
 class SickLeaveAddEditFragment : Fragment(), SickLeaveAddEditContract.View, OnDateSetListener {
     private var userId: String? = null
     private var sickLeaveId: String? = null
-    private var listener: OnCloseScreenListener? = null
+    private var closeListener: OnCloseScreenListener? = null
+    private var titleSetListener: OnToolbarTitleSetListener? = null
 
     private var sickLeave: SickLeave? = null
 
@@ -177,21 +179,24 @@ class SickLeaveAddEditFragment : Fragment(), SickLeaveAddEditContract.View, OnDa
     }
 
     override fun closeScreen() {
-        listener?.onCloseScreen()
+        closeListener?.onCloseScreen()
     }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
         if (context is OnCloseScreenListener) {
-            listener = context
-        } else {
-            throw RuntimeException(context.toString() + " must implement OnCloseScreenListener")
+            closeListener = context
+        }
+
+        if (context is OnToolbarTitleSetListener) {
+            titleSetListener = context
         }
     }
 
     override fun onDetach() {
         super.onDetach()
-        listener = null
+        closeListener = null
+        titleSetListener = null
     }
 
     companion object {

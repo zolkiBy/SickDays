@@ -27,7 +27,6 @@ class SickLeaveDetailActivity : AppCompatActivity(), OnCloseScreenListener {
         val status = intent.extras.getString(EXTRA_SICK_LEAVE_IS_EDIT)
 
         setupActionBar(R.id.toolbar) {
-            // set title, icon etc. here
             setDisplayHomeAsUpEnabled(true)
         }
 
@@ -42,8 +41,9 @@ class SickLeaveDetailActivity : AppCompatActivity(), OnCloseScreenListener {
 
     private fun getFragment(userId: String?, sickLeaveId: String?, status: String?): Fragment {
         return when (status) {
+            Status.OPEN.name-> SickLeaveAddEditFragment.newInstance(userId, sickLeaveId)
             Status.CLOSE.name -> SickLeaveWatchFragment.newInstance(userId, sickLeaveId)
-            else -> SickLeaveAddEditFragment.newInstance(userId, sickLeaveId)
+            else -> throw IllegalArgumentException("Unknown Status")
         }
     }
 
