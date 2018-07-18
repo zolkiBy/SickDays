@@ -9,14 +9,12 @@ import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-
 import com.android.dev.yashchuk.sickleaves.R
 import com.android.dev.yashchuk.sickleaves.callbacks.OnCloseScreenListener
 import com.android.dev.yashchuk.sickleaves.callbacks.OnDateSetListener
 import com.android.dev.yashchuk.sickleaves.callbacks.OnTitleChangeListener
 import com.android.dev.yashchuk.sickleaves.data.DatePickerCode
 import com.android.dev.yashchuk.sickleaves.data.SickLeave
-import com.android.dev.yashchuk.sickleaves.data.Status
 import com.android.dev.yashchuk.sickleaves.detail.SickLeaveDetailViewModel
 import com.android.dev.yashchuk.sickleaves.detail.datepicker.DatePickerFragment
 import com.android.dev.yashchuk.sickleaves.utils.Event
@@ -113,23 +111,11 @@ class SickLeaveAddEditFragment : Fragment(), SickLeaveAddEditContract.View, OnDa
 
     private fun configButtons() {
         create_save_btn.setOnClickListener {
-            val sickLeave = SickLeave(
-                    id = Date().time,
-                    title = title.text.toString(),
-                    description = description.text.toString(),
-                    startDate = start_date.text.toString().getFormattedDate(),
-                    endDate = end_date.text.toString().getFormattedDate()
-            )
-
-            presenter.saveSickLeave(sickLeave)
-            presenter.closeScreen()
+            presenter.validate(sickLeave)
         }
 
         close_btn.setOnClickListener {
-            if (sickLeave != null) {
-                sickLeave?.status = Status.CLOSE.name
-                presenter.saveSickLeave(sickLeave!!)
-            }
+            presenter.close(sickLeave)
         }
     }
 
@@ -141,6 +127,11 @@ class SickLeaveAddEditFragment : Fragment(), SickLeaveAddEditContract.View, OnDa
         end_date.setOnClickListener {
             presenter.showDatePicker(DatePickerCode.END_DATE_CODE.ordinal)
         }
+    }
+
+    private fun saveAndCloseScreen(sickLeave: SickLeave) {
+        presenter.save(sickLeave)
+        presenter.closeScreen()
     }
 
     override fun onDateSet(requestCode: Int?, date: Date) {
@@ -160,8 +151,31 @@ class SickLeaveAddEditFragment : Fragment(), SickLeaveAddEditContract.View, OnDa
         close_btn.visibility = View.VISIBLE
     }
 
-    override fun saveSickLeave(sickLeave: SickLeave) {
+    override fun save(sickLeave: SickLeave) {
         viewModel.saveSickLeave(sickLeave)
+    }
+
+    override fun createSickLeave() {
+        val sickLeave = SickLeave(
+                id = Date().time,
+                title = title.text.toString(),
+                description = description.text.toString(),
+                startDate = start_date.text.toString().getFormattedDate(),
+                endDate = end_date.text.toString().getFormattedDate()
+        )
+
+        saveAndCloseScreen(sickLeave)
+    }
+
+    override fun updateSickLeave() {
+        sickLeave?.let {
+            it.title = title.text.toString()
+            it.description = description.text.toString()
+            it.startDate = start_date.text.toString().getFormattedDate()
+            it.endDate = end_date.text.toString().getFormattedDate()
+
+            saveAndCloseScreen(it)
+        }
     }
 
     override fun showEmptySickLeave() {

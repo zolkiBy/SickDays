@@ -65,6 +65,11 @@ class SickLeavesFragment :
         setupRecycler()
     }
 
+    override fun onResume() {
+        super.onResume()
+        viewModel.loadSickLeaves(false, false)
+    }
+
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
         inflater?.inflate(R.menu.menu_filter, menu)
     }
@@ -85,21 +90,6 @@ class SickLeavesFragment :
                 }
                 else -> false
             }
-
-
-    override fun onAttach(context: Context?) {
-        super.onAttach(context)
-        if (context is OnTitleResChangeListener) {
-            titleResChangeListener = context
-        } else {
-            throw RuntimeException(context.toString() + " must implement OnTitleResChangeListener")
-        }
-    }
-
-    override fun onDetach() {
-        super.onDetach()
-        titleResChangeListener = null
-    }
 
     private fun initPresenter() = Injection.provideSickLeavesPresenter(this)
 
@@ -219,6 +209,20 @@ class SickLeavesFragment :
 
     override fun onRefresh() {
         viewModel.loadSickLeaves(true, true)
+    }
+
+    override fun onAttach(context: Context?) {
+        super.onAttach(context)
+        if (context is OnTitleResChangeListener) {
+            titleResChangeListener = context
+        } else {
+            throw RuntimeException(context.toString() + " must implement OnTitleResChangeListener")
+        }
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        titleResChangeListener = null
     }
 
     companion object {

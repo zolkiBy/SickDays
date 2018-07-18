@@ -37,16 +37,16 @@ class SickLeavesViewModel(private val userId: String?,
         updateFiltering()
     }
 
+    init {
+        loadSickLeaves(true, false)
+    }
+
     private fun updateFiltering() {
         when (currentFiltering) {
             FilterType.ALL -> _toolbarTitleResId.value = R.string.sick_list_toolbar_title_all
             FilterType.OPEN -> _toolbarTitleResId.value = R.string.sick_list_toolbar_title_opened
             FilterType.CLOSE -> _toolbarTitleResId.value = R.string.sick_list_toolbar_title_closed
         }
-    }
-
-    init {
-        loadSickLeaves(true, false)
     }
 
     fun loadSickLeaves(forceUpdate: Boolean, isFromSwipe: Boolean) {
