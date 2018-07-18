@@ -11,6 +11,8 @@ interface SickLeaveAddEditContract {
         fun showDatePicker(requestCode: Int)
         fun showLoading(show: Boolean)
         fun closeScreen()
+        fun setToolbarTextForSickLeave(text: String)
+        fun setToolbarTextForNewSickLeave(textResId: Int)
     }
 
     interface Presenter {
@@ -19,5 +21,6 @@ interface SickLeaveAddEditContract {
         fun showDatePicker(requestCode: Int)
         fun showLoading(show: Boolean)
         fun closeScreen()
+        fun setToolbarTitle(sickLeave: SickLeave?)
     }
 }

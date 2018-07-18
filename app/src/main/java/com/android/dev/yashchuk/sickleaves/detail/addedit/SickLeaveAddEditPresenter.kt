@@ -1,5 +1,6 @@
 package com.android.dev.yashchuk.sickleaves.detail.addedit
 
+import com.android.dev.yashchuk.sickleaves.R
 import com.android.dev.yashchuk.sickleaves.data.SickLeave
 
 
@@ -24,5 +25,13 @@ class SickLeaveAddEditPresenter(private val view: SickLeaveAddEditContract.View)
 
     override fun closeScreen() {
         view.closeScreen()
+    }
+
+    override fun setToolbarTitle(sickLeave: SickLeave?) {
+        if (sickLeave == null) {
+            view.setToolbarTextForNewSickLeave(R.string.fragment_add_edit_toolbar_title_create)
+        } else {
+            view.setToolbarTextForSickLeave(sickLeave.title)
+        }
     }
 }

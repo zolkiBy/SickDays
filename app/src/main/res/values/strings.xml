@@ -43,6 +43,7 @@
     <string name="fragment_detail_btn_close_text">Close Sick Leave</string>
     <string name="fragment_detail_failed_load_sick_leave">Failed to load sick leave</string>
     <string name="fragment_detail_failed_save_sick_leave">Failed to save sick leave</string>
+    <string name="fragment_add_edit_toolbar_title_create">Create</string>
 
     <string name="title_activity_add_edit_sick_leave" translatable="false">AddEditSickLeaveActivity</string>
 </resources>
