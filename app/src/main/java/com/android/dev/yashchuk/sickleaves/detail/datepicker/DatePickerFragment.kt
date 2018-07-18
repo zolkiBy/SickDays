@@ -6,6 +6,7 @@ import android.content.Context
 import android.os.Bundle
 import android.support.v4.app.DialogFragment
 import android.widget.DatePicker
+import com.android.dev.yashchuk.sickleaves.callbacks.OnDateSetListener
 import java.util.*
 
 private const val ARG_REQUEST_CODE = "ARG_REQUEST_CODE"
@@ -45,10 +46,6 @@ class DatePickerFragment : DialogFragment(), DatePickerDialog.OnDateSetListener 
     override fun onDetach() {
         super.onDetach()
         dateListener = null
-    }
-
-    interface OnDateSetListener {
-        fun onDateSet(requestCode: Int?, date: Date)
     }
 
     companion object {

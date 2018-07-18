@@ -3,7 +3,6 @@ package com.android.dev.yashchuk.sickleaves.detail.addedit
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
-import android.net.Uri
 import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.v4.app.Fragment
@@ -12,6 +11,8 @@ import android.view.View
 import android.view.ViewGroup
 
 import com.android.dev.yashchuk.sickleaves.R
+import com.android.dev.yashchuk.sickleaves.callbacks.OnCloseScreenListener
+import com.android.dev.yashchuk.sickleaves.callbacks.OnDateSetListener
 import com.android.dev.yashchuk.sickleaves.data.DatePickerCode
 import com.android.dev.yashchuk.sickleaves.data.SickLeave
 import com.android.dev.yashchuk.sickleaves.data.Status
@@ -29,7 +30,7 @@ private const val PARAM_SICK_LEAVE_ID = "SICK_LEAVE_ID"
 private const val REQUEST_CODE_TARGET_FRAGMENT = 111
 private const val TAG_DATE_PICKER = "DATE_PICKER"
 
-class SickLeaveAddEditFragment : Fragment(), SickLeaveAddEditContract.View, DatePickerFragment.OnDateSetListener {
+class SickLeaveAddEditFragment : Fragment(), SickLeaveAddEditContract.View, OnDateSetListener {
     private var userId: String? = null
     private var sickLeaveId: String? = null
     private var listener: OnCloseScreenListener? = null
@@ -191,10 +192,6 @@ class SickLeaveAddEditFragment : Fragment(), SickLeaveAddEditContract.View, Date
     override fun onDetach() {
         super.onDetach()
         listener = null
-    }
-
-    interface OnCloseScreenListener {
-        fun onCloseScreen()
     }
 
     companion object {

@@ -70,7 +70,7 @@
             android:paddingEnd="8dp"
             android:paddingStart="8dp"
             android:paddingTop="4dp"
-            android:text="@string/sick_list_date_title"
+            android:text="@string/sick_list_item_date_title"
             android:textColor="@color/lightGrey"
             android:textSize="@dimen/text_size_mini"
             tools:text="Дата начала/окончания" />
