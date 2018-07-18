@@ -7,20 +7,22 @@ import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
 import com.android.dev.yashchuk.sickleaves.R
 import com.android.dev.yashchuk.sickleaves.callbacks.OnCloseScreenListener
+import com.android.dev.yashchuk.sickleaves.callbacks.OnToolbarTitleSetListener
 import com.android.dev.yashchuk.sickleaves.data.Status
 import com.android.dev.yashchuk.sickleaves.detail.addedit.SickLeaveAddEditFragment
 import com.android.dev.yashchuk.sickleaves.detail.watch.SickLeaveWatchFragment
 import com.android.dev.yashchuk.sickleaves.utils.getUserIdFromPrefs
 import com.android.dev.yashchuk.sickleaves.utils.setupActionBar
+import kotlinx.android.synthetic.main.activity_detail_sick_leave.*
 
 private const val EXTRA_SICK_LEAVE_ID = "SICK_LEAVE_ID"
 private const val EXTRA_SICK_LEAVE_IS_EDIT = "SICK_LEAVE_STATUS"
 
-class SickLeaveDetailActivity : AppCompatActivity(), OnCloseScreenListener {
+class SickLeaveDetailActivity : AppCompatActivity(), OnCloseScreenListener, OnToolbarTitleSetListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_add_edit_sick_leave)
+        setContentView(R.layout.activity_detail_sick_leave)
 
         val userId = getUserIdFromPrefs()
         val sickLeaveId = intent.extras.getString(EXTRA_SICK_LEAVE_ID)
@@ -49,6 +51,10 @@ class SickLeaveDetailActivity : AppCompatActivity(), OnCloseScreenListener {
 
     override fun onCloseScreen() {
         finish()
+    }
+
+    override fun onToolbarTitleSet(titleResId: Int) {
+        toolbar.title = getString(titleResId)
     }
 
     companion object {
