@@ -32,6 +32,7 @@
     <string name="sick_list_sort_menu_all">All</string>
     <string name="sick_list_sort_menu_opened">Opened</string>
     <string name="sick_list_sort_menu_closed">Closed</string>
+    <string name="sick_list_sort_menu_log_token">Log FCM token</string>
 
     <!-- SickLeave Detail -->
     <string name="activity_detail_toolbar_title" translatable="false">SickLeaveDetailActivity</string>
@@ -48,4 +49,5 @@
     <string name="title_activity_add_edit_sick_leave" translatable="false">AddEditSickLeaveActivity</string>
 
     <string name="default_notification_channel_id" translatable="false">fcm_default_channel</string>
+    <string name="default_notification_channel_name" translatable="false">Sick leave channel</string>
 </resources>
