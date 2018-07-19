@@ -46,4 +46,6 @@
     <string name="fragment_add_edit_toolbar_title_create">Create</string>
 
     <string name="title_activity_add_edit_sick_leave" translatable="false">AddEditSickLeaveActivity</string>
+
+    <string name="default_notification_channel_id" translatable="false">fcm_default_channel</string>
 </resources>
