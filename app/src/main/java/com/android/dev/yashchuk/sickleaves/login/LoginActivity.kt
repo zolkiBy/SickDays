@@ -2,6 +2,8 @@ package com.android.dev.yashchuk.sickleaves.login
 
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
+import android.app.NotificationChannel
+import android.app.NotificationManager
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
@@ -11,6 +13,7 @@ import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity
 import android.view.View
 import android.content.Context
+import android.os.Build
 import com.android.dev.yashchuk.sickleaves.R
 import com.android.dev.yashchuk.sickleaves.sickleaves.SickLeavesActivity
 import com.android.dev.yashchuk.sickleaves.utils.Injection
@@ -33,6 +36,8 @@ class LoginActivity : AppCompatActivity(), LoginContract.View {
         loadUser()
 
         configureViews()
+
+        createNotificationChannel()
     }
 
     override fun onStart() {
@@ -64,6 +69,18 @@ class LoginActivity : AppCompatActivity(), LoginContract.View {
             presenter.saveUserIdToPrefs(user?.uid)
             presenter.checkUser(user)
         })
+    }
+
+    private fun createNotificationChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val channelId = getString(R.string.default_notification_channel_id)
+            val channelName = getString(R.string.default_notification_channel_name)
+            val notificationManager = getSystemService(NotificationManager::class.java)
+            notificationManager.createNotificationChannel(NotificationChannel(
+                    channelId,
+                    channelName,
+                    NotificationManager.IMPORTANCE_LOW))
+        }
     }
 
     override fun saveUserIdToPrefs(userId: String) {

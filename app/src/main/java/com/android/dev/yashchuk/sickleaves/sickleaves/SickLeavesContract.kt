@@ -15,6 +15,7 @@ interface SickLeavesContract {
         fun showAll()
         fun showOpened()
         fun showClosed()
+        fun logToken(token: String)
     }
 
     interface Presenter {
@@ -25,5 +26,6 @@ interface SickLeavesContract {
         fun showAll()
         fun showOpened()
         fun showClosed()
+        fun logFcmToken()
     }
 }

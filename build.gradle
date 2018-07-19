@@ -47,7 +47,8 @@ ext {
     // FireBase
     firebaseCoreVersion = "16.0.1"
     firebaseAuthVersion = "16.0.2"
-    firebaseFireStoreVersion = "17.0.2"
+    firebaseFireStoreVersion = "17.0.3"
+    firebaseCloudMessaging = "17.1.0"
 
     // Networking
     retrofitVersion = "2.4.0"

@@ -4,6 +4,7 @@
     <item
         android:id="@+id/all"
         android:title="@string/sick_list_sort_menu_all" />
+
     <item
         android:id="@+id/opened"
         android:title="@string/sick_list_sort_menu_opened" />
@@ -11,4 +12,8 @@
     <item
         android:id="@+id/closed"
         android:title="@string/sick_list_sort_menu_closed" />
+
+    <item
+        android:id="@+id/log_token"
+        android:title="@string/sick_list_sort_menu_log_token" />
 </menu>

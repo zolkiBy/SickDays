@@ -8,6 +8,7 @@ import android.support.design.widget.Snackbar
 import android.support.v4.app.Fragment
 import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.LinearLayoutManager
+import android.util.Log
 import android.view.*
 import com.android.dev.yashchuk.sickleaves.R
 import com.android.dev.yashchuk.sickleaves.callbacks.OnTitleResChangeListener
@@ -86,6 +87,10 @@ class SickLeavesFragment :
                 }
                 R.id.closed -> {
                     presenter.showClosed()
+                    true
+                }
+                R.id.log_token -> {
+                    presenter.logFcmToken()
                     true
                 }
                 else -> false
@@ -205,6 +210,10 @@ class SickLeavesFragment :
     override fun showClosed() {
         viewModel.currentFiltering = FilterType.CLOSE
         viewModel.loadSickLeaves(false, false)
+    }
+
+    override fun logToken(token: String) {
+        Log.d(SickLeavesFragment::class.java.simpleName, "FCM token: $token")
     }
 
     override fun onRefresh() {
