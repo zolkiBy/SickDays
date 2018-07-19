@@ -39,7 +39,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/fragment_detail_sick_leave_description_hint"
-                android:inputType="text"
+                android:inputType="textMultiLine"
+                android:lines="6"
+                android:gravity="top|start"
+                android:scrollbars="vertical"
                 tools:hint="Описание" />
 
             <TextView
