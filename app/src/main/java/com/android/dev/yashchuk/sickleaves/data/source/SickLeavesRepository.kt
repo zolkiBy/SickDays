@@ -66,17 +66,33 @@ class SickLeavesRepository(
 
     override fun saveSickLeave(userId: String, sickLeave: SickLeave, callback: SickLeavesDataSource.SaveSickLeaveCallback) {
         cacheAndPerform(sickLeave) {
-            localDataSource.saveSickLeave(userId, it, callback)
-            remoteDataSource.saveSickLeave(userId, it, callback)
+            remoteDataSource.saveSickLeave(userId, it, object : SickLeavesDataSource.SaveSickLeaveCallback {
+                override fun onSickLeaveSaved() {
+                    localDataSource.saveSickLeave(userId, it, object : SickLeavesDataSource.SaveSickLeaveCallback {
+                        override fun onSickLeaveSaved() {
+                            callback.onSickLeaveSaved()
+                        }
+
+                        override fun onSickLeaveSaveFailed() {
+                            callback.onSickLeaveSaveFailed()
+                        }
+                    })
+
+                }
+
+                override fun onSickLeaveSaveFailed() {
+                    callback.onSickLeaveSaveFailed()
+                }
+            })
         }
     }
 
     override fun deleteSickLeave(userId: String, sickLeaveId: String, callback: SickLeavesDataSource.DeleteSickLeaveCallback) {
+        cachedSickLeaves.remove(sickLeaveId)
         remoteDataSource.deleteSickLeave(userId, sickLeaveId, object : SickLeavesDataSource.DeleteSickLeaveCallback {
             override fun onSickLeaveDeleted() {
                 localDataSource.deleteSickLeave(userId, sickLeaveId, object : SickLeavesDataSource.DeleteSickLeaveCallback {
                     override fun onSickLeaveDeleted() {
-                        cachedSickLeaves.remove(sickLeaveId)
                         callback.onSickLeaveDeleted()
                     }
 
@@ -92,7 +108,6 @@ class SickLeavesRepository(
                 refreshSickLeaves()
             }
         })
-
     }
 
     override fun deleteAllSickLeaves(
