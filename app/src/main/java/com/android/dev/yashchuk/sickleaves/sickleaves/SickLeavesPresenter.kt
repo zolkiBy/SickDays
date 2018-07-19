@@ -6,6 +6,7 @@ import com.android.dev.yashchuk.sickleaves.data.Status
 class SickLeavesPresenter(private val view: SickLeavesContract.View): SickLeavesContract.Presenter {
 
     override fun showLoading(show: Boolean) {
+        if (show) view.hideEmptyView()
         view.showLoading(show)
     }
 
