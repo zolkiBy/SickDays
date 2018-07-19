@@ -2,15 +2,16 @@ package com.android.dev.yashchuk.sickleaves.sickleaves
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
+import android.content.Context
 import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.v4.app.Fragment
 import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.LinearLayoutManager
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import com.android.dev.yashchuk.sickleaves.R
+import com.android.dev.yashchuk.sickleaves.callbacks.OnTitleResChangeListener
+import com.android.dev.yashchuk.sickleaves.data.FilterType
 import com.android.dev.yashchuk.sickleaves.data.SickLeave
 import com.android.dev.yashchuk.sickleaves.detail.SickLeaveDetailActivity
 import com.android.dev.yashchuk.sickleaves.sickleaves.recycler.SickLeavesAdapter
@@ -27,6 +28,8 @@ class SickLeavesFragment :
 
     var userId: String? = null
 
+    private var titleResChangeListener: OnTitleResChangeListener? = null
+
     private lateinit var adapter: SickLeavesAdapter
 
     private lateinit var presenter: SickLeavesContract.Presenter
@@ -34,6 +37,7 @@ class SickLeavesFragment :
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
         arguments?.let {
             userId = it.getString(PARAM_USER_ID)
         }
@@ -53,15 +57,39 @@ class SickLeavesFragment :
         initSwipeRefreshLayout()
 
         subscribeUpdateLoadingState()
-
         subscribeSwipeLoadingState()
-
         subscribeUpdateSickLeaves()
-
         subscribeSnackBarMessage()
+        subscribeToolbarTitle()
 
         setupRecycler()
     }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.loadSickLeaves(false, false)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
+        inflater?.inflate(R.menu.menu_filter, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?) =
+            when (item?.itemId) {
+                R.id.all -> {
+                    presenter.showAll()
+                    true
+                }
+                R.id.opened -> {
+                    presenter.showOpened()
+                    true
+                }
+                R.id.closed -> {
+                    presenter.showClosed()
+                    true
+                }
+                else -> false
+            }
 
     private fun initPresenter() = Injection.provideSickLeavesPresenter(this)
 
@@ -95,7 +123,10 @@ class SickLeavesFragment :
 
     private fun subscribeUpdateSickLeaves() {
         viewModel.sickLeaves.observe(this, Observer<List<SickLeave>> { sickLeaves ->
-            presenter.updateUi(sickLeaves)
+            val sortedList = sickLeaves
+                    ?.sortedWith(compareBy(SickLeave::status, SickLeave::startDate))?.reversed()
+
+            presenter.updateUi(sortedList)
         })
     }
 
@@ -107,10 +138,18 @@ class SickLeavesFragment :
         })
     }
 
+    private fun subscribeToolbarTitle() {
+        viewModel.toolbarTitleResId.observe(this, Observer<Int> {titleResId ->
+            titleResId?.let {
+                titleResChangeListener?.onTitleResChange(it)
+            }
+        })
+    }
+
     private fun setupRecycler() {
         adapter = SickLeavesAdapter(
                 activity!!,
-                { sickLeave -> SickLeaveDetailActivity.start(activity!!, sickLeave.id, sickLeave.status) },
+                { sickLeave -> SickLeaveDetailActivity.start(activity!!, sickLeave.id.toString(), sickLeave.status) },
                 { sickLeave -> presenter.closeSickLeave(sickLeave) },
                 { sickLeave -> presenter.deleteSickLeave(sickLeave) })
 
@@ -153,8 +192,37 @@ class SickLeavesFragment :
         recycler.visibility = if (show) View.GONE else View.VISIBLE
     }
 
+    override fun showAll() {
+        viewModel.currentFiltering = FilterType.ALL
+        viewModel.loadSickLeaves(false, false)
+    }
+
+    override fun showOpened() {
+        viewModel.currentFiltering = FilterType.OPEN
+        viewModel.loadSickLeaves(false, false)
+    }
+
+    override fun showClosed() {
+        viewModel.currentFiltering = FilterType.CLOSE
+        viewModel.loadSickLeaves(false, false)
+    }
+
     override fun onRefresh() {
         viewModel.loadSickLeaves(true, true)
+    }
+
+    override fun onAttach(context: Context?) {
+        super.onAttach(context)
+        if (context is OnTitleResChangeListener) {
+            titleResChangeListener = context
+        } else {
+            throw RuntimeException(context.toString() + " must implement OnTitleResChangeListener")
+        }
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        titleResChangeListener = null
     }
 
     companion object {

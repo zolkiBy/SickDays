@@ -2,18 +2,19 @@ package com.android.dev.yashchuk.sickleaves.detail.addedit
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
-import android.net.Uri
+import android.content.Context
 import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-
 import com.android.dev.yashchuk.sickleaves.R
+import com.android.dev.yashchuk.sickleaves.callbacks.OnCloseScreenListener
+import com.android.dev.yashchuk.sickleaves.callbacks.OnDateSetListener
+import com.android.dev.yashchuk.sickleaves.callbacks.OnTitleChangeListener
 import com.android.dev.yashchuk.sickleaves.data.DatePickerCode
 import com.android.dev.yashchuk.sickleaves.data.SickLeave
-import com.android.dev.yashchuk.sickleaves.data.Status
 import com.android.dev.yashchuk.sickleaves.detail.SickLeaveDetailViewModel
 import com.android.dev.yashchuk.sickleaves.detail.datepicker.DatePickerFragment
 import com.android.dev.yashchuk.sickleaves.utils.Event
@@ -25,13 +26,14 @@ import java.util.*
 
 private const val PARAM_USER_ID = "USER_ID"
 private const val PARAM_SICK_LEAVE_ID = "SICK_LEAVE_ID"
-private const val REQUEST_CODE_TARGET_FRAGMENT = 111
 private const val TAG_DATE_PICKER = "DATE_PICKER"
+private const val REQUEST_CODE_TARGET_FRAGMENT = 111
 
-class SickLeaveAddEditFragment : Fragment(), SickLeaveAddEditContract.View, DatePickerFragment.OnDateSetListener {
+class SickLeaveAddEditFragment : Fragment(), SickLeaveAddEditContract.View, OnDateSetListener {
     private var userId: String? = null
     private var sickLeaveId: String? = null
-    private var listener: OnFragmentInteractionListener? = null
+    private var closeListener: OnCloseScreenListener? = null
+    private var titleChangeListener: OnTitleChangeListener? = null
 
     private var sickLeave: SickLeave? = null
 
@@ -60,9 +62,7 @@ class SickLeaveAddEditFragment : Fragment(), SickLeaveAddEditContract.View, Date
         presenter = initPresenter()
 
         subscribeUpdateLoadingState()
-
         subscribeUpdateSickLeave()
-
         subscribeSnackBarMessage()
 
         configButtons()
@@ -92,6 +92,7 @@ class SickLeaveAddEditFragment : Fragment(), SickLeaveAddEditContract.View, Date
     private fun subscribeUpdateSickLeave() {
         viewModel.sickLeave.observe(activity!!, Observer<SickLeave> { sickLeave ->
             presenter.updateUi(sickLeave)
+            presenter.setToolbarTitle(sickLeave)
             this.sickLeave = sickLeave
         })
     }
@@ -110,20 +111,11 @@ class SickLeaveAddEditFragment : Fragment(), SickLeaveAddEditContract.View, Date
 
     private fun configButtons() {
         create_save_btn.setOnClickListener {
-            val sickLeave = SickLeave(
-                    title = title.text.toString(),
-                    description = description.text.toString(),
-                    startDate = start_date.text.toString().getFormattedDate(),
-                    endDate = end_date.text.toString().getFormattedDate()
-            )
-            presenter.saveSickLeave(sickLeave)
+            presenter.validate(sickLeave)
         }
 
         close_btn.setOnClickListener {
-            if (sickLeave != null) {
-                sickLeave?.status = Status.CLOSE.name
-                presenter.saveSickLeave(sickLeave!!)
-            }
+            presenter.close(sickLeave)
         }
     }
 
@@ -137,35 +129,16 @@ class SickLeaveAddEditFragment : Fragment(), SickLeaveAddEditContract.View, Date
         }
     }
 
+    private fun saveAndCloseScreen(sickLeave: SickLeave) {
+        presenter.save(sickLeave)
+        presenter.closeScreen()
+    }
+
     override fun onDateSet(requestCode: Int?, date: Date) {
         when (requestCode) {
             DatePickerCode.START_DATE_CODE.ordinal -> start_date.text = date.getFormattedDateString()
             DatePickerCode.END_DATE_CODE.ordinal -> end_date.text = date.getFormattedDateString()
         }
-    }
-
-    // TODO: Rename method, update argument and hook method into UI event
-    fun onButtonPressed(uri: Uri) {
-        listener?.onFragmentInteraction(uri)
-    }
-
-    /*override fun onAttach(context: Context) {
-        super.onAttach(context)
-        if (context is OnFragmentInteractionListener) {
-            listener = context
-        } else {
-            throw RuntimeException(context.toString() + " must implement OnFragmentInteractionListener")
-        }
-    }
-
-    override fun onDetach() {
-        super.onDetach()
-        listener = null
-    }*/
-
-    // TODO: remove if not need
-    interface OnFragmentInteractionListener {
-        fun onFragmentInteraction(uri: Uri)
     }
 
     override fun fillSickLeaveData(sickLeave: SickLeave) {
@@ -178,8 +151,31 @@ class SickLeaveAddEditFragment : Fragment(), SickLeaveAddEditContract.View, Date
         close_btn.visibility = View.VISIBLE
     }
 
-    override fun saveSickLeave(sickLeave: SickLeave) {
+    override fun save(sickLeave: SickLeave) {
         viewModel.saveSickLeave(sickLeave)
+    }
+
+    override fun createSickLeave() {
+        val sickLeave = SickLeave(
+                id = Date().time,
+                title = title.text.toString(),
+                description = description.text.toString(),
+                startDate = start_date.text.toString().getFormattedDate(),
+                endDate = end_date.text.toString().getFormattedDate()
+        )
+
+        saveAndCloseScreen(sickLeave)
+    }
+
+    override fun updateSickLeave() {
+        sickLeave?.let {
+            it.title = title.text.toString()
+            it.description = description.text.toString()
+            it.startDate = start_date.text.toString().getFormattedDate()
+            it.endDate = end_date.text.toString().getFormattedDate()
+
+            saveAndCloseScreen(it)
+        }
     }
 
     override fun showEmptySickLeave() {
@@ -193,6 +189,35 @@ class SickLeaveAddEditFragment : Fragment(), SickLeaveAddEditContract.View, Date
         val datePicker = DatePickerFragment.newInstance(requestCode)
         datePicker.setTargetFragment(this, REQUEST_CODE_TARGET_FRAGMENT)
         datePicker.show(fragmentManager, TAG_DATE_PICKER)
+    }
+
+    override fun closeScreen() {
+        closeListener?.onCloseScreen()
+    }
+
+    override fun setToolbarTextForSickLeave(text: String) {
+        titleChangeListener?.onTitleChange(text)
+    }
+
+    override fun setToolbarTextForNewSickLeave(textResId: Int) {
+        titleChangeListener?.onTitleChange(getString(textResId))
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        if (context is OnCloseScreenListener) {
+            closeListener = context
+        }
+
+        if (context is OnTitleChangeListener) {
+            titleChangeListener = context
+        }
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        closeListener = null
+        titleChangeListener = null
     }
 
     companion object {

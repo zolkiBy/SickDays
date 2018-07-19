@@ -12,18 +12,6 @@ import java.util.*
 
 class FireBaseAuthApi : AuthApi{
 
-    fun addSickLeave(fireStore: FirebaseFirestore) {
-        val sickLeave = SickLeave(title = "Title", description = "description")
-        val sickLeaveObj = HashMap<String, Any>()
-        sickLeaveObj["title"] = sickLeave.title
-        sickLeaveObj["description"] = sickLeave.description
-        sickLeaveObj["id"] = sickLeave.id
-        fireStore.collection("sickleaves")
-                .add(sickLeaveObj)
-                .addOnSuccessListener { Log.d("FireBaseAuthApi", "Add document" + it.id) }
-                .addOnFailureListener { Log.w("FireBaseAuthApi", "Error", it) }
-    }
-
     override fun createUser(email: String, password: String, callback: OnUserAuthListener) {
         FirebaseAuth.getInstance().createUserWithEmailAndPassword(email, password).addOnCompleteListener {
             if (it.isSuccessful) {

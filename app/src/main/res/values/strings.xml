@@ -1,14 +1,13 @@
 <resources>
     <string name="app_name">Sick Leaves</string>
 
-    <string name="preference_user_id_key">com.android.dev.yashchuk.sickleaves.USER_ID</string>
+    <string name="preference_user_id_key" translatable="false">com.android.dev.yashchuk.sickleaves.USER_ID</string>
 
     <!-- Login Screen -->
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password</string>
     <string name="action_sign_in">Sign in</string>
     <string name="action_register">Register</string>
-    <string name="action_sign_in_short">Sign in</string>
     <string name="error_invalid_email">This email address is invalid</string>
     <string name="error_invalid_password">This password is too short</string>
     <string name="error_incorrect_password">This password is incorrect</string>
@@ -17,17 +16,25 @@
     <string name="login_error_sign_in">Failed to sign in</string>
 
     <!-- SickLeaves list -->
-    <string name="sick_list_date_title">Date start/end</string>
-    <string name="sick_list_date">%1$s - %2$s</string>
-    <string name="sick_list_empty_view_text">There are no sick leaves</string>
+    <string name="sick_list_item_date" translatable="false">%1$s - %2$s</string>
+    <string name="sick_list_toolbar_title_all">Sick leaves</string>
+    <string name="sick_list_toolbar_title_opened">Opened sick leaves</string>
+    <string name="sick_list_toolbar_title_closed">Closed sick leaves</string>
+    <string name="sick_list_item_date_title">Date start/end</string>
     <string name="sick_list_item_btn_close_text">Close Sick Leave</string>
+    <string name="sick_list_item_status_open">Open</string>
+    <string name="sick_list_item_status_closed">Closed</string>
+    <string name="sick_list_empty_view_text">There are no sick leaves</string>
     <string name="sick_list_close_success_message">Sick leave successfully closed</string>
     <string name="sick_list_close_error_message">Failed to close sick leave</string>
     <string name="sick_list_delete_success_message">Sick leave successfully deleted</string>
     <string name="sick_list_delete_error_message">Failed to delete sick leave</string>
+    <string name="sick_list_sort_menu_all">All</string>
+    <string name="sick_list_sort_menu_opened">Opened</string>
+    <string name="sick_list_sort_menu_closed">Closed</string>
 
     <!-- SickLeave Detail -->
-    <string name="activity_detail_toolbar_title">SickLeaveDetailActivity</string>
+    <string name="activity_detail_toolbar_title" translatable="false">SickLeaveDetailActivity</string>
     <string name="fragment_detail_sick_leave_title_hint">Title</string>
     <string name="fragment_detail_sick_leave_description_hint">Description</string>
     <string name="fragment_detail_sick_leave_end_date_text">End date</string>
@@ -36,9 +43,7 @@
     <string name="fragment_detail_btn_close_text">Close Sick Leave</string>
     <string name="fragment_detail_failed_load_sick_leave">Failed to load sick leave</string>
     <string name="fragment_detail_failed_save_sick_leave">Failed to save sick leave</string>
+    <string name="fragment_add_edit_toolbar_title_create">Create</string>
 
-    <string name="title_activity_add_edit_sick_leave">AddEditSickLeaveActivity</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_add_edit_sick_leave" translatable="false">AddEditSickLeaveActivity</string>
 </resources>

@@ -5,10 +5,10 @@
     android:background="@color/backgroundColor"
     android:gravity="center_horizontal"
     android:orientation="vertical"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/common_normal_padding"
+    android:paddingLeft="@dimen/common_normal_padding"
+    android:paddingRight="@dimen/common_normal_padding"
+    android:paddingTop="@dimen/common_big_padding"
     tools:context="com.android.dev.yashchuk.sickleaves.login.LoginActivity">
 
     <ProgressBar
@@ -19,21 +19,22 @@
         android:layout_marginBottom="8dp"
         android:visibility="gone" />
 
-    <android.support.v7.widget.CardView
+    <ScrollView
+        android:id="@+id/login_form"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent"
+        android:padding="8dp">
 
-        <ScrollView
-            android:id="@+id/login_form"
+        <android.support.v7.widget.CardView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:padding="8dp">
+            android:layout_height="wrap_content">
 
             <LinearLayout
                 android:id="@+id/email_login_form"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:padding="@dimen/common_normal_padding">
 
                 <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
@@ -60,7 +61,7 @@
                         android:layout_height="wrap_content"
                         android:hint="@string/prompt_password"
                         android:imeActionId="6"
-                        android:imeActionLabel="@string/action_sign_in_short"
+                        android:imeActionLabel="@string/action_sign_in"
                         android:imeOptions="actionUnspecified"
                         android:inputType="textPassword"
                         android:maxLines="1"
@@ -70,20 +71,16 @@
 
                 <Button
                     android:id="@+id/sign_in_btn"
-                    style="@style/Widget.AppCompat.Button.Colored"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="8dp"
+                    style="@style/buttonColored"
+                    android:layout_marginTop="@dimen/common_small_padding"
                     android:text="@string/action_sign_in" />
 
                 <Button
                     android:id="@+id/register_btn"
-                    style="@style/Widget.AppCompat.Button.Colored"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="8dp"
+                    style="@style/buttonColored"
+                    android:layout_marginTop="@dimen/common_small_padding"
                     android:text="@string/action_register" />
             </LinearLayout>
-        </ScrollView>
-    </android.support.v7.widget.CardView>
+        </android.support.v7.widget.CardView>
+    </ScrollView>
 </LinearLayout>

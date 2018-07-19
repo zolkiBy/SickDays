@@ -1,0 +1,43 @@
+<resources>
+    <string name="app_name">Больничные</string>
+
+    <!-- Login Screen -->
+    <string name="prompt_email">Электронная почта</string>
+    <string name="prompt_password">Пароль</string>
+    <string name="action_sign_in">Войти</string>
+    <string name="action_register">Зарегистрироваться</string>
+    <string name="error_invalid_email">Неверный адрес элетронной почты</string>
+    <string name="error_invalid_password">Пароль слишком короткий</string>
+    <string name="error_incorrect_password">Пароль неверный</string>
+    <string name="error_field_required">Обязательное поле</string>
+    <string name="login_error_create_user">Ошибка при создании пользователя</string>
+    <string name="login_error_sign_in">Ошибка входа</string>
+
+    <!-- SickLeaves list -->
+    <string name="sick_list_toolbar_title_all">Больничные</string>
+    <string name="sick_list_toolbar_title_opened">Открытые больничные</string>
+    <string name="sick_list_toolbar_title_closed">Закрытые больничные</string>
+    <string name="sick_list_item_date_title">Дата начала/окончания</string>
+    <string name="sick_list_item_btn_close_text">Закрыть</string>
+    <string name="sick_list_item_status_open">Открыт</string>
+    <string name="sick_list_item_status_closed">Закрыт</string>
+    <string name="sick_list_empty_view_text">У Вас нет больничных</string>
+    <string name="sick_list_close_success_message">Успешно закрыт</string>
+    <string name="sick_list_close_error_message">Ошибка при закрытии</string>
+    <string name="sick_list_delete_success_message">Успешно удален</string>
+    <string name="sick_list_delete_error_message">Ошибка удаления</string>
+    <string name="sick_list_sort_menu_all">Все</string>
+    <string name="sick_list_sort_menu_opened">Открытые</string>
+    <string name="sick_list_sort_menu_closed">Закрытые</string>
+
+    <!-- SickLeave Detail -->
+    <string name="fragment_detail_sick_leave_title_hint">Заголовок</string>
+    <string name="fragment_detail_sick_leave_description_hint">Описание</string>
+    <string name="fragment_detail_sick_leave_end_date_text">Дата окончания</string>
+    <string name="fragment_detail_btn_create_text">Создать больничный</string>
+    <string name="fragment_detail_btn_save_text">Сохранить изменения</string>
+    <string name="fragment_detail_btn_close_text">Закрыть больничный</string>
+    <string name="fragment_detail_failed_load_sick_leave">Ошибка при загрузке</string>
+    <string name="fragment_detail_failed_save_sick_leave">Ошибка при сохранении</string>
+    <string name="fragment_add_edit_toolbar_title_create">Создать</string>
+</resources>

@@ -5,7 +5,10 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="@dimen/common_small_margin"
-    app:cardBackgroundColor="@android:color/white"
+    android:clickable="true"
+    android:focusable="true"
+    android:foreground="?android:attr/selectableItemBackground"
+    app:cardBackgroundColor="@color/grey_200"
     app:cardCornerRadius="4dp"
     app:cardElevation="8dp">
 
@@ -69,7 +72,7 @@
             android:paddingEnd="8dp"
             android:paddingStart="8dp"
             android:paddingTop="4dp"
-            android:text="@string/sick_list_date_title"
+            android:text="@string/sick_list_item_date_title"
             android:textColor="@color/lightGrey"
             android:textSize="@dimen/text_size_mini"
             tools:text="Дата начала/окончания" />

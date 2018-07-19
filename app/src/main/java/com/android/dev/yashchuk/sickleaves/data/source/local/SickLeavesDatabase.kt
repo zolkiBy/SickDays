@@ -7,7 +7,7 @@ import android.arch.persistence.room.TypeConverters
 import android.content.Context
 import com.android.dev.yashchuk.sickleaves.data.SickLeave
 
-@Database(entities = arrayOf(SickLeave::class), version = 1)
+@Database(entities = arrayOf(SickLeave::class), exportSchema = false, version = 1)
 @TypeConverters(DateConverter::class)
 abstract class SickLeavesDatabase : RoomDatabase() {
 

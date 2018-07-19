@@ -12,6 +12,9 @@ interface SickLeavesContract {
         fun hideDataList()
         fun closeSickLeave(sickLeave: SickLeave)
         fun deleteSickLeave(sickLeave: SickLeave)
+        fun showAll()
+        fun showOpened()
+        fun showClosed()
     }
 
     interface Presenter {
@@ -19,5 +22,8 @@ interface SickLeavesContract {
         fun updateUi(sickLeaves: List<SickLeave>?)
         fun closeSickLeave(sickLeave: SickLeave)
         fun deleteSickLeave(sickLeave: SickLeave)
+        fun showAll()
+        fun showOpened()
+        fun showClosed()
     }
 }

@@ -26,7 +26,11 @@ class SickLeavesAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val view: View = layoutInflater.inflate(viewType, parent, false)
-        return SickLeaveClosedVH(view)
+        return when (viewType) {
+            R.layout.item_sick_leave_opened -> SickLeaveOpenedVH(view)
+            R.layout.item_sick_leave_closed -> SickLeaveClosedVH(view)
+            else -> throw IllegalArgumentException("Unknown ViewType")
+        }
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
@@ -46,12 +50,13 @@ class SickLeavesAdapter(
     override fun getItemViewType(position: Int): Int {
         return when (getItem(position).status) {
             Status.OPEN.name -> R.layout.item_sick_leave_opened
-            else -> R.layout.item_sick_leave_closed
+            Status.CLOSE.name -> R.layout.item_sick_leave_closed
+            else -> throw IllegalArgumentException("Unknown Status")
         }
     }
 
     override fun getItemId(position: Int): Long {
-        return getItem(position).startDate!!.time
+        return getItem(position).id
     }
 
     class SickLeaveDiffCallBack : DiffUtil.ItemCallback<SickLeave>() {

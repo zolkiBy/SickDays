@@ -6,6 +6,7 @@ import com.android.dev.yashchuk.sickleaves.data.Status
 class SickLeavesPresenter(private val view: SickLeavesContract.View): SickLeavesContract.Presenter {
 
     override fun showLoading(show: Boolean) {
+        if (show) view.hideEmptyView()
         view.showLoading(show)
     }
 
@@ -30,5 +31,17 @@ class SickLeavesPresenter(private val view: SickLeavesContract.View): SickLeaves
 
     override fun deleteSickLeave(sickLeave: SickLeave) {
         view.deleteSickLeave(sickLeave)
+    }
+
+    override fun showAll() {
+        view.showAll()
+    }
+
+    override fun showOpened() {
+        view.showOpened()
+    }
+
+    override fun showClosed() {
+        view.showClosed()
     }
 }
