@@ -1,5 +1,6 @@
 package com.android.dev.yashchuk.sickleaves
 
+import com.android.dev.yashchuk.sickleaves.data.SickLeave
 import com.android.dev.yashchuk.sickleaves.sickleaves.SickLeavesContract
 import com.android.dev.yashchuk.sickleaves.sickleaves.SickLeavesPresenter
 import com.android.dev.yashchuk.sickleaves.utils.Injection
@@ -17,9 +18,13 @@ class SickLeavesPresenterTest {
 
     private lateinit var sickLeavesPresenter: SickLeavesPresenter
 
+    private lateinit var sickLeaves: MutableList<SickLeave>
+
     @Before
     fun setup() {
         MockitoAnnotations.initMocks(this)
+
+
     }
 
     @Test
