@@ -184,11 +184,11 @@ class SickLeavesFragment :
         empty_view.visibility = View.GONE
     }
 
-    override fun showDataList() {
+    override fun showData() {
         recycler.visibility = View.VISIBLE
     }
 
-    override fun hideDataList() {
+    override fun hideData() {
         recycler.visibility = View.GONE
     }
 
