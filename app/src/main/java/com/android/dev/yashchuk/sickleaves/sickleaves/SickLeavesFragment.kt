@@ -169,7 +169,7 @@ class SickLeavesFragment :
     }
 
     override fun closeSickLeave(sickLeave: SickLeave) {
-        viewModel.saveSickLeave(sickLeave)
+        viewModel.closeSickLeave(sickLeave)
     }
 
     override fun deleteSickLeave(sickLeave: SickLeave) {

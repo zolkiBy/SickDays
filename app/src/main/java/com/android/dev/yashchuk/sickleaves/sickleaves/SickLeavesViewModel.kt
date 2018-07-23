@@ -75,13 +75,13 @@ class SickLeavesViewModel(private val userId: String?,
                 override fun onDataNotAvailable() {
                     _isLoading.value = false
                     _isLoadingFromSwipe.value = false
-                    _sickLeaves.value = null
+                    _sickLeaves.value = listOf()
                 }
             })
         }
     }
 
-    fun saveSickLeave(sickLeave: SickLeave) {
+    fun closeSickLeave(sickLeave: SickLeave) {
         userId?.let {
             _isLoading.value = true
             sickLeavesRepository.saveSickLeave(it, sickLeave, object : SickLeavesDataSource.SaveSickLeaveCallback {
