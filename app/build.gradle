@@ -25,6 +25,10 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+
+    /*testOptions {
+        unitTests.returnDefaultValues = true
+    }*/
 }
 
 dependencies {
@@ -51,6 +55,12 @@ dependencies {
     testImplementation "junit:junit:$rootProject.ext.junitVersion"
     testImplementation "org.hamcrest:hamcrest-all:$rootProject.ext.hamcrestVersion"
     testImplementation "org.mockito:mockito-core:$rootProject.ext.mockitoVersion"
+
+    testImplementation ("android.arch.core:core-testing:$rootProject.archVersion", {
+        exclude group: 'com.android.support', module: 'support-compat'
+        exclude group: 'com.android.support', module: 'support-annotations'
+        exclude group: 'com.android.support', module: 'support-core-utils'
+    })
 
     // Android Testing Support Library's runner and rules
     androidTestImplementation "com.android.support.test:runner:$rootProject.ext.runnerVersion"
