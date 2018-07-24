@@ -169,7 +169,7 @@ class SickLeavesFragment :
     }
 
     override fun closeSickLeave(sickLeave: SickLeave) {
-        viewModel.saveSickLeave(sickLeave)
+        viewModel.closeSickLeave(sickLeave)
     }
 
     override fun deleteSickLeave(sickLeave: SickLeave) {
@@ -184,11 +184,11 @@ class SickLeavesFragment :
         empty_view.visibility = View.GONE
     }
 
-    override fun showDataList() {
+    override fun showData() {
         recycler.visibility = View.VISIBLE
     }
 
-    override fun hideDataList() {
+    override fun hideData() {
         recycler.visibility = View.GONE
     }
 
