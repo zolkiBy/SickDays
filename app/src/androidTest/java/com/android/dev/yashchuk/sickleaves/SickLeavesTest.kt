@@ -7,6 +7,7 @@ import android.support.test.espresso.Espresso.openActionBarOverflowOrOptionsMenu
 import android.support.test.espresso.ViewInteraction
 import android.support.test.espresso.action.ViewActions.*
 import android.support.test.espresso.assertion.ViewAssertions.matches
+import android.support.test.espresso.contrib.RecyclerViewActions
 import android.support.test.rule.ActivityTestRule
 import android.support.test.runner.AndroidJUnit4
 import com.android.dev.yashchuk.sickleaves.sickleaves.SickLeavesActivity
@@ -29,7 +30,7 @@ private const val TEST_TITLE = "Test sick leave"
 private const val TEST_DESCRIPTION = "Test description"
 
 @RunWith(AndroidJUnit4::class)
-class SickLeavesScreenTest {
+class SickLeavesTest {
 
     @Rule
     @JvmField
@@ -50,7 +51,17 @@ class SickLeavesScreenTest {
     }
 
     @Test
-    fun showOpenedSickLeaves_shouldShowOpenedToolbarTitle() {
+    fun showAllSickLeaves_shouldShowAllSickLeavesToolbarTitle() {
+        showAllSickLeaves()
+
+        val title =
+                InstrumentationRegistry.getTargetContext().getString(R.string.sick_list_toolbar_title_all)
+
+        matchToolbarTitle(title)
+    }
+
+    @Test
+    fun showOpenedSickLeaves_shouldShowOpenedSickLeaveToolbarTitle() {
         showOpenedSickLeaves()
 
         val title =
@@ -60,13 +71,18 @@ class SickLeavesScreenTest {
     }
 
     @Test
-    fun showClosedSickLeaves_shouldShowClosedToolbarTitle() {
+    fun showClosedSickLeaves_shouldShowClosedSickLeavesToolbarTitle() {
         showClosedSickLeaves()
 
         val title =
                 InstrumentationRegistry.getTargetContext().getString(R.string.sick_list_toolbar_title_closed)
 
         matchToolbarTitle(title)
+    }
+
+    private fun showAllSickLeaves() {
+        openActionBarOverflowOrOptionsMenu(InstrumentationRegistry.getTargetContext())
+        onView(withText(R.string.sick_list_sort_menu_all)).perform(click())
     }
 
     private fun showOpenedSickLeaves() {
@@ -91,7 +107,7 @@ class SickLeavesScreenTest {
         return object : TypeSafeMatcher<View>() {
             override fun matchesSafely(item: View?): Boolean {
                 return Matchers.allOf(
-                        ViewMatchers.isDescendantOfA(ViewMatchers.isAssignableFrom(RecyclerView::class.java)),
+                        ViewMatchers.isDescendantOfA(isAssignableFrom(RecyclerView::class.java)),
                         ViewMatchers.withText(itemText)
                 ).matches(item)
             }
@@ -103,9 +119,10 @@ class SickLeavesScreenTest {
     }
 
     private fun matchToolbarTitle(title: CharSequence): ViewInteraction {
-        return onView(allOf(
-                isAssignableFrom(TextView::class.java),
-                withParent(isAssignableFrom(Toolbar::class.java))))
+        return onView(
+                allOf(
+                        isAssignableFrom(TextView::class.java),
+                        withParent(isAssignableFrom(Toolbar::class.java))))
                 .check(matches(withText(title.toString())))
     }
 }
