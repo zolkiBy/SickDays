@@ -48,4 +48,62 @@ class SickLeaveAddEditPresenterTest {
         verify(view).showEmptySickLeave()
         verify(view, never()).fillSickLeaveData(sickLeave)
     }
+
+    @Test
+    fun showDatePicker() {
+        addEditPresenter.showDatePicker(0)
+
+        verify(view).showDatePicker(0)
+    }
+
+    @Test
+    fun validateSickLeave_nonNull_shouldUpdateSickLeave() {
+        addEditPresenter.validate(sickLeave)
+
+        verify(view).updateSickLeave()
+        verify(view, never()).createSickLeave()
+    }
+
+    @Test
+    fun validateSickLeave_null_shouldCreateSickLeave() {
+        addEditPresenter.validate(null)
+
+        verify(view).createSickLeave()
+        verify(view, never()).updateSickLeave()
+    }
+
+    @Test
+    fun saveSickLeave() {
+        addEditPresenter.save(sickLeave)
+
+        verify(view).save(sickLeave)
+    }
+
+    @Test
+    fun closeSickLeave_nonNull_shouldClose() {
+        addEditPresenter.close(sickLeave)
+
+        verify(view).save(sickLeave)
+    }
+
+    @Test
+    fun closeSickLeave_null_shouldNeverClose() {
+        addEditPresenter.close(null)
+
+        verify(view, never()).save(sickLeave)
+    }
+
+    @Test
+    fun showLoading() {
+        addEditPresenter.showLoading(true)
+
+        verify(view).showLoading(true)
+    }
+
+    @Test
+    fun closeScreen_shouldCloseScreen() {
+        addEditPresenter.closeScreen()
+
+        verify(view).closeScreen()
+    }
 }
