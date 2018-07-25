@@ -8,13 +8,14 @@ interface SickLeavesContract {
         fun updateUi(sickLeaves: List<SickLeave>?)
         fun showEmptyView()
         fun hideEmptyView()
-        fun showDataList()
-        fun hideDataList()
+        fun showData()
+        fun hideData()
         fun closeSickLeave(sickLeave: SickLeave)
         fun deleteSickLeave(sickLeave: SickLeave)
         fun showAll()
         fun showOpened()
         fun showClosed()
+        fun logToken(token: String)
     }
 
     interface Presenter {
@@ -25,5 +26,6 @@ interface SickLeavesContract {
         fun showAll()
         fun showOpened()
         fun showClosed()
+        fun logFcmToken()
     }
 }

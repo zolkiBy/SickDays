@@ -40,4 +40,5 @@
     <string name="fragment_detail_failed_load_sick_leave">Ошибка при загрузке</string>
     <string name="fragment_detail_failed_save_sick_leave">Ошибка при сохранении</string>
     <string name="fragment_add_edit_toolbar_title_create">Создать</string>
+    <string name="sick_list_sort_menu_log_token">FCM token в логи</string>
 </resources>
