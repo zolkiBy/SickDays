@@ -5,6 +5,7 @@ import com.android.dev.yashchuk.sickleaves.data.source.SickLeavesRepository
 import com.android.dev.yashchuk.sickleaves.data.source.local.SickLeavesDatabase
 import com.android.dev.yashchuk.sickleaves.data.source.local.SickLeavesLocalDataSource
 import com.android.dev.yashchuk.sickleaves.data.source.remote.SickLeavesRemoteDataSource
+import com.android.dev.yashchuk.sickleaves.data.source.remote.net.AuthApi
 import com.android.dev.yashchuk.sickleaves.data.source.remote.net.FireBaseAuthApi
 import com.android.dev.yashchuk.sickleaves.detail.addedit.SickLeaveAddEditContract
 import com.android.dev.yashchuk.sickleaves.detail.addedit.SickLeaveAddEditPresenter
@@ -25,7 +26,7 @@ object Injection {
                             SickLeavesDatabase.getInstance(context.applicationContext).sickLeavesDao()),
                     SickLeavesRemoteDataSource.getInstance())
 
-    fun provideLoginPresenter(view: LoginContract.View) = LoginPresenter(view, FireBaseAuthApi.getInstance())
+    fun provideLoginPresenter(view: LoginContract.View, authApi: AuthApi) = LoginPresenter(view, authApi)
 
     fun provideLoginViewModelFactory() = LoginViewModelFactory(FireBaseAuthApi.getInstance())
 

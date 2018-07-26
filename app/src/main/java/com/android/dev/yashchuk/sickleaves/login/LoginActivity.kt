@@ -6,18 +6,18 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
+import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.support.annotation.StringRes
 import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity
 import android.view.View
-import android.content.Context
-import android.os.Build
 import com.android.dev.yashchuk.sickleaves.R
+import com.android.dev.yashchuk.sickleaves.data.source.remote.net.FireBaseAuthApi
 import com.android.dev.yashchuk.sickleaves.sickleaves.SickLeavesActivity
 import com.android.dev.yashchuk.sickleaves.utils.Injection
-import com.android.dev.yashchuk.sickleaves.utils.getUserIdFromPrefs
 import com.google.firebase.auth.FirebaseUser
 import kotlinx.android.synthetic.main.activity_login.*
 
@@ -47,7 +47,7 @@ class LoginActivity : AppCompatActivity(), LoginContract.View {
     }
 
     private fun initPresenter() =
-            Injection.provideLoginPresenter(this)
+            Injection.provideLoginPresenter(this, FireBaseAuthApi.getInstance())
 
     private fun configureViews() {
         sign_in_btn.setOnClickListener {
