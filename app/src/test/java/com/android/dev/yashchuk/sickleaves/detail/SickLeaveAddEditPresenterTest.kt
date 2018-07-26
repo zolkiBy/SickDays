@@ -1,5 +1,6 @@
 package com.android.dev.yashchuk.sickleaves.detail
 
+import com.android.dev.yashchuk.sickleaves.R
 import com.android.dev.yashchuk.sickleaves.data.SickLeave
 import com.android.dev.yashchuk.sickleaves.detail.addedit.SickLeaveAddEditContract
 import com.android.dev.yashchuk.sickleaves.detail.addedit.SickLeaveAddEditPresenter
@@ -105,5 +106,21 @@ class SickLeaveAddEditPresenterTest {
         addEditPresenter.closeScreen()
 
         verify(view).closeScreen()
+    }
+
+    @Test
+    fun setToolbarTitle_nonNull_shouldSetTitleForCurrentSickLeave() {
+        addEditPresenter.setToolbarTitle(sickLeave)
+
+        verify(view).setToolbarTextForSickLeave(sickLeave.title)
+        verify(view, never()).setToolbarTextForNewSickLeave(R.string.fragment_add_edit_toolbar_title_create)
+    }
+
+    @Test
+    fun setToolbarTitle_nonNull_shouldSetTitleForNewSickLeave() {
+        addEditPresenter.setToolbarTitle(null)
+
+        verify(view).setToolbarTextForNewSickLeave(R.string.fragment_add_edit_toolbar_title_create)
+        verify(view, never()).setToolbarTextForSickLeave(sickLeave.title)
     }
 }
