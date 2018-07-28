@@ -29,6 +29,7 @@
     <string name="sick_list_sort_menu_all">Все</string>
     <string name="sick_list_sort_menu_opened">Открытые</string>
     <string name="sick_list_sort_menu_closed">Закрытые</string>
+    <string name="sick_list_sort_menu_log_token">FCM token в логи</string>
 
     <!-- SickLeave Detail -->
     <string name="fragment_detail_sick_leave_title_hint">Заголовок</string>
@@ -40,5 +41,5 @@
     <string name="fragment_detail_failed_load_sick_leave">Ошибка при загрузке</string>
     <string name="fragment_detail_failed_save_sick_leave">Ошибка при сохранении</string>
     <string name="fragment_add_edit_toolbar_title_create">Создать</string>
-    <string name="sick_list_sort_menu_log_token">FCM token в логи</string>
+    <string name="fragment_watch_status">Закрыт</string>
 </resources>
