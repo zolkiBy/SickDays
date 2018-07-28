@@ -14,20 +14,28 @@ class LoginPresenter(private val view: LoginContract.View,
                      private val api: AuthApi) : LoginContract.Presenter {
 
     override fun attemptCreateUser(email: String?, password: String?) {
-        if (isEmailPasswordValid(email, password)) {
-            createUser(email, password)
-        } else {
+        if (isEmailValid(email) && isPasswordValid(password)) {
+            createUser(email!!, password!!)
+        } else if (isEmailValid(email) && !isPasswordValid(password)) {
+            showPasswordError()
+        } else if (!isEmailValid(email) && isPasswordValid(password)) {
             showEmailError(email)
-            showPasswordError(password)
+        } else if (!isEmailValid(email) && !isPasswordValid(password)) {
+            showEmailError(email)
+            showPasswordError()
         }
     }
 
     override fun attemptSignIn(email: String?, password: String?) {
-        if (isEmailPasswordValid(email, password)) {
+        if (isEmailValid(email) && isPasswordValid(password)) {
             signIn(email, password)
-        } else {
+        } else if (isEmailValid(email) && !isPasswordValid(password)) {
+            showPasswordError()
+        } else if (!isEmailValid(email) && isPasswordValid(password)) {
             showEmailError(email)
-            showPasswordError(password)
+        } else if (!isEmailValid(email) && !isPasswordValid(password)) {
+            showEmailError(email)
+            showPasswordError()
         }
     }
 
@@ -37,11 +45,17 @@ class LoginPresenter(private val view: LoginContract.View,
         }
     }
 
-    private fun createUser(email: String?, password: String?) {
+    override fun saveUserIdToPrefs(userId: String?) {
+        userId?.let {
+            view.saveUserIdToPrefs(it)
+        }
+    }
+
+    private fun createUser(email: String, password: String) {
         view.showProgress(true)
         api.createUser(
-                email!!,
-                password!!,
+                email,
+                password,
                 object : OnUserAuthListener {
                     override fun onSuccess() {
                         openListScreenAndFinish()
@@ -70,20 +84,14 @@ class LoginPresenter(private val view: LoginContract.View,
                 })
     }
 
-    override fun saveUserIdToPrefs(userId: String?) {
-        userId?.let {
-            view.saveUserIdToPrefs(it)
-        }
-    }
-
-    private fun showPasswordError(password: String?) {
-        if (!password.isPasswordValid()) view.showPasswordError(R.string.error_invalid_password)
+    private fun showPasswordError() {
+        view.showPasswordError(R.string.error_invalid_password)
     }
 
     private fun showEmailError(email: String?) {
         if (email == null || email.isBlank()) {
             view.showEmailError(R.string.error_field_required)
-        } else if (!email.isEmailValid()) {
+        } else if (!isEmailValid(email)) {
             view.showEmailError(R.string.error_invalid_email)
         }
     }
@@ -98,15 +106,14 @@ class LoginPresenter(private val view: LoginContract.View,
         view.finishActivity()
     }
 
-    private fun isEmailPasswordValid(email: String?, password: String?): Boolean {
-        return email.isEmailValid() && password.isPasswordValid()
+    private fun isEmailValid(email: String?): Boolean {
+        return email != null
+                && PATTERN_EMAIL.matcher(email).matches()
     }
 
-    private fun String?.isPasswordValid(): Boolean {
-        return this != null && !this.isBlank() && this.length >= PASSWORD_MIN_LENGTH
-    }
-
-    private fun String?.isEmailValid(): Boolean {
-        return PATTERN_EMAIL.matcher(this).matches()
+    private fun isPasswordValid(password: String?): Boolean {
+        return password != null
+                && !password.isBlank()
+                && password.length >= PASSWORD_MIN_LENGTH
     }
 }

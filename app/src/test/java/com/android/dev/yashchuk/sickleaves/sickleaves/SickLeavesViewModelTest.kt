@@ -18,7 +18,6 @@ import org.junit.rules.TestRule
 import org.mockito.ArgumentCaptor
 import org.mockito.Captor
 import org.mockito.Mock
-import org.mockito.Mockito.mock
 import org.mockito.Mockito.verify
 import org.mockito.MockitoAnnotations
 import java.util.*
@@ -32,8 +31,6 @@ class SickLeavesViewModelTest {
 
     @Mock
     private lateinit var repository: SickLeavesRepository
-    @Mock
-    private lateinit var viewModelCallback: SickLeavesDataSource.LoadSickLeavesCallback
     @Captor
     private lateinit var loadSickLeavesCallbackCaptor: ArgumentCaptor<SickLeavesDataSource.LoadSickLeavesCallback>
     @Captor
@@ -86,8 +83,6 @@ class SickLeavesViewModelTest {
 
     @Test
     fun loadSickLeaves_dataLoaded() {
-        viewModelCallback = mock(SickLeavesDataSource.LoadSickLeavesCallback::class.java)
-
         with(viewModel) {
             assertTrue(isLoading.value!!)
 
@@ -104,8 +99,6 @@ class SickLeavesViewModelTest {
 
     @Test
     fun loadSickLeaves_dataNotAvailable() {
-        viewModelCallback = mock(SickLeavesDataSource.LoadSickLeavesCallback::class.java)
-
         with(viewModel) {
             assertTrue(isLoading.value!!)
 
@@ -120,8 +113,6 @@ class SickLeavesViewModelTest {
 
     @Test
     fun loadSickLeaves_opened() {
-        viewModelCallback = mock(SickLeavesDataSource.LoadSickLeavesCallback::class.java)
-
         with(viewModel) {
             assertTrue(isLoading.value!!)
 
@@ -138,8 +129,6 @@ class SickLeavesViewModelTest {
 
     @Test
     fun loadSickLeaves_closed() {
-        viewModelCallback = mock(SickLeavesDataSource.LoadSickLeavesCallback::class.java)
-
         with(viewModel) {
             assertTrue(isLoading.value!!)
 
@@ -156,8 +145,6 @@ class SickLeavesViewModelTest {
 
     @Test
     fun closeSickLeave_success() {
-        viewModelCallback = mock(SickLeavesDataSource.LoadSickLeavesCallback::class.java)
-
         with(viewModel) {
             closeSickLeave(sickLeave)
 
@@ -178,8 +165,6 @@ class SickLeavesViewModelTest {
 
     @Test
     fun closeSickLeave_failed() {
-        viewModelCallback = mock(SickLeavesDataSource.LoadSickLeavesCallback::class.java)
-
         with(viewModel) {
             closeSickLeave(sickLeave)
 
@@ -202,8 +187,6 @@ class SickLeavesViewModelTest {
 
     @Test
     fun deleteSickLeave_success() {
-        viewModelCallback = mock(SickLeavesDataSource.LoadSickLeavesCallback::class.java)
-
         with(viewModel) {
             deleteSickLeave(sickLeave)
 
@@ -222,8 +205,6 @@ class SickLeavesViewModelTest {
 
     @Test
     fun deleteSickLeave_failed() {
-        viewModelCallback = mock(SickLeavesDataSource.LoadSickLeavesCallback::class.java)
-
         with(viewModel) {
             deleteSickLeave(sickLeave)
 
@@ -236,7 +217,7 @@ class SickLeavesViewModelTest {
 
             assertThat(
                     viewModel.snackBarMessage.value?.getContentIfNotHandled(),
-                    `is` (R.string.sick_list_delete_error_message)
+                    `is`(R.string.sick_list_delete_error_message)
             )
         }
     }
