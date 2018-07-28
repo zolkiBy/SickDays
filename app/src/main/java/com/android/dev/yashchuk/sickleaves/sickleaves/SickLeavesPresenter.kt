@@ -6,6 +6,7 @@ import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.Task
 import com.google.firebase.iid.FirebaseInstanceId
 import com.google.firebase.iid.InstanceIdResult
+import java.util.*
 
 class SickLeavesPresenter(private val view: SickLeavesContract.View) : SickLeavesContract.Presenter {
 
@@ -28,6 +29,7 @@ class SickLeavesPresenter(private val view: SickLeavesContract.View) : SickLeave
     override fun closeSickLeave(sickLeave: SickLeave) {
         sickLeave.apply {
             status = Status.CLOSE.name
+            endDate = Date()
         }
 
         view.closeSickLeave(sickLeave)

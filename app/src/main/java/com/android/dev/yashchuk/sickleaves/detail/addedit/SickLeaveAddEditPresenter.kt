@@ -3,6 +3,7 @@ package com.android.dev.yashchuk.sickleaves.detail.addedit
 import com.android.dev.yashchuk.sickleaves.R
 import com.android.dev.yashchuk.sickleaves.data.SickLeave
 import com.android.dev.yashchuk.sickleaves.data.Status
+import java.util.*
 
 
 class SickLeaveAddEditPresenter(private val view: SickLeaveAddEditContract.View)
@@ -27,6 +28,7 @@ class SickLeaveAddEditPresenter(private val view: SickLeaveAddEditContract.View)
     override fun close(sickLeave: SickLeave?) {
         if (sickLeave != null) {
             sickLeave.status = Status.CLOSE.name
+            sickLeave.endDate = Date()
             view.save(sickLeave)
         }
     }

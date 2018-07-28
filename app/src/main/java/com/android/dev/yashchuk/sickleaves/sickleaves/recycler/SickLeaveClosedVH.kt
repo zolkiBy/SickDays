@@ -15,7 +15,6 @@ class SickLeaveClosedVH(itemView: View?) : RecyclerView.ViewHolder(itemView) {
                deleteClickListener: (SickLeave) -> Unit) {
         with(sickLeave) {
             itemView.title.text = title
-            itemView.description.text = description
             itemView.status.text = itemView.context.getString(status.getStatusStringRes())
             itemView.date.text = itemView.context.getString(
                     R.string.sick_list_item_date,
