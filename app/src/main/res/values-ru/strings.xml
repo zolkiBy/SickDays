@@ -41,5 +41,6 @@
     <string name="fragment_detail_failed_load_sick_leave">Ошибка при загрузке</string>
     <string name="fragment_detail_failed_save_sick_leave">Ошибка при сохранении</string>
     <string name="fragment_add_edit_toolbar_title_create">Создать</string>
+    <string name="fragment_add_edit_invalid_date_error_message">Дата окончания должна быть больше чем дата начала</string>
     <string name="fragment_watch_status">Закрыт</string>
 </resources>

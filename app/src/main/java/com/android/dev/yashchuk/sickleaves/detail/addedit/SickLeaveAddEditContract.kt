@@ -1,5 +1,6 @@
 package com.android.dev.yashchuk.sickleaves.detail.addedit
 
+import android.support.annotation.StringRes
 import com.android.dev.yashchuk.sickleaves.data.SickLeave
 
 
@@ -15,6 +16,7 @@ interface SickLeaveAddEditContract {
         fun closeScreen()
         fun setToolbarTextForSickLeave(text: String)
         fun setToolbarTextForNewSickLeave(textResId: Int)
+        fun showErrorWithSnackBar(@StringRes messageResId: Int)
     }
 
     interface Presenter {

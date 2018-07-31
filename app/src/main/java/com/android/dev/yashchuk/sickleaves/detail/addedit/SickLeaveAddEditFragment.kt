@@ -64,6 +64,7 @@ class SickLeaveAddEditFragment : Fragment(), SickLeaveAddEditContract.View, OnDa
         subscribeUpdateLoadingState()
         subscribeUpdateSickLeave()
         subscribeSnackBarMessage()
+        subscribeCloseScreen()
 
         configButtons()
 
@@ -104,7 +105,17 @@ class SickLeaveAddEditFragment : Fragment(), SickLeaveAddEditContract.View, OnDa
     private fun subscribeSnackBarMessage() {
         viewModel.snackBarMessage.observe(this, Observer<Event<Int>> {
             it?.getContentIfNotHandled()?.let { messageResId ->
-                Snackbar.make(content, getString(messageResId), Snackbar.LENGTH_SHORT).show()
+                showErrorWithSnackBar(messageResId)
+            }
+        })
+    }
+
+    private fun subscribeCloseScreen() {
+        viewModel.isCloseScreen.observe(this, Observer<Boolean> { isCloseScreen ->
+            isCloseScreen?.let {
+                if (isCloseScreen) {
+                    presenter.closeScreen()
+                }
             }
         })
     }
@@ -129,9 +140,8 @@ class SickLeaveAddEditFragment : Fragment(), SickLeaveAddEditContract.View, OnDa
         }
     }
 
-    private fun saveAndCloseScreen(sickLeave: SickLeave) {
+    private fun attemptToSave(sickLeave: SickLeave) {
         presenter.save(sickLeave)
-        presenter.closeScreen()
     }
 
     override fun onDateSet(requestCode: Int?, date: Date) {
@@ -164,7 +174,7 @@ class SickLeaveAddEditFragment : Fragment(), SickLeaveAddEditContract.View, OnDa
                 endDate = end_date.text.toString().getFormattedDate()
         )
 
-        saveAndCloseScreen(sickLeave)
+        attemptToSave(sickLeave)
     }
 
     override fun updateSickLeave() {
@@ -174,7 +184,7 @@ class SickLeaveAddEditFragment : Fragment(), SickLeaveAddEditContract.View, OnDa
             it.startDate = start_date.text.toString().getFormattedDate()
             it.endDate = end_date.text.toString().getFormattedDate()
 
-            saveAndCloseScreen(it)
+            attemptToSave(it)
         }
     }
 
@@ -201,6 +211,10 @@ class SickLeaveAddEditFragment : Fragment(), SickLeaveAddEditContract.View, OnDa
 
     override fun setToolbarTextForNewSickLeave(textResId: Int) {
         titleChangeListener?.onTitleChange(getString(textResId))
+    }
+
+    override fun showErrorWithSnackBar(messageResId: Int) {
+        Snackbar.make(content, getString(messageResId), Snackbar.LENGTH_SHORT).show()
     }
 
     override fun onAttach(context: Context) {
