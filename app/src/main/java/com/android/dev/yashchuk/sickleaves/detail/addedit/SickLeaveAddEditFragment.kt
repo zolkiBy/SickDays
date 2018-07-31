@@ -126,7 +126,7 @@ class SickLeaveAddEditFragment : Fragment(), SickLeaveAddEditContract.View, OnDa
         }
 
         close_btn.setOnClickListener {
-            presenter.close(sickLeave)
+            presenter.close(sickLeave, end_date.text.toString().getFormattedDate())
         }
     }
 
