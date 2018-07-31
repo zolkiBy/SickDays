@@ -121,8 +121,7 @@ class LoginActivity : AppCompatActivity(), LoginContract.View {
     }
 
     override fun openListScreen() {
-        startActivity(Intent(this@LoginActivity,
-                SickLeavesActivity::class.java))
+        SickLeavesActivity.start(this)
     }
 
     override fun showError(@StringRes resId: Int) {
@@ -139,5 +138,13 @@ class LoginActivity : AppCompatActivity(), LoginContract.View {
 
     override fun finishActivity() {
         finish()
+    }
+
+    companion object {
+        @JvmStatic
+        fun start(context: Context) {
+            val intent = Intent(context, LoginActivity::class.java)
+            context.startActivity(intent)
+        }
     }
 }

@@ -11,7 +11,8 @@ private const val PASSWORD_MIN_LENGTH = 6
 private val PATTERN_EMAIL = Pattern.compile("\\b[\\w\\-_.]+@[a-zA-Z\\-_]+\\.[a-zA-Z]+\\b")
 
 class LoginPresenter(private val view: LoginContract.View,
-                     private val api: AuthApi) : LoginContract.Presenter {
+                     private val api: AuthApi) :
+        LoginContract.Presenter {
 
     override fun attemptCreateUser(email: String?, password: String?) {
         if (isEmailValid(email) && isPasswordValid(password)) {

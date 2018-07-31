@@ -2,13 +2,16 @@ package com.android.dev.yashchuk.sickleaves.sickleaves
 
 import com.android.dev.yashchuk.sickleaves.data.SickLeave
 import com.android.dev.yashchuk.sickleaves.data.Status
+import com.android.dev.yashchuk.sickleaves.data.source.remote.net.AuthApi
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.Task
 import com.google.firebase.iid.FirebaseInstanceId
 import com.google.firebase.iid.InstanceIdResult
 import java.util.*
 
-class SickLeavesPresenter(private val view: SickLeavesContract.View) : SickLeavesContract.Presenter {
+class SickLeavesPresenter(private val view: SickLeavesContract.View,
+                          private val api: AuthApi) :
+        SickLeavesContract.Presenter {
 
     override fun showLoading(show: Boolean) {
         if (show) view.hideEmptyView()
@@ -62,5 +65,17 @@ class SickLeavesPresenter(private val view: SickLeavesContract.View) : SickLeave
                         view.logToken(task.result.token)
                     }
                 })
+    }
+
+    override fun showSignOutDialog() {
+        view.showSignOutDialog()
+    }
+
+    override fun signOut() {
+        api.signOut()
+    }
+
+    override fun openLoginScreen() {
+        view.openLoginScreen()
     }
 }
