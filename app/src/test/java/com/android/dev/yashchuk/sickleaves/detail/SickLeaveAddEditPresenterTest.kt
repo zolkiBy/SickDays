@@ -82,14 +82,14 @@ class SickLeaveAddEditPresenterTest {
 
     @Test
     fun closeSickLeave_nonNull_shouldClose() {
-        addEditPresenter.close(sickLeave)
+        addEditPresenter.close(sickLeave, null)
 
         verify(view).save(sickLeave)
     }
 
     @Test
     fun closeSickLeave_null_shouldNeverClose() {
-        addEditPresenter.close(null)
+        addEditPresenter.close(null, null)
 
         verify(view, never()).save(sickLeave)
     }

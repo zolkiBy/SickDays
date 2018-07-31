@@ -33,10 +33,11 @@ class SickLeaveAddEditPresenter(private val view: SickLeaveAddEditContract.View)
         }
     }
 
-    override fun close(sickLeave: SickLeave?) {
+    override fun close(sickLeave: SickLeave?, endDate: Date?) {
         if (sickLeave != null) {
             sickLeave.status = Status.CLOSE.name
-            sickLeave.endDate = Date()
+            sickLeave.endDate = endDate ?: Date()
+
             view.save(sickLeave)
         }
     }
