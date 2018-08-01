@@ -32,6 +32,10 @@ class FireBaseAuthApi : AuthApi{
         }
     }
 
+    override fun signOut() {
+        FirebaseAuth.getInstance().signOut()
+    }
+
     override fun getUser() : FirebaseUser? {
         return FirebaseAuth.getInstance().currentUser
     }
