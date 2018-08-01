@@ -30,7 +30,8 @@ object Injection {
 
     fun provideLoginViewModelFactory() = LoginViewModelFactory(FireBaseAuthApi.getInstance())
 
-    fun provideSickLeavesPresenter(view: SickLeavesContract.View) = SickLeavesPresenter(view)
+    fun provideSickLeavesPresenter(view: SickLeavesContract.View) =
+            SickLeavesPresenter(view, FireBaseAuthApi.getInstance())
 
     fun provideSickLeavesViewModelFactory(context: Context, userId: String?) =
             SickLeavesViewModelFactory(userId, provideSickLeaveRepository(context.applicationContext))

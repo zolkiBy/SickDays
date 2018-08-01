@@ -3,18 +3,23 @@ package com.android.dev.yashchuk.sickleaves.sickleaves
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
+import android.content.DialogInterface
 import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.v4.app.Fragment
 import android.support.v4.widget.SwipeRefreshLayout
+import android.support.v7.app.AlertDialog
 import android.support.v7.widget.LinearLayoutManager
 import android.util.Log
 import android.view.*
 import com.android.dev.yashchuk.sickleaves.R
+import com.android.dev.yashchuk.sickleaves.callbacks.OnBackPressListener
+import com.android.dev.yashchuk.sickleaves.callbacks.OnCloseScreenListener
 import com.android.dev.yashchuk.sickleaves.callbacks.OnTitleResChangeListener
 import com.android.dev.yashchuk.sickleaves.data.FilterType
 import com.android.dev.yashchuk.sickleaves.data.SickLeave
 import com.android.dev.yashchuk.sickleaves.detail.SickLeaveDetailActivity
+import com.android.dev.yashchuk.sickleaves.login.LoginActivity
 import com.android.dev.yashchuk.sickleaves.sickleaves.recycler.SickLeavesAdapter
 import com.android.dev.yashchuk.sickleaves.utils.Event
 import com.android.dev.yashchuk.sickleaves.utils.Injection
@@ -25,11 +30,13 @@ private const val PARAM_USER_ID = "USER_ID"
 class SickLeavesFragment :
         Fragment(),
         SickLeavesContract.View,
-        SwipeRefreshLayout.OnRefreshListener {
+        SwipeRefreshLayout.OnRefreshListener,
+        OnBackPressListener {
 
     var userId: String? = null
 
     private var titleResChangeListener: OnTitleResChangeListener? = null
+    private var closeScreenListener: OnCloseScreenListener? = null
 
     private lateinit var adapter: SickLeavesAdapter
 
@@ -56,6 +63,8 @@ class SickLeavesFragment :
         viewModel = createViewModel()
 
         initSwipeRefreshLayout()
+
+        setBackPressedListener()
 
         subscribeUpdateLoadingState()
         subscribeSwipeLoadingState()
@@ -108,6 +117,10 @@ class SickLeavesFragment :
         swipe_refresh_layout.setOnRefreshListener(this)
     }
 
+    private fun setBackPressedListener() {
+        (activity as SickLeavesActivity).setBackPressedListener(this)
+    }
+
     private fun subscribeUpdateLoadingState() {
         viewModel.isLoading.observe(this, Observer<Boolean> { isShow ->
             if (isShow == true) {
@@ -144,7 +157,7 @@ class SickLeavesFragment :
     }
 
     private fun subscribeToolbarTitle() {
-        viewModel.toolbarTitleResId.observe(this, Observer<Int> {titleResId ->
+        viewModel.toolbarTitleResId.observe(this, Observer<Int> { titleResId ->
             titleResId?.let {
                 titleResChangeListener?.onTitleResChange(it)
             }
@@ -216,8 +229,33 @@ class SickLeavesFragment :
         Log.d(SickLeavesFragment::class.java.simpleName, "FCM token: $token")
     }
 
+    override fun showSignOutDialog() {
+        AlertDialog.Builder(context!!)
+                .setMessage(R.string.sick_list_sign_out_dialog_message)
+                .setPositiveButton(R.string.sick_list_sign_out_dialog_positive_btn)
+                { _, _ ->
+                    run {
+                        presenter.openLoginScreen()
+                        presenter.signOut()
+
+                    }
+                }
+                .setNegativeButton(R.string.sick_list_sign_out_dialog_negative_btn) { dialog, _ -> dialog.dismiss() }
+                .create()
+                .show()
+    }
+
+    override fun openLoginScreen() {
+        LoginActivity.startClearTask(activity!!)
+        closeScreenListener?.onCloseScreen()
+    }
+
     override fun onRefresh() {
         viewModel.loadSickLeaves(true, true)
+    }
+
+    override fun onBackPressed() {
+        presenter.showSignOutDialog()
     }
 
     override fun onAttach(context: Context?) {
@@ -227,11 +265,18 @@ class SickLeavesFragment :
         } else {
             throw RuntimeException(context.toString() + " must implement OnTitleResChangeListener")
         }
+
+        if (context is OnCloseScreenListener) {
+            closeScreenListener = context
+        } else {
+            throw RuntimeException(context.toString() + " must implement OnCloseScreenListener")
+        }
     }
 
     override fun onDetach() {
         super.onDetach()
         titleResChangeListener = null
+        closeScreenListener = null
     }
 
     companion object {

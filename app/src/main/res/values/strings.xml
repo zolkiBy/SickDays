@@ -33,6 +33,9 @@
     <string name="sick_list_sort_menu_opened">Opened</string>
     <string name="sick_list_sort_menu_closed">Closed</string>
     <string name="sick_list_sort_menu_log_token">Log FCM token</string>
+    <string name="sick_list_sign_out_dialog_message">Are you sure to exit from account?</string>
+    <string name="sick_list_sign_out_dialog_positive_btn">Yes</string>
+    <string name="sick_list_sign_out_dialog_negative_btn">Cancel</string>
 
     <!-- SickLeave Detail -->
     <string name="activity_detail_toolbar_title" translatable="false">SickLeaveDetailActivity</string>
@@ -45,6 +48,7 @@
     <string name="fragment_detail_failed_load_sick_leave">Failed to load sick leave</string>
     <string name="fragment_detail_failed_save_sick_leave">Failed to save sick leave</string>
     <string name="fragment_add_edit_toolbar_title_create">Create</string>
+    <string name="fragment_add_edit_invalid_date_error_message">End date must greater then start date</string>
     <string name="fragment_watch_status">Closed</string>
 
     <string name="title_activity_add_edit_sick_leave" translatable="false">AddEditSickLeaveActivity</string>

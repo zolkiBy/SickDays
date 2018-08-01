@@ -22,13 +22,22 @@ class SickLeaveAddEditPresenter(private val view: SickLeaveAddEditContract.View)
     }
 
     override fun save(sickLeave: SickLeave) {
-        view.save(sickLeave)
+        if (sickLeave.endDate != null
+                && isEndDateGreaterThenStartDate(sickLeave)) {
+            view.save(sickLeave)
+
+        } else if (sickLeave.endDate != null) {
+            view.showErrorWithSnackBar(R.string.fragment_add_edit_invalid_date_error_message)
+        } else {
+            view.save(sickLeave)
+        }
     }
 
-    override fun close(sickLeave: SickLeave?) {
+    override fun close(sickLeave: SickLeave?, endDate: Date?) {
         if (sickLeave != null) {
             sickLeave.status = Status.CLOSE.name
-            sickLeave.endDate = Date()
+            sickLeave.endDate = endDate ?: Date()
+
             view.save(sickLeave)
         }
     }
@@ -47,5 +56,9 @@ class SickLeaveAddEditPresenter(private val view: SickLeaveAddEditContract.View)
         } else {
             view.setToolbarTextForSickLeave(sickLeave.title)
         }
+    }
+
+    private fun isEndDateGreaterThenStartDate(sickLeave: SickLeave): Boolean {
+        return sickLeave.endDate!!.time > sickLeave.startDate!!.time
     }
 }

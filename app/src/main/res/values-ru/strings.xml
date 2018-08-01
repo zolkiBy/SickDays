@@ -30,6 +30,9 @@
     <string name="sick_list_sort_menu_opened">Открытые</string>
     <string name="sick_list_sort_menu_closed">Закрытые</string>
     <string name="sick_list_sort_menu_log_token">FCM token в логи</string>
+    <string name="sick_list_sign_out_dialog_message">Вы уверены, что хотите выйти из аккаунта?</string>
+    <string name="sick_list_sign_out_dialog_positive_btn">Да</string>
+    <string name="sick_list_sign_out_dialog_negative_btn">Отмена</string>
 
     <!-- SickLeave Detail -->
     <string name="fragment_detail_sick_leave_title_hint">Заголовок</string>
@@ -41,5 +44,6 @@
     <string name="fragment_detail_failed_load_sick_leave">Ошибка при загрузке</string>
     <string name="fragment_detail_failed_save_sick_leave">Ошибка при сохранении</string>
     <string name="fragment_add_edit_toolbar_title_create">Создать</string>
+    <string name="fragment_add_edit_invalid_date_error_message">Дата окончания должна быть больше чем дата начала</string>
     <string name="fragment_watch_status">Закрыт</string>
 </resources>

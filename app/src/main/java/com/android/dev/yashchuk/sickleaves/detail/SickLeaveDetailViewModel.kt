@@ -16,6 +16,7 @@ class SickLeaveDetailViewModel(private val userId: String?,
     private val _snackBarMessage = MutableLiveData<Event<Int>>()
     private val _sickLeave = MutableLiveData<SickLeave>()
     private val _isLoading = MutableLiveData<Boolean>()
+    private val _isCloseScreen = MutableLiveData<Boolean>()
 
     val snackBarMessage: LiveData<Event<Int>>
         get() = _snackBarMessage
@@ -23,6 +24,8 @@ class SickLeaveDetailViewModel(private val userId: String?,
         get() = _sickLeave
     val isLoading: LiveData<Boolean>
         get() = _isLoading
+    val isCloseScreen: LiveData<Boolean>
+        get() = _isCloseScreen
 
     fun loadSickLeave(sickLeaveId: String?) {
         _sickLeave.value = null
@@ -49,6 +52,7 @@ class SickLeaveDetailViewModel(private val userId: String?,
             repository.saveSickLeave(it, sickLeave, object : SickLeavesDataSource.SaveSickLeaveCallback {
                 override fun onSickLeaveSaved() {
                     _isLoading.value = false
+                    _isCloseScreen.value = true
                     this@SickLeaveDetailViewModel._sickLeave.value = sickLeave
                 }
 
