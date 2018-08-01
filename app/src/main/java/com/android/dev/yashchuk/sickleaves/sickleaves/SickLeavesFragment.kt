@@ -64,6 +64,8 @@ class SickLeavesFragment :
 
         initSwipeRefreshLayout()
 
+        setBackPressedListener()
+
         subscribeUpdateLoadingState()
         subscribeSwipeLoadingState()
         subscribeUpdateSickLeaves()
@@ -113,6 +115,10 @@ class SickLeavesFragment :
 
     private fun initSwipeRefreshLayout() {
         swipe_refresh_layout.setOnRefreshListener(this)
+    }
+
+    private fun setBackPressedListener() {
+        (activity as SickLeavesActivity).setBackPressedListener(this)
     }
 
     private fun subscribeUpdateLoadingState() {
@@ -229,16 +235,19 @@ class SickLeavesFragment :
                 .setPositiveButton(R.string.sick_list_sign_out_dialog_positive_btn)
                 { _, _ ->
                     run {
+                        presenter.openLoginScreen()
                         presenter.signOut()
-                        closeScreenListener?.onCloseScreen()
+
                     }
                 }
                 .setNegativeButton(R.string.sick_list_sign_out_dialog_negative_btn) { dialog, _ -> dialog.dismiss() }
                 .create()
+                .show()
     }
 
     override fun openLoginScreen() {
-        LoginActivity.start(context!!)
+        LoginActivity.startClearTask(activity!!)
+        closeScreenListener?.onCloseScreen()
     }
 
     override fun onRefresh() {

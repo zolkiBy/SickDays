@@ -19,7 +19,7 @@ class SickLeavesActivity :
         OnTitleResChangeListener,
         OnCloseScreenListener {
 
-    private val backPressListener: OnBackPressListener? = null
+    private var backPressListener: OnBackPressListener? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,6 +59,15 @@ class SickLeavesActivity :
 
     override fun onCloseScreen() {
         finish()
+    }
+
+    fun setBackPressedListener(backPressListener: OnBackPressListener) {
+        this.backPressListener = backPressListener
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        backPressListener = null
     }
 
     companion object {

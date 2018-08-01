@@ -142,8 +142,10 @@ class LoginActivity : AppCompatActivity(), LoginContract.View {
 
     companion object {
         @JvmStatic
-        fun start(context: Context) {
+        fun startClearTask(context: Context) {
             val intent = Intent(context, LoginActivity::class.java)
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
             context.startActivity(intent)
         }
     }
