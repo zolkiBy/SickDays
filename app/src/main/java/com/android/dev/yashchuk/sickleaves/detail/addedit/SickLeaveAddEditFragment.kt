@@ -17,10 +17,7 @@ import com.android.dev.yashchuk.sickleaves.data.DatePickerCode
 import com.android.dev.yashchuk.sickleaves.data.SickLeave
 import com.android.dev.yashchuk.sickleaves.detail.SickLeaveDetailViewModel
 import com.android.dev.yashchuk.sickleaves.detail.datepicker.DatePickerFragment
-import com.android.dev.yashchuk.sickleaves.utils.Event
-import com.android.dev.yashchuk.sickleaves.utils.Injection
-import com.android.dev.yashchuk.sickleaves.utils.getFormattedDate
-import com.android.dev.yashchuk.sickleaves.utils.getFormattedDateString
+import com.android.dev.yashchuk.sickleaves.utils.*
 import kotlinx.android.synthetic.main.fragment_add_edit_sick_leave.*
 import java.util.*
 
@@ -103,10 +100,8 @@ class SickLeaveAddEditFragment : Fragment(), SickLeaveAddEditContract.View, OnDa
     }
 
     private fun subscribeSnackBarMessage() {
-        viewModel.snackBarMessage.observe(this, Observer<Event<Int>> {
-            it?.getContentIfNotHandled()?.let { messageResId ->
-                showErrorWithSnackBar(messageResId)
-            }
+        viewModel.snackBarMessage.observe(this, EventObserver { messageResId ->
+            showErrorWithSnackBar(messageResId)
         })
     }
 
