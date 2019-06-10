@@ -60,11 +60,11 @@ class SickLeavesAdapter(
     }
 
     class SickLeaveDiffCallBack : DiffUtil.ItemCallback<SickLeave>() {
-        override fun areItemsTheSame(oldItem: SickLeave?, newItem: SickLeave?): Boolean {
-            return oldItem?.id == newItem?.id
+        override fun areItemsTheSame(oldItem: SickLeave, newItem: SickLeave): Boolean {
+            return oldItem.id == newItem.id
         }
 
-        override fun areContentsTheSame(oldItem: SickLeave?, newItem: SickLeave?): Boolean {
+        override fun areContentsTheSame(oldItem: SickLeave, newItem: SickLeave): Boolean {
             return oldItem == newItem
         }
     }

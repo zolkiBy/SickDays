@@ -62,7 +62,7 @@ class SickLeavesPresenter(private val view: SickLeavesContract.View,
                             return
                         }
 
-                        view.logToken(task.result.token)
+                        view.logToken(task.result!!.token)
                     }
                 })
     }

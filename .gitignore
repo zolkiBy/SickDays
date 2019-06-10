@@ -118,6 +118,8 @@ obj/
 .idea/sqlDataSources.xml
 .idea/dynamic.xml
 .idea/uiDesigner.xml
+.idea/markdown-navigator.xml
+.idea/markdown-navigator/profiles_settings.xml
 
 # OS-specific files
 .DS_Store

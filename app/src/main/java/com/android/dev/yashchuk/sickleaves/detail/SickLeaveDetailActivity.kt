@@ -24,8 +24,8 @@ class SickLeaveDetailActivity : AppCompatActivity(), OnCloseScreenListener, OnTi
         setContentView(R.layout.activity_detail_sick_leave)
 
         val userId = getUserIdFromPrefs()
-        val sickLeaveId = intent.extras.getString(EXTRA_SICK_LEAVE_ID)
-        val status = intent.extras.getString(EXTRA_SICK_LEAVE_IS_EDIT)
+        val sickLeaveId = intent.extras?.getString(EXTRA_SICK_LEAVE_ID)
+        val status = intent.extras?.getString(EXTRA_SICK_LEAVE_IS_EDIT)
 
         setupActionBar(R.id.toolbar) {
             setDisplayHomeAsUpEnabled(true)

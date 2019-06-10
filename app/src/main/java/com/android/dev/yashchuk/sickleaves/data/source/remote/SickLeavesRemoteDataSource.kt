@@ -13,7 +13,7 @@ class SickLeavesRemoteDataSource : SickLeavesDataSource {
                 .get()
                 .addOnCompleteListener { task ->
                     if (task.isSuccessful) {
-                        for (document in task.result) {
+                        for (document in task.result!!) {
                             sickLeaves.add(document.toObject(SickLeave::class.java))
                         }
 
@@ -31,8 +31,10 @@ class SickLeavesRemoteDataSource : SickLeavesDataSource {
                 .addOnCompleteListener { task ->
                     if (task.isSuccessful) {
                         val document = task.result
-                        if (document.exists()) {
-                            callback.onSickLeaveLoaded(document.toObject(SickLeave::class.java)!!)
+                        if (document != null) {
+                            if (document.exists()) {
+                                callback.onSickLeaveLoaded(document.toObject(SickLeave::class.java)!!)
+                            }
                         }
                     }
                 }

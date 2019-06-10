@@ -8,7 +8,7 @@ import com.android.dev.yashchuk.sickleaves.utils.getFormattedDateString
 import com.android.dev.yashchuk.sickleaves.utils.getStatusStringRes
 import kotlinx.android.synthetic.main.item_sick_leave_opened.view.*
 
-class SickLeaveOpenedVH(itemView: View?) : RecyclerView.ViewHolder(itemView) {
+class SickLeaveOpenedVH(itemView: View?) : RecyclerView.ViewHolder(itemView!!) {
     fun bindTo(
             sickLeave: SickLeave,
             itemClickListener: (SickLeave) -> Unit,
